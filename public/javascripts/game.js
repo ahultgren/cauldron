@@ -10,15 +10,16 @@ var Cursor = require('./cursor');
 var VisibilityPolygon = require('./visibility-polygon');
 
 
-var Game = module.exports = function (map) {
+var Game = module.exports = function (settings) {
   var self = this;
 
-  self.loop = new Loop();
+  self.canvas = canvas;
+  self.loop = new Loop(self.canvas, self.ctx);
 
-  self.map = new Map(map(canvas));
+  self.map = new Map(settings.map(self.canvas));
   self.loop.alwaysVisible.push(self.map);
 
-  self.playerOne = new Player(self.map, canvas.width/2, canvas.height/2);
+  self.playerOne = new Player(self.map, self.canvas.width/2, self.canvas.height/2);
   self.loop.moving.push(self.playerOne);
   self.loop.masked.push(self.playerOne);
 

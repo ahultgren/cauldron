@@ -1,13 +1,10 @@
 'use strict';
 
-var canvas = require('./canvas'),
-    ctx = require('./ctx');
-
-
 window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
 
 
-var Loop = module.exports = function () {
+var Loop = module.exports = function (canvas) {
+  this.canvas = canvas;
   this.paused = true;
 
   this.static = [];             // Objects not moving but collidable
@@ -17,6 +14,7 @@ var Loop = module.exports = function () {
   this.masked = [];             // Objects only seen when looked at
   this.alwaysVisible = [];      // Objects always seen
 };
+
 
 Loop.prototype.start = function() {
   this.paused = false;
@@ -36,7 +34,8 @@ Loop.prototype.loop = function () {
 };
 
 Loop.prototype.move = function () {
-  var i, l;
+  var i, l,
+      ctx = this.canvas.ctx;
 
   // Move the registered objects
   for(i = 0, l = this.visibilityPolygons.length; i < l; i++) {
@@ -45,10 +44,11 @@ Loop.prototype.move = function () {
 };
 
 Loop.prototype.draw = function () {
-  var i, l;
+  var i, l,
+      ctx = this.canvas.ctx;
 
   // Clear canvas
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
   // Draw each registered layer in turn and in place
 
