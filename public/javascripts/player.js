@@ -5,14 +5,15 @@ var mouse = require('./input/mouse');
 var SAT = require('sat');
 
 
-var Player = module.exports = function (map, x, y) {
-  this.map = map;
+var Player = module.exports = function (settings) {
+  this.map = settings.map;
+  this.network = settings.network;
 
-  this.x = x;
-  this.y = y;
+  this.x = settings.x;
+  this.y = settings.y;
   this.lastPos = {
-    x: x,
-    y: y
+    x: settings.x,
+    y: settings.y
   };
 
   this.radius = 5;
@@ -23,6 +24,14 @@ var Player = module.exports = function (map, x, y) {
   this.friction = 0.8;
 
   this.fill = '#f00';
+};
+
+
+Player.prototype.update = function(settings) {
+  // Generalize this? Need to check in .move if "slave" before calculating stuff in that case
+  this.x = settings.x;
+  this.y = settings.y;
+  this.a = settings.a;
 };
 
 Player.prototype.move = function() {
@@ -43,6 +52,17 @@ Player.prototype.move = function() {
   this.a = Math.atan2(mouse.y-this.y, mouse.x-this.x);
 
   this.collisionTest();
+
+  // Basic event emitter
+  if(this.network) {
+    this.network.sendToAll({
+      player: {
+        x: this.x,
+        y: this.y,
+        a: this.a
+      }
+    });
+  }
 };
 
 Player.prototype.draw = function(ctx) {
