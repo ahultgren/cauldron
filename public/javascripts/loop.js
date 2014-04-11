@@ -38,7 +38,7 @@ Loop.prototype.move = function () {
       ctx = this.canvas.ctx;
 
   // Move the registered objects
-  for(i = 0, l = this.visibilityPolygons.length; i < l; i++) {
+  for(i = 0, l = this.moving.length; i < l; i++) {
     this.moving[i].move(ctx);
   }
 };

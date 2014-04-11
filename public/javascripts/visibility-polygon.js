@@ -3,8 +3,8 @@
 var utils = require('./utils');
 
 
-var VP = module.exports = function (game, player) {
-  this.segments = game.map.segments;
+var VP = module.exports = function (segments, player) {
+  this.segments = segments;
   this.player = player;
   this.fuzzyRadius = 10;
 };
