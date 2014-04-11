@@ -1,0 +1,4 @@
+'use strict';
+
+exports.drawPolygon = require('./draw-polygon');
+exports.getIntersection = require('./get-intersection');
