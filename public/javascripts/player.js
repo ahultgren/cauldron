@@ -2,12 +2,11 @@
 
 var keyboard = require('./input/keyboard');
 var mouse = require('./input/mouse');
-var VisibilityPolygon = require('./visibility-polygon');
 var SAT = require('sat');
 
 
-var Player = module.exports = function (game, x, y) {
-  this.game = game;
+var Player = module.exports = function (map, x, y) {
+  this.map = map;
 
   this.x = x;
   this.y = y;
@@ -24,13 +23,6 @@ var Player = module.exports = function (game, x, y) {
   this.friction = 0.8;
 
   this.fill = '#f00';
-
-  this.visibilityPolygon = new VisibilityPolygon(game, this);
-
-  game.loop.moving.push(this);
-
-  game.loop.masked.push(this);
-  game.loop.visibilityPolygons.push(this.visibilityPolygon);
 };
 
 Player.prototype.move = function() {
@@ -66,10 +58,10 @@ Player.prototype.draw = function(ctx) {
 
 Player.prototype.collisionTest = function() {
   var self = this;
-  var segments = this.game.map.segments;
-  var intersection;
+  var segments = this.map.segments;
   var response = new SAT.Response();
   var l = segments.length;
+  //var intersection;
 
   if(false && SAT.testPolygonPolygon(
     new SAT.Polygon(new SAT.V(), [

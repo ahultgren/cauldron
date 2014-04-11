@@ -3,10 +3,8 @@
 var mouse = require('./input/mouse');
 
 
-var Cursor = module.exports = function (game) {
+var Cursor = module.exports = function () {
   this.color = '#ccc';
-
-  game.loop.masked.push(this);
 };
 
 Cursor.prototype.draw = function (ctx) {

@@ -42,7 +42,10 @@ module.exports = function (grunt) {
         }
       },
       js: {
-        src: 'public/javascripts/*.js'
+        src: 'public/javascripts/*.js',
+        options: {
+          unused: true
+        }
       }
     },
     browserify: {
