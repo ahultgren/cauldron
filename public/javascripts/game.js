@@ -25,7 +25,7 @@ var Game = module.exports = function (settings) {
   self.loop = new Loop(self.canvas, self.ctx);
 
   self.map = new Map(settings.map(self.canvas));
-  self.loop.alwaysVisible.push(self.map);
+  self.add('alwaysVisible', self.map);
 
   // Player one
 
@@ -36,18 +36,30 @@ var Game = module.exports = function (settings) {
     network: self.network
   });
 
-  self.loop.moving.push(self.playerOne);
-  self.loop.masked.push(self.playerOne);
+  self.add('moving', self.playerOne);
+  self.add('masked', self.playerOne);
 
   self.playerOne.weapon = new Laser(self);
 
   self.cursor = new Cursor();
-  self.loop.alwaysVisible.push(self.cursor);
+  self.add('alwaysVisible', self.cursor);
 
   // Visibility polygon
 
   self.visibilityPolygon = new VisibilityPolygon(self.map.segments, self.playerOne);
-  self.loop.visibilityPolygons.push(self.visibilityPolygon);
+  self.add('visibilityPolygons', self.visibilityPolygon);
+};
+
+
+Game.prototype.add = function (type, object) {
+  if(this.loop[type]) {
+    this.loop[type].push(object);
+  }
+  else {
+    throw new Error('The type ' + type + ' does not exist');
+  }
+
+  return this;
 };
 
 

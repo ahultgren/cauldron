@@ -47,7 +47,7 @@ Beam.prototype.move = function() {
 };
 
 Beam.prototype.draw = function (ctx) {
-  if((this.aliveFor++) < 3) {
+  if((this.aliveFor++) < 2) {
     ctx.strokeStyle = '#c63';
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -56,6 +56,6 @@ Beam.prototype.draw = function (ctx) {
     ctx.stroke();
   }
   else {
-    //## Need a way of destroying the object
+    this._remove = true;
   }
 };

@@ -39,37 +39,43 @@ Loop.prototype.move = function () {
 
   // Move the registered objects
   for(i = 0, l = this.moving.length; i < l; i++) {
-    this.moving[i].move(ctx);
+    if(this.moving[i]._remove) {
+      this.moving.splice(i--, 1);
+      l--;
+    }
+    else {
+      this.moving[i].move(ctx);
+    }
   }
 };
 
 Loop.prototype.draw = function () {
-  var i, l,
-      ctx = this.canvas.ctx;
+  var ctx = this.canvas.ctx;
 
   // Clear canvas
   ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
   // Draw each registered layer in turn and in place
+  this.drawEach('destination-over', this.visibilityPolygons);
+  this.drawEach('destination-over', this.antiMasked);
+  this.drawEach('source-atop', this.masked);
+  this.drawEach('source-over', this.alwaysVisible);
+};
 
-  ctx.globalCompositeOperation = 'destination-over';
-  for(i = 0, l = this.visibilityPolygons.length; i < l; i++) {
-    this.visibilityPolygons[i].draw(ctx);
-  }
 
-  ctx.globalCompositeOperation = 'destination-over';
-  for(i = 0, l = this.antiMasked.length; i < l; i++) {
-    this.antiMasked[i].draw(ctx);
-  }
+Loop.prototype.drawEach = function(gco, objects) {
+  var i, l;
 
-  ctx.globalCompositeOperation = 'source-atop';
-  for(i = 0, l = this.masked.length; i < l; i++) {
-    this.masked[i].draw(ctx);
-  }
+  this.canvas.ctx.globalCompositeOperation = gco;
 
-  ctx.globalCompositeOperation = 'source-over';
-  for(i = 0, l = this.alwaysVisible.length; i < l; i++) {
-    this.alwaysVisible[i].draw(ctx);
+  for(i = 0, l = objects.length; i < l; i++) {
+    if(objects[i]._remove) {
+      objects.splice(i--, 1);
+      l--;
+    }
+    else {
+      objects[i].draw(this.canvas.ctx);
+    }
   }
 };
 

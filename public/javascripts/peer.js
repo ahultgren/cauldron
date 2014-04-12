@@ -23,7 +23,7 @@ Peer.prototype.data = function(data) {
       y: data.data.player.y
     });
 
-    this.game.loop.masked.push(this.player);
+    this.game.add('masked', this.player);
   }
 
   this.player.update(data.data.player);
