@@ -43,4 +43,4 @@ module.exports = function getIntersection (ray, segment) {
     y: rPy+rDy*T1,
     param: T1
   };
-}
+};

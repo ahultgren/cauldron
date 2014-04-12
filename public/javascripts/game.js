@@ -10,6 +10,7 @@ var Laser = require('./laser');
 var Cursor = require('./cursor');
 var VisibilityPolygon = require('./visibility-polygon');
 var Network = require('./network');
+var stdin = require('./input/stdin');
 
 
 var Game = module.exports = function (settings) {
@@ -33,7 +34,8 @@ var Game = module.exports = function (settings) {
     map: self.map,
     x: self.canvas.width/2,
     y: self.canvas.height/2,
-    network: self.network
+    network: self.network,
+    input: new stdin()
   });
 
   self.add('moving', self.playerOne);

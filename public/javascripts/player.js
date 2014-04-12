@@ -1,13 +1,12 @@
 'use strict';
 
-var keyboard = require('./input/keyboard');
-var mouse = require('./input/mouse');
 var SAT = require('sat');
 
 
 var Player = module.exports = function (settings) {
   this.map = settings.map;
   this.network = settings.network;
+  this.input = settings.input;
 
   this.x = settings.x;
   this.y = settings.y;
@@ -36,8 +35,8 @@ Player.prototype.update = function(settings) {
 
 Player.prototype.move = function() {
   // Acceleration
-  this.dx += keyboard.a && -this.acc || keyboard.d && this.acc || 0;
-  this.dy += keyboard.w && -this.acc || keyboard.s && this.acc || 0;
+  this.dx += this.input.isDown('left') && -this.acc || this.input.isDown('right') && this.acc || 0;
+  this.dy += this.input.isDown('up') && -this.acc || this.input.isDown('down') && this.acc || 0;
 
   // Friction
   this.dx *= this.friction;
@@ -49,7 +48,7 @@ Player.prototype.move = function() {
   this.x += this.dx;
   this.y += this.dy;
 
-  this.a = Math.atan2(mouse.y-this.y, mouse.x-this.x);
+  this.a = Math.atan2(this.input.getPosition('y')-this.y, this.input.getPosition('x')-this.x);
 
   this.collisionTest();
 

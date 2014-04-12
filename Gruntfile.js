@@ -20,12 +20,10 @@ module.exports = function (grunt) {
         //unused: true,
         trailing: true,
         browser: true,
-        ignore: [
-          'public/javascripts/vendor/**/*.js'
-        ],
         globals: {
           console: true,
           require: true,
+          exports: true,
           module: true
         }
       },
@@ -42,7 +40,7 @@ module.exports = function (grunt) {
         }
       },
       js: {
-        src: 'public/javascripts/*.js',
+        src: ['public/javascripts/**/*.js', '!public/javascripts/vendor/**/*.js'],
         options: {
           unused: true
         }
