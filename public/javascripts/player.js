@@ -1,28 +1,30 @@
 'use strict';
 
 var SAT = require('sat');
+var utils = require('./utils');
+
+var defaults = {
+  radius: 5,
+  a: 0,
+  dx: 0,
+  dy: 0,
+  acc: 0.8,
+  friction: 0.8,
+  fill: '#f00'
+};
 
 
 var Player = module.exports = function (settings) {
-  this.map = settings.map;
-  this.network = settings.network;
-  this.input = settings.input;
-
-  this.x = settings.x;
-  this.y = settings.y;
   this.lastPos = {
     x: settings.x,
     y: settings.y
   };
 
-  this.radius = 5;
-  this.a = 0;
-  this.dx = 0;
-  this.dy = 0;
-  this.acc = 0.8;
-  this.friction = 0.8;
+  utils.extend(this, defaults, settings);
 
-  this.fill = '#f00';
+  window.addEventListener('mousedown',
+    this.weapon.shoot.bind(this.weapon, this, this.input.mouse),
+    false);
 };
 
 

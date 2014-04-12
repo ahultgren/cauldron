@@ -6,7 +6,7 @@ var canvas = require('./canvas');
 var Loop = require('./loop');
 var Map = require('./map');
 var Player = require('./player');
-var Laser = require('./laser');
+var Laser = require('./weapons/laser-cannon');
 var Cursor = require('./cursor');
 var VisibilityPolygon = require('./visibility-polygon');
 var Network = require('./network');
@@ -35,13 +35,15 @@ var Game = module.exports = function (settings) {
     x: self.canvas.width/2,
     y: self.canvas.height/2,
     network: self.network,
-    input: new stdin()
+    input: new stdin(),
+    weapon: new Laser({
+      game: self,
+      map: self.map
+    })
   });
 
   self.add('moving', self.playerOne);
   self.add('masked', self.playerOne);
-
-  self.playerOne.weapon = new Laser(self);
 
   self.cursor = new Cursor();
   self.add('alwaysVisible', self.cursor);
