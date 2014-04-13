@@ -64,10 +64,7 @@ Network.prototype.sendToAll = function(data) {
     peer = this.peers[peers[i]];
 
     if(peer.conn.open) {
-      peer.send(JSON.stringify({
-        id: this.id,
-        data: data
-      }));
+      peer.send(JSON.stringify(data));
     }
   }
 };

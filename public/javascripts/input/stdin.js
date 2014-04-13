@@ -7,24 +7,31 @@
  * I think. At least it sounds cool.
  */
 
-var keyboard = require('./keyboard'),
+var util = require('util'),
+    EventEmitter = require('events').EventEmitter,
+    utils = require('../utils'),
+    keyboard = require('./keyboard'),
     mouse = require('./mouse');
 
 
 var Stdin = module.exports = function (settings) {
-  settings = settings || {};
+  utils.extend(this, {
+    keyboard: keyboard,
+    mouse: mouse,
+    keymap: {
+      left: 'a',
+      right: 'd',
+      up: 'w',
+      down: 's'
+    }
+  }, settings);
 
-  this.keyboard = settings.keyboard || keyboard;
-  this.mouse = settings.mouse || mouse;
-
-  this.keymap = settings.keymap || {
-    left: 'a',
-    right: 'd',
-    up: 'w',
-    down: 's'
-  };
+  if(this.mouse.on) {
+    this.mouse.on('mousedown', this.emit.bind(this, 'mousedown'));
+  }
 };
 
+util.inherits(Stdin, EventEmitter);
 
 Stdin.prototype.isDown = function (key) {
   return this.keyboard[this.keymap[key]];

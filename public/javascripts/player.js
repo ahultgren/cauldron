@@ -22,20 +22,41 @@ var Player = module.exports = function (settings) {
 
   utils.extend(this, defaults, settings);
 
-  window.addEventListener('mousedown',
-    this.weapon.shoot.bind(this.weapon, this, this.input.mouse),
-    false);
+  this.input.on('mousedown', this.shoot.bind(this), false);
+};
+
+
+Player.prototype.shoot = function(settings) {
+  if(this.weapon) {
+    this.weapon.shoot(settings.from || this, settings.toward || this.input.mouse);
+  }
+
+  //## Decouple this shit. Player need not know about network
+  if(this.network) {
+    this.network.sendToAll({
+      action: 'shoot',
+      data: {
+        from: {
+          x: this.x,
+          y: this.y
+        },
+        toward: {
+          x: this.input.mouse.x,
+          y: this.input.mouse.y
+        }
+      }
+    });
+  }
 };
 
 
 Player.prototype.update = function(settings) {
-  // Generalize this? Need to check in .move if "slave" before calculating stuff in that case
-  this.x = settings.x;
-  this.y = settings.y;
-  this.a = settings.a;
+  utils.extend(this, settings);
 };
 
 Player.prototype.move = function() {
+  // Need to check if "slave"?
+
   // Acceleration
   this.dx += this.input.isDown('left') && -this.acc || this.input.isDown('right') && this.acc || 0;
   this.dy += this.input.isDown('up') && -this.acc || this.input.isDown('down') && this.acc || 0;

@@ -1,14 +1,24 @@
 'use strict';
 
+var util = require('util');
+var EventEmitter = require('events').EventEmitter;
 var canvas = require('../canvas');
 
 
-var mouse = module.exports = {
-  x: canvas.width/2,
-  y: canvas.height/2
+var Mouse = function () {
+  var self = this;
+
+  this.x = canvas.width/2;
+  this.y = canvas.height/2;
+
+  canvas.addEventListener('mousemove', function (e) {
+    self.x = e.layerX;
+    self.y = e.layerY;
+  }, false);
+
+  window.addEventListener('mousedown', this.emit.bind(this, 'mousedown'), false);
 };
 
-canvas.onmousemove = function (e) {
-  mouse.x = e.layerX;
-  mouse.y = e.layerY;
-};
+util.inherits(Mouse, EventEmitter);
+
+module.exports = new Mouse();
