@@ -7,7 +7,9 @@ var Network = module.exports = function (game) {
   //## [TODO] shim peerjs
   var self = this;
   var peer = new window.Peer({
-    key: 'ambtcaqn9kl3ow29'
+    host: window.location.hostname,
+    port: 9000,
+    path: 'peers'
   });
 
   // Store peers
