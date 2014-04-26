@@ -20,31 +20,31 @@ Peer.prototype.send = function(data) {
 Peer.prototype.data = function(data) {
   data = JSON.parse(data);
 
-  if(!this.player) {
-    this.input = new Stdin({
-      mouse: {},
-      keyboard: {}
-    });
+  if(data.position) {
+    if(!this.player) {
+      this.input = new Stdin({
+        mouse: {},
+        keyboard: {}
+      });
 
-    this.player = new Player({
-      map: this.game.map,
-      x: data.player.x,
-      y: data.player.y,
-      a: data.player.a,
-      input: this.input
-    });
+      this.player = new Player({
+        map: this.game.map,
+        x: data.position.x,
+        y: data.position.y,
+        a: data.position.a,
+        input: this.input
+      });
 
-    this.game.add('masked', this.player);
+      this.game.add('masked', this.player);
 
-    //## Temp to test with a weapon (it must be sent on connect somehow)
-    this.player.weapon = new (require('./weapons/laser-cannon'))({
-      map: this.game.map,
-      game: this.game
-    });
-  }
+      //## Temp to test with a weapon (it must be sent on connect somehow)
+      this.player.weapon = new (require('./weapons/laser-cannon'))({
+        map: this.game.map,
+        game: this.game
+      });
+    }
 
-  if(this.player) {
-    this.player.update(data.player);
+    this.player.update(data.position);
   }
 
   if(data.weapon) {

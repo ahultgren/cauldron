@@ -16,10 +16,6 @@ var stdin = require('./input/stdin');
 var Game = module.exports = function (settings) {
   var self = this;
 
-  // Network
-
-  self.network = new Network(self);
-
   // Map
 
   self.canvas = canvas;
@@ -34,7 +30,6 @@ var Game = module.exports = function (settings) {
     map: self.map,
     x: self.canvas.width/2,
     y: self.canvas.height/2,
-    network: self.network,
     input: new stdin(),
     weapon: new Laser({
       game: self,
@@ -47,6 +42,11 @@ var Game = module.exports = function (settings) {
 
   self.cursor = new Cursor();
   self.add('alwaysVisible', self.cursor);
+
+  // Network
+
+  self.network = new Network(self);
+  self.network.setLocalPlayer(self.playerOne);
 
   // Visibility polygon
 

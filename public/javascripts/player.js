@@ -1,5 +1,7 @@
 'use strict';
 
+var util = require('util');
+var EventEmitter = require('events').EventEmitter;
 var SAT = require('sat');
 var utils = require('./utils');
 
@@ -25,28 +27,24 @@ var Player = module.exports = function (settings) {
   this.input.on('mousedown', this.shoot.bind(this), false);
 };
 
+util.inherits(Player, EventEmitter);
+
 
 Player.prototype.shoot = function(settings) {
   if(this.weapon) {
     this.weapon.shoot(settings.from || this, settings.toward || this.input.mouse);
   }
 
-  //## Decouple this shit. Player need not know about network
-  if(this.network) {
-    this.network.sendToAll({
-      action: 'shoot',
-      data: {
-        from: {
-          x: this.x,
-          y: this.y
-        },
-        toward: {
-          x: this.input.mouse.x,
-          y: this.input.mouse.y
-        }
-      }
-    });
-  }
+  this.emit('action', 'shoot', {
+    from: {
+      x: this.x,
+      y: this.y
+    },
+    toward: {
+      x: this.input.mouse.x,
+      y: this.input.mouse.y
+    }
+  });
 };
 
 
@@ -67,6 +65,7 @@ Player.prototype.move = function() {
 
   this.lastPos.x = this.x;
   this.lastPos.y = this.y;
+  this.lastPos.a = this.a;
 
   this.x += this.dx;
   this.y += this.dy;
@@ -75,14 +74,12 @@ Player.prototype.move = function() {
 
   this.collisionTest();
 
-  // Basic event emitter
-  if(this.network) {
-    this.network.sendToAll({
-      player: {
-        x: this.x,
-        y: this.y,
-        a: this.a
-      }
+  if(this.x !== this.lastPos.x || this.y !== this.lastPos.y || this.a !== this.lastPos.a) {
+    //## require('./codes').UPDATE_POSITION (to reduce networked data)
+    this.emit('update_position', {
+      x: this.x,
+      y: this.y,
+      a: this.a
     });
   }
 };

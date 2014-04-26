@@ -6,7 +6,10 @@ var Peer = require('./peer');
 var Network = module.exports = function (game) {
   //## [TODO] shim peerjs
   var self = this;
-  var peer = new window.Peer({
+
+  this.game = game;
+
+  self.localPeer = new window.Peer({
     host: window.location.hostname,
     port: 9000,
     path: 'peers'
@@ -15,58 +18,94 @@ var Network = module.exports = function (game) {
   // Store peers
   self.peers = [];
 
-  peer.on('open', function (id) {
+  self.localPeer.on('open', function (id) {
     console.log('Connected as ' + id);
     self.id = id;
   });
 
-  peer.on('connection', function (conn) {
-    console.log('PEER connected ' + conn.peer);
-
-    conn.on('open', function () {
-      console.log('PEER connection open ' + conn.peer);
-
-      self.peers[conn.peer] = new Peer(conn, game);
-    });
-
-    conn.on('error', function (err) {
-      console.log('peer connection error!');
-      console.log(err);
-      delete self.peers[conn.peer];
-    });
+  self.localPeer.on('connection', function (conn) {
+    console.log('PEER connection attempt ' + conn.peer);
+    self.connection(conn.id, conn);
   });
 
 
   //## Hack to support connecting until we have a socket implementation
-  window.connect = function (id) {
-    var conn = peer.connect(id);
-
-    console.log('connecting...');
-
-    conn.on('open', function () {
-      console.log('PEER connection open ' + id);
-
-      self.peers[id] = new Peer(conn, game);
-    });
-
-    conn.on('error', function (err) {
-      console.log('peer connection error!');
-      console.log(err);
-      delete self.peers[id];
-    });
-  };
+  window.connect = this.connect.bind(this);
 };
+
+
+Network.prototype.connect = function(id) {
+  console.log('connecting...');
+  this.connection(id, this.localPeer.connect(id));
+};
+
+
+Network.prototype.connection = function(id, conn) {
+  var self = this;
+
+  conn.on('open', function () {
+    console.log('PEER connection open ' + id);
+    self.peers[id] = new Peer(conn, self.game);
+
+    //## does this work?
+    self.peers[id].send(JSON.stringify({
+      position: {
+        x: self.localPlayer.x,
+        y: self.localPlayer.y,
+        a: self.localPlayer.a
+      }
+    }));
+  });
+
+  conn.on('error', function (err) {
+    console.log('peer connection error!');
+    console.log(err);
+    delete self.peers[id];
+  });
+};
+
 
 Network.prototype.sendToAll = function(data) {
   var i, l,
       peers = Object.keys(this.peers),
       peer;
 
+  data = JSON.stringify(data);
+
   for(i = 0, l = peers.length; i < l; i++) {
     peer = this.peers[peers[i]];
 
     if(peer.conn.open) {
-      peer.send(JSON.stringify(data));
+      peer.send(data);
     }
   }
+};
+
+
+Network.prototype.setLocalPlayer = function(player) {
+  var self = this;
+
+  if(self.localPlayer) {
+    this.removeLocalPlayer();
+  }
+
+  self.localPlayer = player;
+
+  player.on('update_position', function (position) {
+    self.sendToAll({
+      position: position
+    });
+  });
+
+  player.on('action', function (action, data) {
+    self.sendToAll({
+      action: action,
+      data: data
+    });
+  });
+};
+
+
+Network.prototype.removeLocalPlayer = function() {
+  //this.localPlayer.removeEventlistener
 };
