@@ -6,25 +6,11 @@ var Beam = require('./ammunition/beam');
 
 
 var LaserCannon = module.exports = function (settings) {
+  this.shotInterval = 10;
+  this.singleAction = true;
+  this.ammunition = Beam;
+
   Weapon.call(this, settings);
 };
 
 util.inherits(LaserCannon, Weapon);
-
-
-LaserCannon.prototype.triggerStart = function (from, toward) {
-  this.shoot(from, toward);
-};
-
-
-LaserCannon.prototype.shoot = function (from, toward) {
-  var beam = new Beam({
-    from: from,
-    toward: toward,
-    segments: this.map.segments
-  });
-
-  this.game
-    .add('masked', beam)
-    .add('moving', beam);
-};
