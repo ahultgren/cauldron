@@ -28,6 +28,7 @@ var Stdin = module.exports = function (settings) {
 
   if(this.mouse.on) {
     this.mouse.on('mousedown', this.emit.bind(this, 'mousedown'));
+    this.mouse.on('mouseup', this.emit.bind(this, 'mouseup'));
   }
 };
 

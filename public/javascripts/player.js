@@ -24,18 +24,19 @@ var Player = module.exports = function (settings) {
 
   utils.extend(this, defaults, settings);
 
-  this.input.on('mousedown', this.shoot.bind(this), false);
+  this.input.on('mousedown', this.triggerStart.bind(this), false);
+  this.input.on('mouseup', this.triggerEnd.bind(this), false);
 };
 
 util.inherits(Player, EventEmitter);
 
 
-Player.prototype.shoot = function(settings) {
+Player.prototype.triggerStart = function(settings) {
   if(this.weapon) {
-    this.weapon.shoot(settings.from || this, settings.toward || this.input.mouse);
+    this.weapon.triggerStart(settings.from || this, settings.toward || this.input.mouse);
   }
 
-  this.emit('action', 'shoot', {
+  this.emit('action', 'triggerStart', {
     from: {
       x: this.x,
       y: this.y
@@ -45,6 +46,13 @@ Player.prototype.shoot = function(settings) {
       y: this.input.mouse.y
     }
   });
+};
+
+
+Player.prototype.triggerEnd = function() {
+  if(this.weapon) {
+    this.weapon.triggerEnd();
+  }
 };
 
 

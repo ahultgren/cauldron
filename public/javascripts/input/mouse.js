@@ -17,6 +17,7 @@ var Mouse = function () {
   }, false);
 
   window.addEventListener('mousedown', this.emit.bind(this, 'mousedown'), false);
+  window.addEventListener('mouseup', this.emit.bind(this, 'mouseup'), false);
 };
 
 util.inherits(Mouse, EventEmitter);
