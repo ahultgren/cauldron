@@ -7,12 +7,13 @@ var Beam = module.exports = function (settings) {
     aliveUntil: 2,
   }, settings);
 
+  this.aliveFor = 0;
+  this.spread = (Math.random() * this.spread - this.spread/2) * (Math.random() * this.spread - this.spread/2);
+
   // Allow for setting a and b
   if(!this.a && !this.b) {
     this.makeLine();
   }
-
-  this.aliveFor = 0;
 };
 
 Beam.prototype.makeLine = function() {
@@ -30,6 +31,9 @@ Beam.prototype.makeLine = function() {
   };
 
   angle = Math.atan2(this.toward.y - this.from.y, this.toward.x - this.from.x);
+
+  // Accuracy
+  angle = angle + this.spread;
 
   // First just make the line really long
   line.b.x = Math.cos(angle)*1000000;

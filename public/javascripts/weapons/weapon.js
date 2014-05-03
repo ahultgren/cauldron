@@ -12,6 +12,10 @@ var utils = require('../utils');
 var Weapon = module.exports = function (settings) {
   this.shooting = false;
   this.lastShot = 0;
+  this.shotInterval = 6;
+  this.minAccuracy = 1;
+  this.maxAccuracy = 0.1;
+  this.spread = this.maxAccuracy;
 
   utils.extend(this, settings);
 
@@ -33,6 +37,7 @@ Weapon.prototype.triggerEnd = function() {
 
 
 Weapon.prototype.move = function() {
+  // Whether to shoot or not
   if(this.shooting && this.lastShot <= 0) {
     this.lastShot = this.shotInterval;
     this.shoot(this.from, this.toward);
@@ -40,14 +45,22 @@ Weapon.prototype.move = function() {
     if(this.singleAction) {
       this.shooting = false;
     }
+
+    // Increase spread based on accuracy
+    this.spread = this.minAccuracy;
   }
   else {
     this.lastShot--;
   }
+
+  // Reduce spread
+  //## different reduction based on weight or something?
+  this.spread -= (this.spread - this.maxAccuracy) * 0.05;
 };
 
 Weapon.prototype.shoot = function(from, toward) {
   var bullet = new this.ammunition({
+    spread: this.spread,
     from: from,
     toward: toward,
     segments: this.map.segments
