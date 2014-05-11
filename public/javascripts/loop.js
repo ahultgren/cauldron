@@ -6,6 +6,8 @@ window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequ
 var Loop = module.exports = function (canvas) {
   this.canvas = canvas;
   this.paused = true;
+  this.MS_PER_UPDATE = 16.666666667;
+  this.previousTime = 0;
 
   this.static = [];             // Objects not moving but collidable
   this.moving = [];             // Objects moving
@@ -18,6 +20,7 @@ var Loop = module.exports = function (canvas) {
 
 Loop.prototype.start = function() {
   this.paused = false;
+  this.previousTime = window.performance.now();
   this.loop();
 };
 
@@ -26,11 +29,23 @@ Loop.prototype.pause = function() {
 };
 
 Loop.prototype.loop = function () {
-  if(!this.paused) {
-    window.requestAnimationFrame(this.loop.bind(this));
-    this.move();
-    this.draw();
+  var currentTime, elapsed;
+
+  if(this.paused) {
+    return;
   }
+
+  currentTime = window.performance.now();
+  elapsed = currentTime - this.previousTime;
+  this.previousTime = currentTime;
+
+  while((elapsed -= this.MS_PER_UPDATE) >= 0) {
+    this.move();
+  }
+
+  window.requestAnimationFrame(this.loop.bind(this));
+
+  this.draw();
 };
 
 Loop.prototype.move = function () {
