@@ -15,6 +15,7 @@ var Weapon = module.exports = function (settings) {
   this.shotInterval = 6;
   this.minAccuracy = 1;
   this.maxAccuracy = 0.1;
+  this.spreadRange = this.maxAccuracy;
   this.spread = this.maxAccuracy;
 
   utils.extend(this, settings);
@@ -24,10 +25,11 @@ var Weapon = module.exports = function (settings) {
 };
 
 
-Weapon.prototype.triggerStart = function (from, toward) {
+Weapon.prototype.triggerStart = function (from, toward, spread) {
   this.shooting = true;
   this.from = from;
   this.toward = toward;
+  this.spread = spread;
 };
 
 
@@ -46,23 +48,26 @@ Weapon.prototype.move = function() {
       this.shooting = false;
     }
 
-    // Increase spread based on accuracy
-    this.spread = this.minAccuracy;
+    // Increase spreadRange based on accuracy
+    this.spreadRange = this.minAccuracy;
   }
   else {
     this.lastShot--;
   }
 
-  // Reduce spread
+  // Reduce spreadRange
   //## different reduction based on weight or something?
-  this.spread -= (this.spread - this.maxAccuracy) * 0.05;
+  this.spreadRange -= (this.spreadRange - this.maxAccuracy) * 0.05;
+
+  this.spread = (Math.random() * this.spreadRange - this.spreadRange/2) * (Math.random() * this.spreadRange - this.spreadRange/2);
 };
 
 Weapon.prototype.shoot = function(from, toward) {
   var bullet = new this.ammunition({
-    spread: this.spread,
+    spreadRange: this.spreadRange,
     from: from,
     toward: toward,
+    spread: this.spread,
     segments: this.map.segments
   });
 

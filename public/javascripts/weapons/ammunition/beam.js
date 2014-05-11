@@ -8,7 +8,6 @@ var Beam = module.exports = function (settings) {
   }, settings);
 
   this.aliveFor = 0;
-  this.spread = (Math.random() * this.spread - this.spread/2) * (Math.random() * this.spread - this.spread/2);
 
   // Allow for setting a and b
   if(!this.a && !this.b) {

@@ -32,26 +32,35 @@ util.inherits(Player, EventEmitter);
 
 
 Player.prototype.triggerStart = function(settings) {
-  if(this.weapon) {
-    this.weapon.triggerStart(settings.from || this, settings.toward || this.input.mouse);
-  }
+  var from, toward, spread;
 
-  this.emit('action', 'triggerStart', {
-    from: {
-      x: this.x,
-      y: this.y
-    },
-    toward: {
-      x: this.input.mouse.x,
-      y: this.input.mouse.y
-    }
-  });
+  if(this.weapon) {
+    from = settings.from || this;
+    toward = settings.toward || this.input.mouse;
+    spread = settings.spread || this.weapon.spread;
+
+    this.weapon.triggerStart(from, toward, spread);
+
+    this.emit('action', 'triggerStart', {
+      from: {
+        x: from.x,
+        y: from.y
+      },
+      toward: {
+        x: toward.x,
+        y: toward.y
+      },
+      spread: spread
+    });
+  }
 };
 
 
 Player.prototype.triggerEnd = function() {
   if(this.weapon) {
     this.weapon.triggerEnd();
+
+    this.emit('action', 'triggerEnd');
   }
 };
 
@@ -59,6 +68,7 @@ Player.prototype.triggerEnd = function() {
 Player.prototype.update = function(settings) {
   utils.extend(this, settings);
 };
+
 
 Player.prototype.move = function() {
   // Need to check if "slave"?
