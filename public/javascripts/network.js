@@ -1,6 +1,7 @@
 'use strict';
 
 var Peer = require('./peer');
+var Peerjs = require('peerjs');
 
 
 var Network = module.exports = function (game) {
@@ -9,7 +10,7 @@ var Network = module.exports = function (game) {
 
   this.game = game;
 
-  self.localPeer = new window.Peer({
+  self.localPeer = new Peerjs({
     host: window.location.hostname,
     port: 9000,
     path: 'peers'
@@ -70,7 +71,13 @@ Network.prototype.sendToAll = function(data) {
       peers = Object.keys(this.peers),
       peer;
 
-  data = JSON.stringify(data);
+  try {
+    data = JSON.stringify(data);
+  }
+  catch (e) {
+    console.error(data);
+    throw e;
+  }
 
   for(i = 0, l = peers.length; i < l; i++) {
     peer = this.peers[peers[i]];

@@ -60,6 +60,10 @@ module.exports = function (grunt) {
             sat: {
               path: 'public/javascripts/vendor/sat.min.js',
               exports: 'SAT'
+            },
+            peerjs: {
+              path: 'public/javascripts/vendor/peerjs.min.js',
+              exports: 'Peer'
             }
           }
         }
