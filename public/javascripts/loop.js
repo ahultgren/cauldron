@@ -40,7 +40,7 @@ Loop.prototype.loop = function () {
   this.previousTime = currentTime;
 
   while((elapsed -= this.MS_PER_UPDATE) >= 0) {
-    this.move();
+    this.update();
   }
 
   window.requestAnimationFrame(this.loop.bind(this));
@@ -48,7 +48,7 @@ Loop.prototype.loop = function () {
   this.draw();
 };
 
-Loop.prototype.move = function () {
+Loop.prototype.update = function () {
   var i, l,
       ctx = this.canvas.ctx;
 
@@ -59,7 +59,7 @@ Loop.prototype.move = function () {
       l--;
     }
     else {
-      this.moving[i].move(ctx);
+      this.moving[i].update(ctx);
     }
   }
 };

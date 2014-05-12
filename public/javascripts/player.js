@@ -70,7 +70,7 @@ Player.prototype.update = function(settings) {
 };
 
 
-Player.prototype.move = function() {
+Player.prototype.update = function() {
   // Need to check if "slave"?
 
   // Acceleration

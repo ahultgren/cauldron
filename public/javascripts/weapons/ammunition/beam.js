@@ -55,7 +55,7 @@ Beam.prototype.makeLine = function() {
   this.b = line.b;
 };
 
-Beam.prototype.move = function() {
+Beam.prototype.update = function() {
   //## Collision test for other moving objects
   this.a.x = this.from.x;
   this.a.y = this.from.y;

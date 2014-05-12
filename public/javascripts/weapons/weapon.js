@@ -38,7 +38,7 @@ Weapon.prototype.triggerEnd = function() {
 };
 
 
-Weapon.prototype.move = function() {
+Weapon.prototype.update = function() {
   // Whether to shoot or not
   if(this.shooting && this.lastShot <= 0) {
     this.lastShot = this.shotInterval;
