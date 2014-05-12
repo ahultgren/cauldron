@@ -1,6 +1,6 @@
 'use strict';
 
-var Game = require('./game'),
+var Game = require('./engine'),
     map1 = require('./maps/one');
 
 module.exports = new Game({

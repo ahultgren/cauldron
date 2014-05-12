@@ -40,7 +40,7 @@ module.exports = function (grunt) {
         }
       },
       js: {
-        src: ['public/javascripts/**/*.js', '!public/javascripts/vendor/**/*.js'],
+        src: ['public/javascripts/**/*.js', '!public/javascripts/engine/vendor/**/*.js'],
         options: {
           unused: true
         }
@@ -49,20 +49,20 @@ module.exports = function (grunt) {
     browserify: {
       dist: {
         files: {
-          'public/dist/main.js': ['public/javascripts/*.js']
+          'public/dist/main.js': ['public/javascripts/**/*.js', '!public/javascripts/engine/vendor/**/*.js']
         },
         options: {
           shim: {
             jquery: {
-              path: 'public/javascripts/vendor/jquery.min.js',
+              path: 'public/javascripts/engine/vendor/jquery.min.js',
               exports: 'jQuery'
             },
             sat: {
-              path: 'public/javascripts/vendor/sat.min.js',
+              path: 'public/javascripts/engine/vendor/sat.min.js',
               exports: 'SAT'
             },
             peerjs: {
-              path: 'public/javascripts/vendor/peerjs.min.js',
+              path: 'public/javascripts/engine/vendor/peerjs.min.js',
               exports: 'Peer'
             }
           }
