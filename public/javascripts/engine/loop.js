@@ -1,12 +1,14 @@
 'use strict';
 
+var MS_PER_UPDATE = 1000/60;
+var MAX_FRAMES_SKIP = 10;
+
 window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
 
 
 var Loop = module.exports = function (canvas) {
   this.canvas = canvas;
   this.paused = true;
-  this.MS_PER_UPDATE = 16.666666667;
   this.previousTime = 0;
 
   this.static = [];             // Objects not moving but collidable
@@ -30,6 +32,7 @@ Loop.prototype.pause = function() {
 
 Loop.prototype.loop = function () {
   var currentTime, elapsed;
+  var skipped = 0;
 
   if(this.paused) {
     return;
@@ -39,7 +42,11 @@ Loop.prototype.loop = function () {
   elapsed = currentTime - this.previousTime;
   this.previousTime = currentTime;
 
-  while((elapsed -= this.MS_PER_UPDATE) >= 0) {
+  this.update();
+
+  // Some extra milliseconds are subtracted because the browser doesn't seem to
+  // invoke frames with a consistent interval (or something?)
+  while((elapsed -= MS_PER_UPDATE) - MS_PER_UPDATE * 0.5 >= 0 && skipped++ < MAX_FRAMES_SKIP) {
     this.update();
   }
 
