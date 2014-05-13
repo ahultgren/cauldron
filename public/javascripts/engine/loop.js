@@ -11,8 +11,8 @@ var Loop = module.exports = function (canvas) {
   this.paused = true;
   this.previousTime = 0;
 
-  this.static = [];             // Objects not moving but collidable
-  this.moving = [];             // Objects moving
+  this.obstacles = [];          // Objects not moving but collidable
+  this.updating = [];           // Objects updating each tick
   this.visibilityPolygons = []; // Polygons masking the seen area
   this.antiMasked = [];         // Objects only visible when not looked at
   this.masked = [];             // Objects only seen when looked at
@@ -60,13 +60,13 @@ Loop.prototype.update = function () {
       ctx = this.canvas.ctx;
 
   // Move the registered objects
-  for(i = 0, l = this.moving.length; i < l; i++) {
-    if(this.moving[i]._remove) {
-      this.moving.splice(i--, 1);
+  for(i = 0, l = this.updating.length; i < l; i++) {
+    if(this.updating[i]._remove) {
+      this.updating.splice(i--, 1);
       l--;
     }
     else {
-      this.moving[i].update(ctx);
+      this.updating[i].update(ctx);
     }
   }
 };

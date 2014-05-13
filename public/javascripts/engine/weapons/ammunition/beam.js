@@ -3,6 +3,8 @@
 var utils = require('../../utils');
 
 var Beam = module.exports = function (settings) {
+  this._type = 'masked';
+
   utils.extend(this, {
     aliveUntil: 2,
   }, settings);

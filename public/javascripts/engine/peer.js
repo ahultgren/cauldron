@@ -35,7 +35,7 @@ Peer.prototype.data = function(data) {
         input: this.input
       });
 
-      this.game.add('masked', this.player);
+      this.game.add(this.player);
 
       //## Temp to test with a weapon (it must be sent on connect somehow)
       this.player.weapon = new (require('./weapons/auto-laser-cannon'))({

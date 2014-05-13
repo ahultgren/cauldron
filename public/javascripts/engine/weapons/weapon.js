@@ -21,7 +21,7 @@ var Weapon = module.exports = function (settings) {
   utils.extend(this, settings);
 
   //## Shouldn't really be done here. Some kind of game auto-adding would be nice
-  this.game.add('moving', this);
+  this.game.add(this);
 };
 
 
@@ -71,7 +71,5 @@ Weapon.prototype.shoot = function(from, toward) {
     segments: this.map.segments
   });
 
-  this.game
-    .add('masked', bullet)
-    .add('moving', bullet);
+  this.game.add(bullet);
 };

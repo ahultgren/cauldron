@@ -6,6 +6,7 @@ var SAT = require('sat');
 var utils = require('./utils');
 
 var defaults = {
+  _type: 'masked',
   radius: 5,
   a: 0,
   dx: 0,
