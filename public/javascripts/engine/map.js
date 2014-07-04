@@ -3,7 +3,7 @@
 /*jshint -W079 */
 
 var Map = module.exports = function (segments) {
-  this._type = 'alwaysVisible';
+  this._type = 'masked';
   this.segments = segments;
 };
 

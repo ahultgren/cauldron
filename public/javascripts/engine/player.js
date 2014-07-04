@@ -66,6 +66,7 @@ Player.prototype.triggerEnd = function() {
 };
 
 
+//## WTF IS THIS?!
 Player.prototype.update = function(settings) {
   utils.extend(this, settings);
 };

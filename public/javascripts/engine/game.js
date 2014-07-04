@@ -9,6 +9,7 @@ var Player = require('./player');
 var Laser = require('./weapons/auto-laser-cannon');
 var Cursor = require('./cursor');
 var VisibilityPolygon = require('./visibility-polygon');
+var CVP = require('./conical-visibility-polygon');
 var Network = require('./network');
 var stdin = require('./input/stdin');
 
@@ -50,6 +51,9 @@ var Game = module.exports = function (settings) {
   // Visibility polygon
 
   self.visibilityPolygon = new VisibilityPolygon(self.map.segments, self.playerOne);
+  self.add(self.visibilityPolygon);
+
+  self.visibilityPolygon = new CVP(self.map.segments, self.playerOne);
   self.add(self.visibilityPolygon);
 };
 
