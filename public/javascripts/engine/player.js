@@ -17,7 +17,7 @@ var defaults = {
 };
 
 
-var Player = module.exports = function (settings) {
+var Player = module.exports = function Player (settings) {
   this.lastPos = {
     x: settings.x,
     y: settings.y
@@ -66,8 +66,7 @@ Player.prototype.triggerEnd = function() {
 };
 
 
-//## WTF IS THIS?!
-Player.prototype.update = function(settings) {
+Player.prototype.control = function(settings) {
   utils.extend(this, settings);
 };
 

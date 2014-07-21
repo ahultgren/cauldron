@@ -11,7 +11,7 @@ var Mouse = function () {
   this.x = canvas.width/2;
   this.y = canvas.height/2;
 
-  canvas.addEventListener('mousemove', function (e) {
+  window.addEventListener('mousemove', function (e) {
     self.x = e.layerX;
     self.y = e.layerY;
   }, false);
