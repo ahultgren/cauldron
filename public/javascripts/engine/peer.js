@@ -44,7 +44,7 @@ Peer.prototype.data = function(data) {
       });
     }
 
-    this.player.update(data.position);
+    this.player.control(data.position);
   }
 
   if(data.weapon) {
@@ -58,4 +58,9 @@ Peer.prototype.data = function(data) {
     //## For now just supports shoot i think
     this.player[data.action](data.data);
   }
+};
+
+Peer.prototype.update = function(entity) {
+  entity.dx += this.input.isDown('left') && -entity.acc || this.input.isDown('right') && entity.acc || 0;
+  entity.dy += this.input.isDown('up') && -entity.acc || this.input.isDown('down') && entity.acc || 0;
 };

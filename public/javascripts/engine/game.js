@@ -5,6 +5,8 @@
 var canvas = require('./canvas');
 var Loop = require('./loop');
 var Map = require('./map');
+var Physics = require('./physics');
+var Graphics = require('./graphics');
 var Player = require('./player');
 var Laser = require('./weapons/auto-laser-cannon');
 var Cursor = require('./cursor');
@@ -28,10 +30,13 @@ var Game = module.exports = function (settings) {
   // Player one
 
   self.playerOne = new Player({
-    map: self.map,
+    input: new stdin(),
+    physics: new Physics({
+      map: self.map
+    }),
+    graphics: new Graphics(),
     x: self.canvas.width/2,
     y: self.canvas.height/2,
-    input: new stdin(),
     weapon: new Laser({
       game: self,
       map: self.map
