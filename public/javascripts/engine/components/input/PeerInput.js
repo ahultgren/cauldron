@@ -67,6 +67,11 @@ Peer.prototype.update = function(entity) {
   // prediction/interpolation
   entity.dx += this.isDown('left') && -entity.acc || this.isDown('right') && entity.acc || 0;
   entity.dy += this.isDown('up') && -entity.acc || this.isDown('down') && entity.acc || 0;
+
+  if(this.newPosition) {
+    utils.extend(entity, this.newPosition);
+    this.newPosition = null;
+  }
 };
 
 
@@ -101,8 +106,7 @@ Peer.prototype.onWeapon = function(data) {
 };
 
 Peer.prototype.onPosition = function(data) {
-  //## This shall become this.newPosition = data; and be used in update()
-  this.player.control(data);
+  this.newPosition = data;
 };
 
 Peer.prototype.onTriggerStart = function(data) {

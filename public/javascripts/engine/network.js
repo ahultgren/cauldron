@@ -51,7 +51,6 @@ Network.prototype.connection = function(id, conn) {
       game: self.game
     });
 
-    //## emit spawn_player and player_weapon instead?
     self.peers[id].send(JSON.stringify([
       {
         type: 'spawnPlayer',
