@@ -8,7 +8,7 @@ var Map = require('./map');
 var Physics = require('./components/physics');
 var Graphics = require('./components/graphics');
 var Player = require('./player');
-var Laser = require('./weapons/auto-laser-cannon');
+var weaponFactory = require('./weapons');
 var Cursor = require('./cursor');
 var VisibilityPolygon = require('./visibility-polygon');
 var CVP = require('./conical-visibility-polygon');
@@ -37,7 +37,7 @@ var Game = module.exports = function (settings) {
     graphics: new Graphics(),
     x: self.canvas.width/2,
     y: self.canvas.height/2,
-    weapon: new Laser({
+    weapon: weaponFactory('AutoLaserCannon', {
       game: self,
       map: self.map
     })
