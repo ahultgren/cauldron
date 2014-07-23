@@ -5,7 +5,6 @@ var Peerjs = require('peerjs');
 
 
 var Network = module.exports = function (game) {
-  //## [TODO] shim peerjs
   var self = this;
 
   this.game = game;
@@ -54,6 +53,18 @@ Network.prototype.connection = function(id, conn) {
 
     //## emit spawn_player and player_weapon instead?
     self.peers[id].send(JSON.stringify([
+      {
+        type: 'spawnPlayer',
+        data: {
+          fill: self.localPlayer.fill //## Just testing with something
+        }
+      },
+      {
+        type: 'weapon',
+        data: {
+          weapon: self.localPlayer.weapon.name
+        }
+      },
       {
         type: 'position',
         data: {

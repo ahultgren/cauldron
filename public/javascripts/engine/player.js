@@ -12,7 +12,7 @@ var defaults = {
   dy: 0,
   acc: 0.8,
   friction: 0.8,
-  fill: '#f00'
+  fill: '#'+Math.floor(Math.random()*4095).toString(16)
 };
 
 
