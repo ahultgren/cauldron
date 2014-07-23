@@ -1,17 +1,10 @@
 'use strict';
 
-/**
- * I think the point of this module is to represent a standard input, which in
- * the world of games is mouse and keyboard, but abstract away the actual inputs
- * so that they can be replaced by imitiating modules, like remote peers.
- * I think. At least it sounds cool.
- */
-
 var util = require('util');
 var InputInterface = require('./InputInterface');
 var defaults = {
-  keyboard: require('./keyboard'),
-  mouse: require('./mouse'),
+  keyboard: require('../../system/keyboard'),
+  mouse: require('../../system/mouse'),
   keymap: {
     left: 'a',
     right: 'd',

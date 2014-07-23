@@ -5,15 +5,15 @@
 var canvas = require('./canvas');
 var Loop = require('./loop');
 var Map = require('./map');
-var Physics = require('./physics');
-var Graphics = require('./graphics');
+var Physics = require('./components/physics');
+var Graphics = require('./components/graphics');
 var Player = require('./player');
 var Laser = require('./weapons/auto-laser-cannon');
 var Cursor = require('./cursor');
 var VisibilityPolygon = require('./visibility-polygon');
 var CVP = require('./conical-visibility-polygon');
 var Network = require('./network');
-var LocalInput = require('./input/LocalInput');
+var LocalInput = require('./components/input/LocalInput');
 
 
 var Game = module.exports = function (settings) {

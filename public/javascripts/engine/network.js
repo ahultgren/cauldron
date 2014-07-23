@@ -1,6 +1,6 @@
 'use strict';
 
-var Peer = require('./input/PeerInput');
+var Peer = require('./components/input/PeerInput');
 var Peerjs = require('peerjs');
 
 

@@ -7,7 +7,7 @@
 
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
-var utils = require('../utils');
+var utils = require('../../utils');
 
 
 var InputInterface = module.exports = function InputInterface (defaults, settings) {

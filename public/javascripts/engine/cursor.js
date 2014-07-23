@@ -1,6 +1,6 @@
 'use strict';
 
-var mouse = require('./input/mouse');
+var mouse = require('./system/mouse');
 
 
 var Cursor = module.exports = function () {

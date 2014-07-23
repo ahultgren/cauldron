@@ -2,7 +2,7 @@
 
 var util = require('util');
 var InputInterface = require('./InputInterface');
-var Player = require('../Player');
+var Player = require('../../Player');
 var Physics = require('../physics');
 var Graphics = require('../graphics');
 var defaults = {
@@ -49,7 +49,7 @@ Peer.prototype.onData = function(data) {
       this.game.add(this.player);
 
       //## Temp to test with a weapon (it must be sent on connect somehow)
-      this.player.weapon = new (require('../weapons/auto-laser-cannon'))({
+      this.player.weapon = new (require('../../weapons/auto-laser-cannon'))({
         map: this.game.map,
         game: this.game
       });
