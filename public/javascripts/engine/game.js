@@ -52,6 +52,7 @@ var Game = module.exports = function (settings) {
 
   self.network = new Network(self);
   self.network.setLocalPlayer(self.playerOne);
+  self.add(self.network);
 
   // Visibility polygon
 

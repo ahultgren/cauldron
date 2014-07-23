@@ -9,6 +9,7 @@ var Network = module.exports = function (game) {
   var self = this;
 
   this.game = game;
+  this.outgoing = [];
 
   self.localPeer = new Peerjs({
     host: window.location.hostname,
@@ -51,14 +52,17 @@ Network.prototype.connection = function(id, conn) {
       game: self.game
     });
 
-    //## does this work?
-    self.peers[id].send(JSON.stringify({
-      position: {
-        x: self.localPlayer.x,
-        y: self.localPlayer.y,
-        a: self.localPlayer.a
+    //## emit spawn_player and player_weapon instead?
+    self.peers[id].send(JSON.stringify([
+      {
+        type: 'position',
+        data: {
+          x: self.localPlayer.x,
+          y: self.localPlayer.y,
+          a: self.localPlayer.a
+        }
       }
-    }));
+    ]));
   });
 
   conn.on('error', function (err) {
@@ -101,15 +105,22 @@ Network.prototype.setLocalPlayer = function(player) {
 
   self.localPlayer = player;
 
-  player.on('update_position', function (position) {
-    self.sendToAll({
-      position: position
+  player.on('update', function () {
+    var position = {
+      x: player.x,
+      y: player.y,
+      a: player.a
+    };
+
+    self.outgoing.push({
+      type: 'position',
+      data: position
     });
   });
 
   player.on('action', function (action, data) {
-    self.sendToAll({
-      action: action,
+    self.outgoing.push({
+      type: action,
       data: data
     });
   });
@@ -118,4 +129,16 @@ Network.prototype.setLocalPlayer = function(player) {
 
 Network.prototype.removeLocalPlayer = function() {
   //this.localPlayer.removeEventlistener
+};
+
+Network.prototype.update = function() {
+  var outgoing = this.outgoing;
+
+  // Clear outgoing queue
+  this.outgoing = [];
+
+  // Only send if there's anything to send
+  if(outgoing.length) {
+    this.sendToAll(outgoing);
+  }
 };

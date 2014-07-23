@@ -11,6 +11,11 @@ var Physics = module.exports = exports = function Physics (settings) {
 
 
 Physics.prototype.update = function(entity) {
+  entity.lastPos = {
+    x: entity.x,
+    y: entity.y
+  };
+
   entity.dx *= entity.friction;
   entity.dy *= entity.friction;
 
