@@ -7,24 +7,21 @@
  * I think. At least it sounds cool.
  */
 
-var util = require('util'),
-    EventEmitter = require('events').EventEmitter,
-    utils = require('../utils'),
-    keyboard = require('./keyboard'),
-    mouse = require('./mouse');
+var util = require('util');
+var InputInterface = require('./InputInterface');
+var defaults = {
+  keyboard: require('./keyboard'),
+  mouse: require('./mouse'),
+  keymap: {
+    left: 'a',
+    right: 'd',
+    up: 'w',
+    down: 's'
+  }
+};
 
-
-var Stdin = module.exports = function (settings) {
-  utils.extend(this, {
-    keyboard: keyboard,
-    mouse: mouse,
-    keymap: {
-      left: 'a',
-      right: 'd',
-      up: 'w',
-      down: 's'
-    }
-  }, settings);
+var LocalInput = module.exports = function LocalInput (settings) {
+  this.constructor.super_.call(this, defaults, settings);
 
   if(this.mouse.on) {
     this.mouse.on('mousedown', this.emit.bind(this, 'mousedown'));
@@ -32,17 +29,18 @@ var Stdin = module.exports = function (settings) {
   }
 };
 
-util.inherits(Stdin, EventEmitter);
+util.inherits(LocalInput, InputInterface);
 
-Stdin.prototype.isDown = function (key) {
+
+LocalInput.prototype.isDown = function (key) {
   return this.keyboard[this.keymap[key]];
 };
 
-Stdin.prototype.getPosition = function (axis) {
+LocalInput.prototype.getPosition = function (axis) {
   return this.mouse[axis];
 };
 
-Stdin.prototype.update = function(entity) {
+LocalInput.prototype.update = function(entity) {
   entity.dx += this.isDown('left') && -entity.acc || this.isDown('right') && entity.acc || 0;
   entity.dy += this.isDown('up') && -entity.acc || this.isDown('down') && entity.acc || 0;
 

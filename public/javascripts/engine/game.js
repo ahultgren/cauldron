@@ -13,7 +13,7 @@ var Cursor = require('./cursor');
 var VisibilityPolygon = require('./visibility-polygon');
 var CVP = require('./conical-visibility-polygon');
 var Network = require('./network');
-var stdin = require('./input/stdin');
+var LocalInput = require('./input/LocalInput');
 
 
 var Game = module.exports = function (settings) {
@@ -30,7 +30,7 @@ var Game = module.exports = function (settings) {
   // Player one
 
   self.playerOne = new Player({
-    input: new stdin(),
+    input: new LocalInput(),
     physics: new Physics({
       map: self.map
     }),

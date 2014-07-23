@@ -1,6 +1,6 @@
 'use strict';
 
-var Peer = require('./peer');
+var Peer = require('./input/PeerInput');
 var Peerjs = require('peerjs');
 
 
@@ -46,7 +46,10 @@ Network.prototype.connection = function(id, conn) {
 
   conn.on('open', function () {
     console.log('PEER connection open ' + id);
-    self.peers[id] = new Peer(conn, self.game);
+    self.peers[id] = new Peer({
+      conn: conn,
+      game: self.game
+    });
 
     //## does this work?
     self.peers[id].send(JSON.stringify({
