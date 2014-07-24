@@ -3,10 +3,6 @@
 var util = require('util');
 var utils = require('../../utils');
 var InputInterface = require('./InputInterface');
-var Player = require('../../Player');
-var Physics = require('../physics');
-var Graphics = require('../graphics');
-var Weapon = require('../../weapons');
 var defaults = {
   from: {},
   toward: {},
@@ -79,29 +75,20 @@ Peer.prototype.update = function(entity) {
 ============================================================================= */
 
 Peer.prototype.onSpawnPlayer = function(data) {
-  data = utils.extend({
-    x: 0,
-    y: 0,
-    a: 0
-  },
-  data,
-  {
-    input: this,
-    physics: new Physics({
-      map: this.game.map
+  this.player = this.game.factories.player(
+    utils.extend(data, {
+      input: this
     }),
-    graphics: new Graphics()
-  });
-
-  this.player = new Player(data);
-
-  this.game.add(this.player);
+    {
+      map: this.game.map
+    }
+  );
 };
 
 Peer.prototype.onWeapon = function(data) {
-  this.player.weapon = new Weapon(data.weapon, {
-    map: this.game.map,
-    game: this.game
+  this.player.weapon = this.game.factories.weapon(data.weapon, {
+    game: this.game,
+    map: this.game.map
   });
 };
 

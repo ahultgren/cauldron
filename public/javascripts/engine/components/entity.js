@@ -17,6 +17,7 @@ util.inherits(Entity, EventEmitter);
 Entity.prototype.update = function() {
   this.input && this.input.update(this);
   this.physics && this.physics.update(this);
+  this.script && this.script.update(this);
 
   this.emit('update');
 };

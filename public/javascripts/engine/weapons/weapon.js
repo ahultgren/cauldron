@@ -19,9 +19,6 @@ var Weapon = module.exports = function (settings) {
   this.spread = this.maxAccuracy;
 
   utils.extend(this, settings);
-
-  //## Shouldn't really be done here. Some kind of game auto-adding would be nice
-  this.game.add(this);
 };
 
 
@@ -64,7 +61,6 @@ Weapon.prototype.update = function() {
 
 Weapon.prototype.shoot = function(from, toward) {
   var bullet = new this.ammunition({
-    spreadRange: this.spreadRange,
     from: from,
     toward: toward,
     spread: this.spread,

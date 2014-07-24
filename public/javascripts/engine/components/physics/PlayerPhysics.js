@@ -1,7 +1,7 @@
 'use strict';
 
 var SAT = require('sat');
-var utils = require('../utils');
+var utils = require('../../utils');
 
 
 var Physics = module.exports = exports = function Physics (settings) {

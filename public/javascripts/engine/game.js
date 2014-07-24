@@ -5,10 +5,6 @@
 var canvas = require('./canvas');
 var Loop = require('./loop');
 var Map = require('./map');
-var Physics = require('./components/physics');
-var Graphics = require('./components/graphics');
-var Player = require('./player');
-var weaponFactory = require('./weapons');
 var Cursor = require('./cursor');
 var VisibilityPolygon = require('./visibility-polygon');
 var CVP = require('./conical-visibility-polygon');
@@ -18,6 +14,12 @@ var LocalInput = require('./components/input/LocalInput');
 
 var Game = module.exports = function (settings) {
   var self = this;
+
+  // Set up factories for easy access from components
+  self.factories = {
+    player: require('./factories/playerFactory').bind(self),
+    weapon: require('./factories/weaponFactory').bind(self)
+  };
 
   // Map
 
@@ -29,21 +31,17 @@ var Game = module.exports = function (settings) {
 
   // Player one
 
-  self.playerOne = new Player({
-    input: new LocalInput(),
-    physics: new Physics({
+  self.playerOne = self.factories.player({
+      input: new LocalInput(),
+      x: self.canvas.width/2,
+      y: self.canvas.height/2,
+      weapon: self.factories.weapon('AutoLaserCannon', {
+        game: self,
+        map: self.map
+      })
+    }, {
       map: self.map
-    }),
-    graphics: new Graphics(),
-    x: self.canvas.width/2,
-    y: self.canvas.height/2,
-    weapon: weaponFactory('AutoLaserCannon', {
-      game: self,
-      map: self.map
-    })
-  });
-
-  self.add(self.playerOne);
+    });
 
   self.cursor = new Cursor();
   self.add(self.cursor);
