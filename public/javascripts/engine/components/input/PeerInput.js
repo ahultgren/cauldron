@@ -3,6 +3,7 @@
 var util = require('util');
 var utils = require('../../utils');
 var Component = require('../Component');
+var PeerPlayerScript = require('../script/PeerPlayerScript');
 var defaults = {
   from: {},
   toward: {},
@@ -77,7 +78,8 @@ Peer.prototype.update = function(entity) {
 Peer.prototype.onSpawnPlayer = function(data) {
   this.player = this.game.factories.player(
     utils.extend(data, {
-      input: this
+      input: this,
+      script: new PeerPlayerScript()
     }),
     {
       map: this.game.map
@@ -97,11 +99,11 @@ Peer.prototype.onPosition = function(data) {
 };
 
 Peer.prototype.onTriggerStart = function(data) {
-  this.player.triggerStart(data);
+  this.emit('triggerStart', data);
 };
 
 Peer.prototype.onTriggerEnd = function(data) {
-  this.player.triggerEnd(data);
+  this.emit('triggerEnd', data);
 };
 
 

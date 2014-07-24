@@ -10,6 +10,7 @@ var VisibilityPolygon = require('./visibility-polygon');
 var CVP = require('./conical-visibility-polygon');
 var Network = require('./network');
 var LocalInput = require('./components/input/LocalInput');
+var LocalPlayerScript = require('./components/script/LocalPlayerScript');
 
 
 var Game = module.exports = function (settings) {
@@ -38,7 +39,8 @@ var Game = module.exports = function (settings) {
       weapon: self.factories.weapon('AutoLaserCannon', {
         game: self,
         map: self.map
-      })
+      }),
+      script: new LocalPlayerScript()
     }, {
       map: self.map
     });

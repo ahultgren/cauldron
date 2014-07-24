@@ -1,7 +1,7 @@
 'use strict';
 
 var utils = require('../utils');
-var Player = require('../player');
+var Entity = require('../components/Entity');
 var PlayerPhysics = require('../components/physics/PlayerPhysics');
 var PlayerGraphics = require('../components/graphics/PlayerGraphics');
 
@@ -29,7 +29,7 @@ module.exports = function playerFactory (playerSettings, factorySettings) {
     graphics: new PlayerGraphics()
   });
 
-  var player = new Player(settings);
+  var player = new Entity(settings);
 
   game.add(player);
 
