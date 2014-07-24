@@ -60,11 +60,6 @@ Player.prototype.triggerEnd = function() {
 };
 
 
-Player.prototype.control = function(settings) {
-  utils.extend(this, settings);
-};
-
-
 Player.prototype.update = function() {
   this.input.update(this);
   this.physics.update(this);
