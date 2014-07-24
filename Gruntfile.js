@@ -53,10 +53,6 @@ module.exports = function (grunt) {
         },
         options: {
           shim: {
-            jquery: {
-              path: 'public/javascripts/engine/vendor/jquery.min.js',
-              exports: 'jQuery'
-            },
             sat: {
               path: 'public/javascripts/engine/vendor/sat.min.js',
               exports: 'SAT'
