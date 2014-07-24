@@ -1,12 +1,15 @@
 'use strict';
 
-var utils = require('../../utils');
+var util = require('util');
+var Component = require('../Component');
 var defaults = {};
 
 
 var Graphics = module.exports = exports = function Graphics (settings) {
-  utils.extend(this, defaults, settings);
+  this.constructor.super_.call(this, defaults, settings);
 };
+
+util.inherits(Graphics, Component);
 
 
 Graphics.prototype.draw = function(entity, ctx) {

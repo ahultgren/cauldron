@@ -9,6 +9,11 @@ var utils = require('../utils');
 
 var Entity = module.exports = function Entity (defaults, settings) {
   utils.extend(this, defaults, settings);
+
+  this.input && this.input.init(this);
+  this.physics && this.physics.init(this);
+  this.script && this.script.init(this);
+  this.graphics && this.graphics.init(this);
 };
 
 util.inherits(Entity, EventEmitter);

@@ -1,7 +1,7 @@
 'use strict';
 
 var util = require('util');
-var InputInterface = require('./InputInterface');
+var Component = require('../Component');
 var defaults = {
   keyboard: require('../../system/keyboard'),
   mouse: require('../../system/mouse'),
@@ -22,7 +22,7 @@ var LocalInput = module.exports = function LocalInput (settings) {
   }
 };
 
-util.inherits(LocalInput, InputInterface);
+util.inherits(LocalInput, Component);
 
 
 LocalInput.prototype.isDown = function (key) {

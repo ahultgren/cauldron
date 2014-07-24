@@ -1,29 +1,17 @@
 'use strict';
 
 var util = require('util');
-var EventEmitter = require('events').EventEmitter;
-var utils = require('./utils');
-
-var defaults = {
-  _type: 'masked',
-  radius: 5,
-  a: 0,
-  dx: 0,
-  dy: 0,
-  acc: 0.8,
-  friction: 0.8,
-  fill: '#'+Math.floor(Math.random()*4095).toString(16)
-};
+var Entity = require('./components/entity');
 
 
 var Player = module.exports = function Player (settings) {
-  utils.extend(this, defaults, settings);
+  this.constructor.super_.call(this, {}, settings);
 
   this.input.on('mousedown', this.triggerStart.bind(this), false);
   this.input.on('mouseup', this.triggerEnd.bind(this), false);
 };
 
-util.inherits(Player, EventEmitter);
+util.inherits(Player, Entity);
 
 
 Player.prototype.triggerStart = function(settings) {
@@ -57,17 +45,4 @@ Player.prototype.triggerEnd = function() {
 
     this.emit('action', 'triggerEnd');
   }
-};
-
-
-Player.prototype.update = function() {
-  this.input.update(this);
-  this.physics.update(this);
-
-  this.emit('update');
-};
-
-
-Player.prototype.draw = function(ctx) {
-  this.graphics.draw(this, ctx);
 };

@@ -2,7 +2,7 @@
 
 var util = require('util');
 var utils = require('../../utils');
-var InputInterface = require('./InputInterface');
+var Component = require('../Component');
 var defaults = {
   from: {},
   toward: {},
@@ -21,7 +21,7 @@ var Peer = module.exports = function (settings) {
   this.conn.on('data', this.onData.bind(this));
 };
 
-util.inherits(Peer, InputInterface);
+util.inherits(Peer, Component);
 
 
 Peer.prototype.send = function(data) {

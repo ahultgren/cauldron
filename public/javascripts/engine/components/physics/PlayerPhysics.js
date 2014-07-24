@@ -1,13 +1,16 @@
 'use strict';
 
+var util = require('util');
 var SAT = require('sat');
-var utils = require('../../utils');
+var Component = require('../Component');
 
 
 var Physics = module.exports = exports = function Physics (settings) {
+  this.constructor.super_.call(this, {}, settings);
   // this.map
-  utils.extend(this, settings);
 };
+
+util.inherits(Physics, Component);
 
 
 Physics.prototype.update = function(entity) {
