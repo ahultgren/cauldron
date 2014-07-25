@@ -23,8 +23,6 @@ Script.prototype.update = function(entity) {
 Script.prototype.triggerStart = function(entity, settings) {
   var from, toward, spread;
 
-  console.log('triggerStart', settings);
-
   if(entity.weapon) {
     from = settings.from || entity;
     toward = settings.toward || entity.input.mouse;

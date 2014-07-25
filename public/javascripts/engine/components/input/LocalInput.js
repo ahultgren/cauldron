@@ -33,7 +33,7 @@ LocalInput.prototype.getPosition = function (axis) {
   return this.mouse[axis];
 };
 
-LocalInput.prototype.update = function(entity) {
+LocalInput.prototype.updateEvent = function(entity) {
   entity.dx += this.isDown('left') && -entity.acc || this.isDown('right') && entity.acc || 0;
   entity.dy += this.isDown('up') && -entity.acc || this.isDown('down') && entity.acc || 0;
 

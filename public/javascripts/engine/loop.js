@@ -13,6 +13,7 @@ var Loop = module.exports = function (canvas) {
 
   this.obstacles = [];          // Objects not moving but collidable
   this.updating = [];           // Objects updating each tick
+  this.eventUpdating = [];      // Objects updating each step but not each tick
   this.visibilityPolygons = []; // Polygons masking the seen area
   this.antiMasked = [];         // Objects only visible when not looked at
   this.masked = [];             // Objects only seen when looked at
@@ -50,6 +51,8 @@ Loop.prototype.loop = function () {
     this.update();
   }
 
+  this.updateEvent();
+
   window.requestAnimationFrame(this.loop.bind(this));
 
   this.draw();
@@ -68,6 +71,14 @@ Loop.prototype.update = function () {
     else {
       this.updating[i].update(ctx);
     }
+  }
+};
+
+Loop.prototype.updateEvent = function() {
+  var i, l;
+
+  for(i = 0, l = this.eventUpdating.length; i < l; i++) {
+    this.eventUpdating[i].updateEvent();
   }
 };
 

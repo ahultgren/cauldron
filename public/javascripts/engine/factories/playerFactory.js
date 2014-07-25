@@ -22,7 +22,7 @@ var defaults = {
 module.exports = function playerFactory (playerSettings, factorySettings) {
   var game = this;
 
-  var settings = utils.extend(defaults, playerSettings, {
+  var settings = utils.extend({}, defaults, playerSettings, {
     physics: new PlayerPhysics({
       map: factorySettings.map
     }),

@@ -14,19 +14,21 @@ var Entity = module.exports = function Entity (defaults, settings) {
   this.physics && this.physics.init(this);
   this.script && this.script.init(this);
   this.graphics && this.graphics.init(this);
+  this.output && this.output.init(this);
 };
 
 util.inherits(Entity, EventEmitter);
 
 
 Entity.prototype.update = function() {
-  this.input && this.input.update(this);
   this.physics && this.physics.update(this);
   this.script && this.script.update(this);
-
-  this.emit('update');
 };
 
+Entity.prototype.updateEvent = function() {
+  this.input && this.input.updateEvent(this);
+  this.output && this.output.updateEvent(this);
+};
 
 Entity.prototype.draw = function(ctx) {
   this.graphics && this.graphics.draw(this, ctx);

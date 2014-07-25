@@ -15,7 +15,7 @@ var defaults = {
   }
 };
 
-var Peer = module.exports = function (settings) {
+var Peer = module.exports = function PeerInput (settings) {
   // conn, game
   this.constructor.super_.call(this, defaults, settings);
 
@@ -59,7 +59,7 @@ Peer.prototype.isDown = function (key) {
   return this.keyStates[key];
 };
 
-Peer.prototype.update = function(entity) {
+Peer.prototype.updateEvent = function(entity) {
   //## States are not used yet, but when they are it's really only for position
   // prediction/interpolation
   entity.dx += this.isDown('left') && -entity.acc || this.isDown('right') && entity.acc || 0;

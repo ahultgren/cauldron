@@ -8,9 +8,10 @@ var Map = require('./map');
 var Cursor = require('./cursor');
 var VisibilityPolygon = require('./visibility-polygon');
 var CVP = require('./conical-visibility-polygon');
-var Network = require('./network');
+var Network = require('./system/network');
 var LocalInput = require('./components/input/LocalInput');
 var LocalPlayerScript = require('./components/script/LocalPlayerScript');
+var PlayerOutput = require('./components/output/PlayerOutput');
 
 
 var Game = module.exports = function (settings) {
@@ -30,6 +31,11 @@ var Game = module.exports = function (settings) {
   self.map = new Map(settings.map(self.canvas));
   self.add(self.map);
 
+  // Network
+
+  self.network = new Network(self);
+  self.add(self.network);
+
   // Player one
 
   self.playerOne = self.factories.player({
@@ -40,19 +46,16 @@ var Game = module.exports = function (settings) {
         game: self,
         map: self.map
       }),
-      script: new LocalPlayerScript()
+      script: new LocalPlayerScript(),
+      output: new PlayerOutput({
+        network: self.network
+      })
     }, {
       map: self.map
     });
 
   self.cursor = new Cursor();
   self.add(self.cursor);
-
-  // Network
-
-  self.network = new Network(self);
-  self.network.setLocalPlayer(self.playerOne);
-  self.add(self.network);
 
   // Visibility polygon
 
@@ -74,6 +77,10 @@ Game.prototype.add = function (object) {
   }
   else if(object._isObstacle) {
     this.loop.obstacles.push(object);
+  }
+
+  if(object.updateEvent) {
+    this.loop.eventUpdating.push(object);
   }
 
   return this;

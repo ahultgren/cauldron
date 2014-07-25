@@ -17,12 +17,6 @@ var Component = module.exports = function Component (defaults, settings) {
 util.inherits(Component, EventEmitter);
 
 
-Component.prototype.init = function (/*entity*/) {
-};
-
-Component.prototype.update = function(entity) {
-  void(entity); // lint hack
-  throw(new Error(this.constructor.name + '#update is not implemented'));
-};
-
+Component.prototype.init = function (/*entity*/) {};
+Component.prototype.update = null; /* (entity) */
 Component.prototype.draw = null; /* (entity, ctx) */

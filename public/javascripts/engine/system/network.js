@@ -1,6 +1,6 @@
 'use strict';
 
-var Peer = require('./components/input/PeerInput');
+var Peer = require('../components/input/PeerInput');
 var Peerjs = require('peerjs');
 
 
@@ -51,25 +51,26 @@ Network.prototype.connection = function(id, conn) {
       game: self.game
     });
 
+    //## Move this to output somehow?
     self.peers[id].send(JSON.stringify([
       {
         type: 'spawnPlayer',
         data: {
-          fill: self.localPlayer.fill //## Just testing with something
+          fill: self.game.playerOne.fill //## Just testing with something
         }
       },
       {
         type: 'weapon',
         data: {
-          weapon: self.localPlayer.weapon.name
+          weapon: self.game.playerOne.weapon.name
         }
       },
       {
         type: 'position',
         data: {
-          x: self.localPlayer.x,
-          y: self.localPlayer.y,
-          a: self.localPlayer.a
+          x: self.game.playerOne.x,
+          y: self.game.playerOne.y,
+          a: self.game.playerOne.a
         }
       }
     ]));
@@ -84,9 +85,8 @@ Network.prototype.connection = function(id, conn) {
 
 
 Network.prototype.sendToAll = function(data) {
-  var i, l,
-      peers = Object.keys(this.peers),
-      peer;
+  var i, l, peer;
+  var peers = Object.keys(this.peers);
 
   try {
     data = JSON.stringify(data);
@@ -105,43 +105,7 @@ Network.prototype.sendToAll = function(data) {
   }
 };
 
-
-Network.prototype.setLocalPlayer = function(player) {
-  var self = this;
-
-  if(self.localPlayer) {
-    this.removeLocalPlayer();
-  }
-
-  self.localPlayer = player;
-
-  player.on('update', function () {
-    var position = {
-      x: player.x,
-      y: player.y,
-      a: player.a
-    };
-
-    self.outgoing.push({
-      type: 'position',
-      data: position
-    });
-  });
-
-  player.on('action', function (action, data) {
-    self.outgoing.push({
-      type: action,
-      data: data
-    });
-  });
-};
-
-
-Network.prototype.removeLocalPlayer = function() {
-  //this.localPlayer.removeEventlistener
-};
-
-Network.prototype.update = function() {
+Network.prototype.updateEvent = function() {
   var outgoing = this.outgoing;
 
   // Clear outgoing queue
