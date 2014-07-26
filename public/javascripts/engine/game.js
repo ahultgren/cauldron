@@ -50,8 +50,6 @@ var Game = module.exports = function (settings) {
       output: new PlayerOutput({
         network: self.network
       })
-    }, {
-      map: self.map
     });
 
   self.cursor = new Cursor();

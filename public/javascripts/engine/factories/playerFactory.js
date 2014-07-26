@@ -19,12 +19,12 @@ var defaults = {
 };
 
 
-module.exports = function playerFactory (playerSettings, factorySettings) {
+module.exports = function playerFactory (playerSettings) {
   var game = this;
 
   var settings = utils.extend({}, defaults, playerSettings, {
     physics: new PlayerPhysics({
-      map: factorySettings.map
+      map: game.map
     }),
     graphics: new PlayerGraphics()
   });

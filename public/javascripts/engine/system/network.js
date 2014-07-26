@@ -1,6 +1,7 @@
 'use strict';
 
-var Peer = require('../components/input/PeerInput');
+var PeerInput = require('../components/input/PeerInput');
+var PeerPlayerScript = require('../components/script/PeerPlayerScript');
 var Peerjs = require('peerjs');
 
 
@@ -16,8 +17,8 @@ var Network = module.exports = function (game) {
     path: 'peers'
   });
 
-  // Store peers
-  self.peers = [];
+  // Store connections
+  self.connections = [];
 
   self.localPeer.on('open', function (id) {
     console.log('Connected as ' + id);
@@ -46,19 +47,17 @@ Network.prototype.connection = function(id, conn) {
 
   conn.on('open', function () {
     console.log('PEER connection open ' + id);
-    self.peers[id] = new Peer({
-      conn: conn,
-      game: self.game
+    self.connections[id] = conn;
+
+    self.game.factories.player({
+      input: new PeerInput({
+        conn: conn,
+        game: self.game
+      }),
+      script: new PeerPlayerScript()
     });
 
-    //## Move this to output somehow?
-    self.peers[id].send(JSON.stringify([
-      {
-        type: 'spawnPlayer',
-        data: {
-          fill: self.game.playerOne.fill //## Just testing with something
-        }
-      },
+    self.sendTo(id, JSON.stringify([
       {
         type: 'weapon',
         data: {
@@ -70,7 +69,8 @@ Network.prototype.connection = function(id, conn) {
         data: {
           x: self.game.playerOne.x,
           y: self.game.playerOne.y,
-          a: self.game.playerOne.a
+          a: self.game.playerOne.a,
+          fill: self.game.playerOne.fill
         }
       }
     ]));
@@ -79,14 +79,21 @@ Network.prototype.connection = function(id, conn) {
   conn.on('error', function (err) {
     console.log('peer connection error!');
     console.log(err);
-    delete self.peers[id];
+    delete self.connections[id];
   });
 };
 
 
+Network.prototype.sendTo = function(id, data) {
+  if(this.connections[id].open) {
+    this.connections[id].send(data);
+  }
+};
+
+
 Network.prototype.sendToAll = function(data) {
-  var i, l, peer;
-  var peers = Object.keys(this.peers);
+  var i, l;
+  var connections = Object.keys(this.connections);
 
   try {
     data = JSON.stringify(data);
@@ -96,14 +103,11 @@ Network.prototype.sendToAll = function(data) {
     throw e;
   }
 
-  for(i = 0, l = peers.length; i < l; i++) {
-    peer = this.peers[peers[i]];
-
-    if(peer.conn.open) {
-      peer.send(data);
-    }
+  for(i = 0, l = connections.length; i < l; i++) {
+    this.sendTo(connections[i], data);
   }
 };
+
 
 Network.prototype.updateEvent = function() {
   var outgoing = this.outgoing;

@@ -3,7 +3,6 @@
 var util = require('util');
 var utils = require('../../utils');
 var Component = require('../Component');
-var PeerPlayerScript = require('../script/PeerPlayerScript');
 var defaults = {
   from: {},
   toward: {},
@@ -24,10 +23,6 @@ var Peer = module.exports = function PeerInput (settings) {
 
 util.inherits(Peer, Component);
 
-
-Peer.prototype.send = function(data) {
-  this.conn.send(data);
-};
 
 Peer.prototype.onData = function(data) {
   var i, l;
@@ -69,29 +64,22 @@ Peer.prototype.updateEvent = function(entity) {
     utils.extend(entity, this.newPosition);
     this.newPosition = null;
   }
+
+  if(this.newWeapon) {
+    entity.weapon = this.game.factories.weapon(this.newWeapon.weapon, {
+      game: this.game,
+      map: this.game.map
+    });
+    this.newWeapon = null;
+  }
 };
 
 
 /* Data handlers
 ============================================================================= */
 
-Peer.prototype.onSpawnPlayer = function(data) {
-  this.player = this.game.factories.player(
-    utils.extend(data, {
-      input: this,
-      script: new PeerPlayerScript()
-    }),
-    {
-      map: this.game.map
-    }
-  );
-};
-
 Peer.prototype.onWeapon = function(data) {
-  this.player.weapon = this.game.factories.weapon(data.weapon, {
-    game: this.game,
-    map: this.game.map
-  });
+  this.newWeapon = data;
 };
 
 Peer.prototype.onPosition = function(data) {
