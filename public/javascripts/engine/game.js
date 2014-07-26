@@ -42,10 +42,7 @@ var Game = module.exports = function (settings) {
       input: new LocalInput(),
       x: self.canvas.width/2,
       y: self.canvas.height/2,
-      weapon: self.factories.weapon('AutoLaserCannon', {
-        game: self,
-        map: self.map
-      }),
+      weapon: self.factories.weapon('AutoLaserCannon'),
       script: new LocalPlayerScript(),
       output: new PlayerOutput({
         network: self.network

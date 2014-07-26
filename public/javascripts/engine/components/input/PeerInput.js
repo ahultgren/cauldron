@@ -66,10 +66,7 @@ Peer.prototype.updateEvent = function(entity) {
   }
 
   if(this.newWeapon) {
-    entity.weapon = this.game.factories.weapon(this.newWeapon.weapon, {
-      game: this.game,
-      map: this.game.map
-    });
+    entity.weapon = this.game.factories.weapon(this.newWeapon.weapon);
     this.newWeapon = null;
   }
 };

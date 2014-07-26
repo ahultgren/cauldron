@@ -4,11 +4,18 @@
 require('../weapons/LaserCannon');
 require('../weapons/AutoLaserCannon');
 
+var utils = require('../utils');
 var weaponsRoot = '../weapons/';
 
 
 module.exports = function weaponFactory (name, settings) {
   var game = this;
+
+  settings = utils.extend({
+    game: game,
+    map: game.map
+  }, settings);
+
   var weapon = new (require(weaponsRoot + name))(settings);
 
   /*
