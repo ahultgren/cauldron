@@ -83,7 +83,14 @@ Peer.prototype.onWeapon = function(data) {
 };
 
 Peer.prototype.onPosition = function(data) {
-  this.newPosition = data;
+  if(this.newPosition) {
+    // Merge data, the might not contain the same properties, but the latest
+    // update of the same property shall conquer
+    utils.extend(this.newPosition, data);
+  }
+  else {
+    this.newPosition = data;
+  }
 };
 
 Peer.prototype.onTriggerStart = function(data) {

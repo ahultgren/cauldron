@@ -1,11 +1,15 @@
 'use strict';
 
+var util = require('util');
+var EventEmitter = require('events').EventEmitter;
+var Peerjs = require('peerjs');
 var PeerInput = require('../components/input/PeerInput');
 var PeerPlayerScript = require('../components/script/PeerPlayerScript');
-var Peerjs = require('peerjs');
 
 
 var Network = module.exports = function (game) {
+  this.constructor.super_.call(this);
+
   var self = this;
 
   this.game = game;
@@ -30,10 +34,11 @@ var Network = module.exports = function (game) {
     self.connection(conn.id, conn);
   });
 
-
   //## Hack to support connecting until we have a socket implementation
   window.connect = this.connect.bind(this);
 };
+
+util.inherits(Network, EventEmitter);
 
 
 Network.prototype.connect = function(id) {
@@ -57,29 +62,14 @@ Network.prototype.connection = function(id, conn) {
       script: new PeerPlayerScript()
     });
 
-    self.sendTo(id, JSON.stringify([
-      {
-        type: 'weapon',
-        data: {
-          weapon: self.game.playerOne.weapon.name
-        }
-      },
-      {
-        type: 'position',
-        data: {
-          x: self.game.playerOne.x,
-          y: self.game.playerOne.y,
-          a: self.game.playerOne.a,
-          fill: self.game.playerOne.fill
-        }
-      }
-    ]));
+    self.emit('newPeer', id);
   });
 
   conn.on('error', function (err) {
     console.log('peer connection error!');
     console.log(err);
     delete self.connections[id];
+    self.emit('peerError', id);
   });
 };
 

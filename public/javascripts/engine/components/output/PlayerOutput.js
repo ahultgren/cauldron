@@ -7,8 +7,12 @@ var Component = require('../Component');
 
 
 var Output = module.exports = function PlayerOutput (settings) {
-  this.constructor.super_.call(this, {}, settings);
+  this.constructor.super_.call(this, {
+    newPeers: []
+  }, settings);
   // this.network
+
+  this.network.on('newPeer', this.newPeer.bind(this));
 };
 
 util.inherits(Output, Component);
@@ -27,8 +31,10 @@ Output.prototype.init = function(entity) {
 };
 
 Output.prototype.updateEvent = function(entity) {
+  var self = this;
+
   //## Check if update is needed; Object.observe?
-  this.network.outgoing.push({
+  self.network.outgoing.push({
     type: 'position',
     data: {
       x: entity.x,
@@ -36,4 +42,32 @@ Output.prototype.updateEvent = function(entity) {
       a: entity.a
     }
   });
+
+  if(self.newPeers.length) {
+    self.newPeers.forEach(function (id) {
+      self.network.sendTo(id, JSON.stringify([
+        {
+          type: 'weapon',
+          data: {
+            weapon: entity.weapon.name
+          }
+        },
+        {
+          type: 'position',
+          data: {
+            x: entity.x,
+            y: entity.y,
+            a: entity.a,
+            fill: entity.fill
+          }
+        }
+      ]));
+    });
+
+    self.newPeers = [];
+  }
+};
+
+Output.prototype.newPeer = function(id) {
+  this.newPeers.push(id);
 };
