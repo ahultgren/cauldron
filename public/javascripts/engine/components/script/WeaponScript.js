@@ -31,7 +31,7 @@ Script.prototype.update = function(entity) {
   // Whether to shoot or not
   if(this.shooting && entity.lastShot <= 0) {
     entity.lastShot = entity.shotInterval;
-    this.shoot(entity, this.from, this.toward);
+    this.shoot(entity, this.from, this.toward, entity.spread);
 
     if(entity.singleAction) {
       this.shooting = false;
@@ -51,13 +51,25 @@ Script.prototype.update = function(entity) {
   entity.spread = (Math.random() * entity.spreadRange - entity.spreadRange/2) * (Math.random() * entity.spreadRange - entity.spreadRange/2);
 };
 
-Script.prototype.shoot = function(entity, from, toward) {
+Script.prototype.shoot = function(entity, from, toward, spread) {
   var bullet = new entity.ammunition({
     from: from,
     toward: toward,
-    spread: entity.spread,
+    spread: spread,
     segments: this.map.segments
   });
 
   this.game.add(bullet);
+
+  entity.emit('action', 'shoot', {
+    from: {
+      x: from.x,
+      y: from.y
+    },
+    toward: {
+      x: toward.x,
+      y: toward.y
+    },
+    spread: spread
+  });
 };

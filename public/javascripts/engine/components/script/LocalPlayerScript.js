@@ -29,7 +29,7 @@ Script.prototype.triggerStart = function(entity) {
 
     entity.weapon.script.triggerStart(from, toward, spread);
 
-    entity.emit('action', 'triggerStart', {
+    /*entity.emit('action', 'triggerStart', {
       from: {
         x: from.x,
         y: from.y
@@ -39,7 +39,7 @@ Script.prototype.triggerStart = function(entity) {
         y: toward.y
       },
       spread: spread
-    });
+    });*/
   }
 };
 
@@ -48,6 +48,6 @@ Script.prototype.triggerEnd = function(entity) {
   if(entity.weapon) {
     entity.weapon.script.triggerEnd();
 
-    entity.emit('action', 'triggerEnd');
+    /*entity.emit('action', 'triggerEnd');*/
   }
 };

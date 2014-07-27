@@ -69,6 +69,11 @@ Peer.prototype.updateEvent = function(entity) {
     entity.weapon = this.game.factories.weapon(this.newWeapon.weapon);
     this.newWeapon = null;
   }
+
+  if(this.shootData) {
+    entity.weapon.script.shoot(entity.weapon, this.shootData.from, this.shootData.toward, this.shootData.spread);
+    this.shootData = null;
+  }
 };
 
 
@@ -77,6 +82,10 @@ Peer.prototype.updateEvent = function(entity) {
 
 Peer.prototype.onWeapon = function(data) {
   this.newWeapon = data;
+};
+
+Peer.prototype.onShootWeapon = function(data) {
+  this.shootData = data;
 };
 
 Peer.prototype.onPosition = function(data) {
@@ -88,14 +97,6 @@ Peer.prototype.onPosition = function(data) {
   else {
     this.newPosition = data;
   }
-};
-
-Peer.prototype.onTriggerStart = function(data) {
-  this.emit('triggerStart', data);
-};
-
-Peer.prototype.onTriggerEnd = function(data) {
-  this.emit('triggerEnd', data);
 };
 
 

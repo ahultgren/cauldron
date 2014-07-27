@@ -22,9 +22,9 @@ Output.prototype.init = function(entity) {
   var self = this;
 
   //## Can this be made more specific? Most importantly not listen on entity (so that entity is not an eventemitter)?
-  entity.on('action', function (action, data) {
+  entity.weapon.on('action', function (action, data) {
     self.network.outgoing.push({
-      type: action,
+      type: action + 'Weapon',
       data: data
     });
   });
