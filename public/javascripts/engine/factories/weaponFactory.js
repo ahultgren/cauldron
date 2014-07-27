@@ -1,11 +1,12 @@
 'use strict';
 
 // Fulhack to convince browserify to require all weapons...
-require('../weapons/LaserCannon');
-require('../weapons/AutoLaserCannon');
+require('../models/weapons/LaserCannon');
+require('../models/weapons/AutoLaserCannon');
 
 var utils = require('../utils');
-var weaponsRoot = '../weapons/';
+var Weapon = require('../weapons/weapon');
+var weaponModels = '../models/weapons/';
 
 
 module.exports = function weaponFactory (name, settings) {
@@ -14,9 +15,9 @@ module.exports = function weaponFactory (name, settings) {
   settings = utils.extend({
     game: game,
     map: game.map
-  }, settings);
+  }, require(weaponModels + name), settings);
 
-  var weapon = new (require(weaponsRoot + name))(settings);
+  var weapon = new Weapon(settings);
 
   /*
   weapon = new Entity({
