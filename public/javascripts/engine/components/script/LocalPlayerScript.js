@@ -27,7 +27,7 @@ Script.prototype.triggerStart = function(entity) {
     toward = entity.input.mouse;
     spread = entity.weapon.spread;
 
-    entity.weapon.triggerStart(from, toward, spread);
+    entity.weapon.script.triggerStart(from, toward, spread);
 
     entity.emit('action', 'triggerStart', {
       from: {
@@ -46,7 +46,7 @@ Script.prototype.triggerStart = function(entity) {
 
 Script.prototype.triggerEnd = function(entity) {
   if(entity.weapon) {
-    entity.weapon.triggerEnd();
+    entity.weapon.script.triggerEnd();
 
     entity.emit('action', 'triggerEnd');
   }

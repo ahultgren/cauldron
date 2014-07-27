@@ -25,16 +25,16 @@ Script.prototype.triggerStart = function(entity, settings) {
 
   if(entity.weapon) {
     from = settings.from || entity;
-    toward = settings.toward || entity.input.mouse;
+    toward = settings.toward;
     spread = settings.spread || entity.weapon.spread;
 
-    entity.weapon.triggerStart(from, toward, spread);
+    entity.weapon.script.triggerStart(from, toward, spread);
   }
 };
 
 
 Script.prototype.triggerEnd = function(entity) {
   if(entity.weapon) {
-    entity.weapon.triggerEnd();
+    entity.weapon.script.triggerEnd();
   }
 };
