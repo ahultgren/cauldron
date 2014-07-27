@@ -9,7 +9,7 @@ var Polygon = module.exports = function (segments, player) {
   this.segments = segments;
   this.player = player;
   this.fuzzyRadius = 10;
-  this.fov = 0.4;
+  this.fov = 0.8;
   this.peripheryDistance = 20;
 
   this.basePolygon = [
