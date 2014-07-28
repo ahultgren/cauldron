@@ -12,15 +12,15 @@ util.inherits(Script, Component);
 
 
 Script.prototype.init = function(entity) {
-  entity.input.on('triggerStart', this.triggerStart.bind(this, entity));
-  entity.input.on('triggerEnd', this.triggerEnd.bind(this, entity));
+  entity.input.on('triggerStart', this.triggerStart_.bind(this, entity));
+  entity.input.on('triggerEnd', this.triggerEnd_.bind(this, entity));
 };
 
 Script.prototype.update = function(entity) {
   void(entity);
 };
 
-Script.prototype.triggerStart = function(entity, settings) {
+Script.prototype.triggerStart_ = function(entity, settings) {
   var from, toward, spread;
 
   if(entity.weapon) {
@@ -33,7 +33,7 @@ Script.prototype.triggerStart = function(entity, settings) {
 };
 
 
-Script.prototype.triggerEnd = function(entity) {
+Script.prototype.triggerEnd_ = function(entity) {
   if(entity.weapon) {
     entity.weapon.script.triggerEnd();
   }

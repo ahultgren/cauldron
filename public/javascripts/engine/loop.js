@@ -64,7 +64,7 @@ Loop.prototype.update = function () {
 
   // Move the registered objects
   for(i = 0, l = this.updating.length; i < l; i++) {
-    if(this.updating[i]._remove) {
+    if(this.updating[i].remove_) {
       this.updating.splice(i--, 1);
       l--;
     }
@@ -102,7 +102,7 @@ Loop.prototype.drawEach = function(gco, objects) {
   this.canvas.ctx.globalCompositeOperation = gco;
 
   for(i = 0, l = objects.length; i < l; i++) {
-    if(objects[i]._remove) {
+    if(objects[i].remove_) {
       objects.splice(i--, 1);
       l--;
     }

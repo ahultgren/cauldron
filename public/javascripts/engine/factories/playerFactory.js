@@ -6,7 +6,7 @@ var PlayerPhysics = require('../components/physics/PlayerPhysics');
 var PlayerGraphics = require('../components/graphics/PlayerGraphics');
 
 var defaults = {
-  _type: 'masked',
+  type_: 'masked',
   radius: 5,
   x: 0,
   y: 0,

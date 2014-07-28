@@ -25,11 +25,11 @@ Physics.prototype.update = function(entity) {
   entity.x += entity.dx;
   entity.y += entity.dy;
 
-  this.collisionTest(entity);
+  this.collisionTest_(entity);
 };
 
 
-Physics.prototype.collisionTest = function(entity) {
+Physics.prototype.collisionTest_ = function(entity) {
   var self = entity;
   var segments = this.map.segments;
   var response = new SAT.Response();

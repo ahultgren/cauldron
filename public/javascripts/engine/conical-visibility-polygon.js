@@ -4,7 +4,7 @@ var utils = require('./utils');
 
 var Polygon = module.exports = function (segments, player) {
   //## This is a bit ugly, refactor when you have a better idea
-  this._type = 'visibilityPolygons';
+  this.type_ = 'visibilityPolygons';
 
   this.segments = segments;
   this.player = player;

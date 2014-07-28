@@ -64,14 +64,14 @@ var Game = module.exports = function (settings) {
 
 
 Game.prototype.add = function (object) {
-  if(object._type && this.loop[object._type]) {
-    this.loop[object._type].push(object);
+  if(object.type_ && this.loop[object.type_]) {
+    this.loop[object.type_].push(object);
   }
 
   if(object.update) {
     this.loop.updating.push(object);
   }
-  else if(object._isObstacle) {
+  else if(object.isObstacle_) {
     this.loop.obstacles.push(object);
   }
 

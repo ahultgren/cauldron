@@ -34,13 +34,13 @@ Peer.prototype.onData = function(data) {
   }
   else {
     for(i = 0, l = data.length; i < l; i++) {
-      this.dispatch(data[i]);
+      this.dispatch_(data[i]);
     }
   }
 };
 
-Peer.prototype.dispatch = function(message) {
-  var handler = 'on' + capitalize(message.type);
+Peer.prototype.dispatch_ = function(message) {
+  var handler = 'on' + capitalize(message.type) + '_';
 
   if(this[handler]) {
     this[handler](message.data);
@@ -80,15 +80,15 @@ Peer.prototype.updateEvent = function(entity) {
 /* Data handlers
 ============================================================================= */
 
-Peer.prototype.onWeapon = function(data) {
+Peer.prototype.onWeapon_ = function(data) {
   this.newWeapon = data;
 };
 
-Peer.prototype.onShootWeapon = function(data) {
+Peer.prototype.onShootWeapon_ = function(data) {
   this.shootData = data;
 };
 
-Peer.prototype.onPosition = function(data) {
+Peer.prototype.onPosition_ = function(data) {
   if(this.newPosition) {
     // Merge data, the might not contain the same properties, but the latest
     // update of the same property shall conquer

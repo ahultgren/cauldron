@@ -16,7 +16,7 @@ module.exports = function (type, settings) {
   var model = require(ammunitionModels + type);
 
   settings = utils.extend({
-    _type: 'masked',
+    type_: 'masked',
     physics: new model.components.Physics({
       segments: this.map.segments
     }),

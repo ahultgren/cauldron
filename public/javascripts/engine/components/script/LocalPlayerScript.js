@@ -12,14 +12,19 @@ util.inherits(Script, Component);
 
 
 Script.prototype.init = function(entity) {
-  entity.input.on('mousedown', this.triggerStart.bind(this, entity));
-  entity.input.on('mouseup', this.triggerEnd.bind(this, entity));
+  entity.input.on('mousedown', this.triggerStart_.bind(this, entity));
+  entity.input.on('mouseup', this.triggerEnd_.bind(this, entity));
 };
 
 Script.prototype.update = function() {
 };
 
-Script.prototype.triggerStart = function(entity) {
+
+
+/* Private
+============================================================================= */
+
+Script.prototype.triggerStart_ = function(entity) {
   var from, toward, spread;
 
   if(entity.weapon) {
@@ -44,7 +49,7 @@ Script.prototype.triggerStart = function(entity) {
 };
 
 
-Script.prototype.triggerEnd = function(entity) {
+Script.prototype.triggerEnd_ = function(entity) {
   if(entity.weapon) {
     entity.weapon.script.triggerEnd();
 

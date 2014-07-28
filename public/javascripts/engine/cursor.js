@@ -4,7 +4,7 @@ var mouse = require('./system/mouse');
 
 
 var Cursor = module.exports = function () {
-  this._type = 'alwaysVisible';
+  this.type_ = 'alwaysVisible';
   this.color = '#ccc';
 };
 

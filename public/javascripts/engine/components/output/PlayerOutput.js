@@ -12,7 +12,7 @@ var Output = module.exports = function PlayerOutput (settings) {
   }, settings);
   // this.network
 
-  this.network.on('newPeer', this.newPeer.bind(this));
+  this.network.on('newPeer', this.newPeer_.bind(this));
 };
 
 util.inherits(Output, Component);
@@ -68,6 +68,6 @@ Output.prototype.updateEvent = function(entity) {
   }
 };
 
-Output.prototype.newPeer = function(id) {
+Output.prototype.newPeer_ = function(id) {
   this.newPeers.push(id);
 };
