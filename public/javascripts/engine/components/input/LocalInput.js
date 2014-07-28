@@ -25,17 +25,17 @@ var LocalInput = module.exports = function LocalInput (settings) {
 util.inherits(LocalInput, Component);
 
 
+LocalInput.prototype.update = function(entity) {
+  entity.dx += this.isDown('left') && -entity.acc || this.isDown('right') && entity.acc || 0;
+  entity.dy += this.isDown('up') && -entity.acc || this.isDown('down') && entity.acc || 0;
+
+  entity.a = Math.atan2(this.getPosition('y')-entity.y, this.getPosition('x')-entity.x);
+};
+
 LocalInput.prototype.isDown = function (key) {
   return this.keyboard[this.keymap[key]];
 };
 
 LocalInput.prototype.getPosition = function (axis) {
   return this.mouse[axis];
-};
-
-LocalInput.prototype.updateEvent = function(entity) {
-  entity.dx += this.isDown('left') && -entity.acc || this.isDown('right') && entity.acc || 0;
-  entity.dy += this.isDown('up') && -entity.acc || this.isDown('down') && entity.acc || 0;
-
-  entity.a = Math.atan2(this.getPosition('y')-entity.y, this.getPosition('x')-entity.x);
 };
