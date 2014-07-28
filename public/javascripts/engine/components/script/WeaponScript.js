@@ -1,6 +1,7 @@
 'use strict';
 
 var util = require('util');
+var utils = require('../../utils');
 var Component = require('../Component');
 
 
@@ -52,11 +53,11 @@ Script.prototype.update = function(entity) {
 };
 
 Script.prototype.shoot = function(entity, from, toward, spread) {
-  this.game.factories.ammunition(entity.ammunition, {
+  this.game.factories.ammunition(entity.ammunition, utils.extend({
     from: from,
     toward: toward,
     spread: spread
-  });
+  }, entity.ammunitionData));
 
   entity.emit('action', 'shoot', {
     from: {

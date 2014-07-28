@@ -3,6 +3,7 @@
 // Fulhack to convince browserify to require all weapons...
 require('../models/weapons/LaserCannon');
 require('../models/weapons/AutoLaserCannon');
+require('../models/weapons/PlasmaRifle');
 
 
 var utils = require('../utils');
