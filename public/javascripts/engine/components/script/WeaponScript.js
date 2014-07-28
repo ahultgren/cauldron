@@ -52,14 +52,11 @@ Script.prototype.update = function(entity) {
 };
 
 Script.prototype.shoot = function(entity, from, toward, spread) {
-  var bullet = new entity.ammunition({
+  this.game.factories.ammunition(entity.ammunition, {
     from: from,
     toward: toward,
-    spread: spread,
-    segments: this.map.segments
+    spread: spread
   });
-
-  this.game.add(bullet);
 
   entity.emit('action', 'shoot', {
     from: {

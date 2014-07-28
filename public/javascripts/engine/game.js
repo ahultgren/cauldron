@@ -20,7 +20,8 @@ var Game = module.exports = function (settings) {
   // Set up factories for easy access from components
   self.factories = {
     player: require('./factories/playerFactory').bind(self),
-    weapon: require('./factories/weaponFactory').bind(self)
+    weapon: require('./factories/weaponFactory').bind(self),
+    ammunition: require('./factories/ammunitionFactory').bind(self)
   };
 
   // Map
