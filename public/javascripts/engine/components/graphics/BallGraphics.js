@@ -24,7 +24,7 @@ util.inherits(Graphics, Component);
 
 Graphics.prototype.draw = function(entity, ctx) {
   if(entity.physics.collided) {
-    entity.radius += 1;
+    entity.radius += 5;
     entity.fill = gradient[this.currentGradient++];
   }
 
