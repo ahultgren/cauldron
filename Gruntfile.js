@@ -53,12 +53,8 @@ module.exports = function (grunt) {
         },
         options: {
           shim: {
-            sat: {
-              path: 'public/javascripts/engine/vendor/sat.min.js',
-              exports: 'SAT'
-            },
             peerjs: {
-              path: 'public/javascripts/engine/vendor/peerjs.min.js',
+              path: 'node_modules/peerjs/dist/peer.min.js',
               exports: 'Peer'
             }
           }
