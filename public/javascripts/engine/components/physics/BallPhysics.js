@@ -5,7 +5,9 @@ var Component = require('../Component');
 
 
 var Physics = module.exports = function BallPhysics (settings) {
-  this.constructor.super_.call(this, {}, settings);
+  this.constructor.super_.call(this, {
+    animateFor: 5
+  }, settings);
 };
 
 util.inherits(Physics, Component);
@@ -18,6 +20,11 @@ Physics.prototype.init = function(entity) {
   entity.x = entity.from.x;
   entity.y = entity.from.y;
 
+  entity.lastPos = {
+    x: entity.x,
+    y: entity.y
+  };
+
   // Calculate velocity
   angle = Math.atan2(entity.toward.y - entity.from.y, entity.toward.x - entity.from.x);
   angle += entity.spread;
@@ -27,20 +34,25 @@ Physics.prototype.init = function(entity) {
 
   entity.x += this.dx;
   entity.y += this.dy;
+
+  entity.collision.on('obstacle', this.onCollision_.bind(this));
 };
 
 Physics.prototype.update = function(entity) {
-  // Move
-  if(!this.stopped) {
+  if(!this.collided) {
+    entity.lastPos.x = entity.x;
+    entity.lastPos.y = entity.y;
+
+    // Move only until collided
     entity.x += this.dx;
     entity.y += this.dy;
   }
-
-  // If colliding with wall or player
-  if(this.collisionTest_(entity)) {
-    // Stop moving
-    // Flash for n frames (or just spawn an effect?)
-      // Then set remove-flag
+  else if(this.dieIn && !entity.stopCollisionTests_) {
+    entity.stopCollisionTests_ = true;
+  }
+  else if(!(this.dieIn--)) {
+    // Allow to show some effect for a while, then die
+    entity.remove_ = true;
   }
 };
 
@@ -48,6 +60,7 @@ Physics.prototype.update = function(entity) {
 /* Private
 ============================================================================= */
 
-Physics.prototype.collisionTest_ = function(entity) {
-  void(entity);
+Physics.prototype.onCollision_ = function() {
+  this.collided = true;
+  this.dieIn = this.animateFor;
 };

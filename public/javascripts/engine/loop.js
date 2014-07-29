@@ -6,12 +6,14 @@ var MAX_FRAMES_SKIP = 10;
 window.requestAnimationFrame = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.msRequestAnimationFrame;
 
 
-var Loop = module.exports = function (canvas) {
-  this.canvas = canvas;
+var Loop = module.exports = function (game) {
+  this.game = game;
+  this.canvas = game.canvas;
   this.paused = true;
   this.previousTime = 0;
 
   this.obstacles = [];          // Objects not moving but collidable
+  this.collidable = [];         // Objects moving and collidable
   this.updating = [];           // Objects updating each tick
   this.eventUpdating = [];      // Objects updating each step but not each tick
   this.visibilityPolygons = []; // Polygons masking the seen area
@@ -44,11 +46,13 @@ Loop.prototype.loop = function () {
   this.previousTime = currentTime;
 
   this.update();
+  this.collide();
 
   // Some extra milliseconds are subtracted because the browser doesn't seem to
   // invoke frames with a consistent interval (or something?)
   while((elapsed -= MS_PER_UPDATE) - MS_PER_UPDATE * 0.5 >= 0 && skipped++ < MAX_FRAMES_SKIP) {
     this.update();
+    this.collide();
   }
 
   this.updateEvent();
@@ -70,6 +74,42 @@ Loop.prototype.update = function () {
     }
     else {
       this.updating[i].update(ctx);
+    }
+  }
+};
+
+Loop.prototype.collide = function() {
+  var i, l, ii, ll;
+  var obstacles = this.obstacles;
+  var collidable = this.collidable;
+  var response;
+
+  // Check if a collidable collides with the map
+  for(i = 0, l = collidable.length; i < l; i++) {
+    if(this.collidable[i].remove_ || this.collidable[i].stopCollisionTests_) {
+      this.collidable.splice(i--, 1);
+      l--;
+    }
+    else {
+      response = this.game.collisionManager.testMap(collidable[i]);
+
+      if(response) {
+        collidable[i].collision.onCollision('obstacle', response);
+      }
+    }
+  }
+
+  // Check if a collidable collides with an obstacle
+  for(i = 0, l = collidable.length; i < l; i++) {
+    for(ii = 0, ll = obstacles.length; ii < ll; ii++) {
+      //## Do something
+    }
+  }
+
+  // Check if a collidable collides with another collidable
+  for(i = 0, l = collidable.length; i < l; i++) {
+    for(ii = i; ii < l; ii++) {
+      //## Do something
     }
   }
 };
@@ -111,14 +151,3 @@ Loop.prototype.drawEach = function(gco, objects) {
     }
   }
 };
-
-
-/* Stuff that's masked
-============================================================================= */
-/*
-// Masked live graphics
-ctx.beginPath();
-ctx.fillStyle = '#0f0';
-ctx.arc(350, 100, 5, 0, 2*Math.PI, false);
-ctx.fill();
-*/

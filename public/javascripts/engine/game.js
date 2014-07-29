@@ -5,6 +5,7 @@
 var canvas = require('./canvas');
 var Loop = require('./loop');
 var Map = require('./map');
+var CollisionManager = require('./CollisionManager');
 var Cursor = require('./cursor');
 var VisibilityPolygon = require('./visibility-polygon');
 var CVP = require('./conical-visibility-polygon');
@@ -27,10 +28,14 @@ var Game = module.exports = function (settings) {
   // Map
 
   self.canvas = canvas;
-  self.loop = new Loop(self.canvas, self.ctx);
+  self.loop = new Loop(self);
 
   self.map = new Map(settings.map(self.canvas));
   self.add(self.map);
+
+  self.collisionManager = new CollisionManager({
+    segments: self.map.segments
+  });
 
   // Network
 
@@ -63,20 +68,24 @@ var Game = module.exports = function (settings) {
 };
 
 
-Game.prototype.add = function (object) {
-  if(object.type_ && this.loop[object.type_]) {
-    this.loop[object.type_].push(object);
+Game.prototype.add = function (entity) {
+  if(entity.type_ && this.loop[entity.type_]) {
+    this.loop[entity.type_].push(entity);
   }
 
-  if(object.update) {
-    this.loop.updating.push(object);
+  if(entity.update) {
+    this.loop.updating.push(entity);
   }
-  else if(object.isObstacle_) {
-    this.loop.obstacles.push(object);
+  else if(entity.isObstacle_) {
+    this.loop.obstacles.push(entity);
   }
 
-  if(object.updateEvent) {
-    this.loop.eventUpdating.push(object);
+  if(entity.collision) {
+    this.loop.collidable.push(entity);
+  }
+
+  if(entity.updateEvent) {
+    this.loop.eventUpdating.push(entity);
   }
 
   return this;

@@ -12,6 +12,7 @@ var Entity = module.exports = function Entity (defaults, settings) {
 
   this.input && this.input.init(this);
   this.physics && this.physics.init(this);
+  this.collision && this.collision.init(this);
   this.script && this.script.init(this);
   this.graphics && this.graphics.init(this);
   this.output && this.output.init(this);
@@ -23,6 +24,7 @@ util.inherits(Entity, EventEmitter);
 Entity.prototype.update = function() {
   this.input && this.input.update(this);
   this.physics && this.physics.update(this);
+  this.collision && this.collision.update(this);
   this.script && this.script.update(this);
 };
 

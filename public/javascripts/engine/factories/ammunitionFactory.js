@@ -21,6 +21,7 @@ module.exports = function (type, settings) {
       segments: this.map.segments
     }),
     graphics: new model.components.Graphics(),
+    collision: new model.components.Collision()
   }, model.settings, settings);
 
   bullet = new Entity(settings);

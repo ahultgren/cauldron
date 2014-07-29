@@ -5,7 +5,7 @@ module.exports = {
   ammunition: 'Ball',
   ammunitionData: {
     speed: 12,
-    size: 7,
+    radius: 7,
     fill: 'cyan'
   }
 };
