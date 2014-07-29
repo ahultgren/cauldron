@@ -20,11 +20,6 @@ Physics.prototype.init = function(entity) {
   entity.x = entity.from.x;
   entity.y = entity.from.y;
 
-  entity.lastPos = {
-    x: entity.x,
-    y: entity.y
-  };
-
   // Calculate velocity
   angle = Math.atan2(entity.toward.y - entity.from.y, entity.toward.x - entity.from.x);
   angle += entity.spread;
@@ -32,8 +27,13 @@ Physics.prototype.init = function(entity) {
   this.dx = Math.cos(angle) * entity.speed;
   this.dy = Math.sin(angle) * entity.speed;
 
-  entity.x += this.dx;
-  entity.y += this.dy;
+  entity.x += Math.cos(angle) * (entity.radius + 1);
+  entity.y += Math.sin(angle) * (entity.radius + 1);
+
+  entity.lastPos = {
+    x: entity.x,
+    y: entity.y
+  };
 
   entity.collision.on('obstacle', this.onCollision_.bind(this));
 };
