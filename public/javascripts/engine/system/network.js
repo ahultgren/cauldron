@@ -17,7 +17,7 @@ var Network = module.exports = function (game) {
 
   self.localPeer = new Peerjs({
     host: window.location.hostname,
-    port: 9000,
+    port: window.location.port,
     path: 'peers'
   });
 

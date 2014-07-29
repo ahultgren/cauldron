@@ -6,13 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "body-parser": "~1.0.0",
-    "cookie-parser": "~1.0.1",
-    "debug": "~0.7.4",
-    "ejs": "~0.8.5",
-    "express": "~3.4.8",
     "jquery": "^2.1.1",
-    "morgan": "~1.0.0",
     "peer": "~0.2.5",
     "peerjs": "^0.3.9",
     "sat": "^0.4.1",
