@@ -94,7 +94,7 @@ Loop.prototype.collide = function() {
       response = this.game.collisionManager.testMap(collidable[i]);
 
       if(response) {
-        collidable[i].collision.onCollision('obstacle', response);
+        collidable[i].onCollision('obstacle', response);
       }
     }
   }

@@ -35,3 +35,7 @@ Entity.prototype.updateEvent = function() {
 Entity.prototype.draw = function(ctx) {
   this.graphics && this.graphics.draw(this, ctx);
 };
+
+Entity.prototype.onCollision = function(type, response) {
+  this.collision && this.collision.onCollision(this, type, response);
+};

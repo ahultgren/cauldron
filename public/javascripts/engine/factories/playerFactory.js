@@ -4,6 +4,7 @@ var utils = require('../utils');
 var Entity = require('../components/Entity');
 var PlayerPhysics = require('../components/physics/PlayerPhysics');
 var PlayerGraphics = require('../components/graphics/PlayerGraphics');
+var Collision = require('../components/collision/ObstaclePhobicCollision');
 
 var defaults = {
   type_: 'masked',
@@ -24,9 +25,11 @@ module.exports = function playerFactory (playerSettings) {
 
   var settings = utils.extend({}, defaults, playerSettings, {
     physics: new PlayerPhysics({
-      map: game.map
+      map: game.map,
+      game: game
     }),
-    graphics: new PlayerGraphics()
+    graphics: new PlayerGraphics(),
+    collision: new Collision()
   });
 
   var player = new Entity(settings);

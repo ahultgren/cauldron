@@ -17,14 +17,12 @@ var Collision = module.exports = function ObstaclePhobicCollision (settings) {
 util.inherits(Collision, Component);
 
 
-Collision.prototype.update = function(entity) {
-  if(this.newData) {
-    utils.extend(entity, this.newData);
-    this.newData = null;
-  }
-};
+Collision.prototype.update = function() {};
 
-Collision.prototype.onCollision = function(type, response) {
-  this.newData = response;
+Collision.prototype.onCollision = function(entity, type, response) {
+  if(type === 'obstacle') {
+    utils.extend(entity, response);
+  }
+
   this.emit(type);
 };
