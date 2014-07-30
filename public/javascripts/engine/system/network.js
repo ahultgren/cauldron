@@ -5,6 +5,7 @@ var EventEmitter = require('events').EventEmitter;
 var Peerjs = require('peerjs');
 var PeerInput = require('../components/input/PeerInput');
 var PeerPlayerScript = require('../components/script/PeerPlayerScript');
+var $ = require('jquery');
 
 
 var Network = module.exports = function (game) {
@@ -35,6 +36,7 @@ var Network = module.exports = function (game) {
   self.localPeer.on('open', function (id) {
     console.log('Connected as ' + id);
     self.id = id;
+    self.emit('ready');
   });
 
   self.localPeer.on('connection', function (conn) {
@@ -108,6 +110,24 @@ Network.prototype.sendToAll = function(data) {
   for(i = 0, l = connections.length; i < l; i++) {
     this.sendTo(connections[i], data);
   }
+};
+
+
+Network.prototype.connectToAllPeers = function() {
+  var self = this;
+
+  $.ajax({
+    url: '/peerjs/peers',
+    dataType: 'json',
+    success: function (data) {
+      data.forEach(function (peerId) {
+        if(peerId !== self.localPeer.id) {
+          console.log('connecting to', peerId);
+          self.connect(peerId);
+        }
+      });
+    }
+  });
 };
 
 

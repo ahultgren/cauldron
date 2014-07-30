@@ -3,11 +3,15 @@
 var Game = require('./engine'),
     map1 = require('./maps/one');
 
-module.exports = new Game({
+var game = new Game({
   map: map1,
   canvas: document.querySelector('#canvas')
 });
 
 window.onload = function () {
-  module.exports.start();
+  game.start();
+
+  game.network.on('ready', function () {
+    game.network.connectToAllPeers();
+  });
 };

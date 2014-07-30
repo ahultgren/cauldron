@@ -4,7 +4,8 @@ var restify = require('peer/node_modules/restify');
 var port = process.env.PORT || 3000;
 var PeerServer = require('peer').PeerServer;
 var peerServer = new PeerServer({
-  port: port
+  port: port,
+  'allow_discovery': true
 });
 
 console.log('Listening on port %s', port);
