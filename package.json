@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "jquery": "^2.1.1",
-    "peer": "~0.2.5",
+    "peer": "^0.2.6",
     "peerjs": "^0.3.9",
     "sat": "^0.4.1",
     "static-favicon": "~1.0.0"

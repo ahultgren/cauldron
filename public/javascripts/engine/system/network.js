@@ -18,7 +18,15 @@ var Network = module.exports = function (game) {
   self.localPeer = new Peerjs({
     host: window.location.hostname,
     port: window.location.port,
-    path: 'peers'
+    config: {
+      'iceServers': [
+        { url: 'stun:stun.l.google.com:19302' },
+        { url: 'stun:stun1.l.google.com:19302' },
+        { url: 'stun:stun2.l.google.com:19302' },
+        { url: 'stun:stun3.l.google.com:19302' },
+        { url: 'stun:stun4.l.google.com:19302' }
+      ]
+    }
   });
 
   // Store connections
@@ -32,6 +40,10 @@ var Network = module.exports = function (game) {
   self.localPeer.on('connection', function (conn) {
     console.log('PEER connection attempt ' + conn.peer);
     self.connection(conn.id, conn);
+  });
+
+  self.localPeer.on('error', function (err) {
+    console.log('network error', err);
   });
 
   //## Hack to support connecting until we have a socket implementation
