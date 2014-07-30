@@ -107,9 +107,13 @@ Loop.prototype.collide = function() {
   }
 
   // Check if a collidable collides with another collidable
+  //## Assume for now that a collision response is never needed
   for(i = 0, l = collidable.length; i < l; i++) {
-    for(ii = i; ii < l; ii++) {
-      //## Do something
+    for(ii = i + 1; ii < l; ii++) {
+      if(this.game.collisionManager.test(collidable[i], collidable[ii])) {
+        collidable[i].onCollision('collidable', collidable[ii]);
+        collidable[ii].onCollision('collidable', collidable[i]);
+      }
     }
   }
 };

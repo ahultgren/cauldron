@@ -56,7 +56,8 @@ Script.prototype.shoot = function(entity, from, toward, spread) {
   this.game.factories.ammunition(entity.ammunition, utils.extend({
     from: from,
     toward: toward,
-    spread: spread
+    spread: spread,
+    weapon: entity
   }, entity.ammunitionData));
 
   entity.emit('action', 'shoot', {

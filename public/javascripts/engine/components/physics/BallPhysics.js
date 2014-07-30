@@ -16,6 +16,9 @@ util.inherits(Physics, Component);
 Physics.prototype.init = function(entity) {
   var angle;
 
+  //## Is it right/better to cheat like this?
+  this.entity = entity;
+
   // Set position
   entity.x = entity.from.x;
   entity.y = entity.from.y;
@@ -35,7 +38,8 @@ Physics.prototype.init = function(entity) {
     y: entity.y
   };
 
-  entity.collision.on('obstacle', this.onCollision_.bind(this));
+  entity.collision.on('obstacle', this.onCollision_.bind(this, 'obstacle'));
+  entity.collision.on('collidable', this.onCollision_.bind(this, 'collidable'));
 };
 
 Physics.prototype.update = function(entity) {
@@ -60,7 +64,18 @@ Physics.prototype.update = function(entity) {
 /* Private
 ============================================================================= */
 
-Physics.prototype.onCollision_ = function() {
-  this.collided = true;
-  this.dieIn = this.animateFor;
+Physics.prototype.onCollision_ = function(type, response) {
+  switch (type) {
+    case 'obstacle':
+      this.collided = true;
+      this.dieIn = this.animateFor;
+      break;
+
+    case 'collidable':
+      if(response.weapon !== this.entity.weapon) {
+        this.collided = true;
+        this.dieIn = this.animateFor;
+      }
+      break;
+  }
 };

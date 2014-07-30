@@ -24,5 +24,5 @@ Collision.prototype.onCollision = function(entity, type, response) {
     utils.extend(entity, response);
   }
 
-  this.emit(type);
+  this.emit(type, response);
 };
