@@ -20,3 +20,7 @@ util.inherits(Component, EventEmitter);
 Component.prototype.init = function (/*entity*/) {};
 Component.prototype.update = null; /* (entity) */
 Component.prototype.draw = null; /* (entity, ctx) */
+
+Component.prototype.remove = function (/*entity*/) {
+  this.removeAllListeners();
+};

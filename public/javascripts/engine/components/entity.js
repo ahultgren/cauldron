@@ -45,5 +45,13 @@ Entity.prototype.onCollision = function(type, response) {
  * the loop.
  */
 Entity.prototype.remove = function() {
+  this.input && this.input.remove(this);
+  this.physics && this.physics.remove(this);
+  this.collision && this.collision.remove(this);
+  this.script && this.script.remove(this);
+  this.graphics && this.graphics.remove(this);
+  this.output && this.output.remove(this);
+
+  this.removeAllListeners();
   this.remove_ = true;
 };

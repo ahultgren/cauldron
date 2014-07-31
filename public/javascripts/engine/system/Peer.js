@@ -20,5 +20,6 @@ var Peer = module.exports = function Peer (game, id, conn) {
 
 
 Peer.prototype.remove = function() {
+  this.conn.removeAllListeners();
   this.player.remove();
 };

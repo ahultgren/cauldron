@@ -12,7 +12,9 @@ var Output = module.exports = function PlayerOutput (settings) {
   }, settings);
   // this.network
 
-  this.network.on('newPeer', this.newPeer_.bind(this));
+  // Hack to be able to unlisten
+  this.newPeerListener = this.newPeer_.bind(this);
+  this.network.on('newPeer', this.newPeerListener);
 };
 
 util.inherits(Output, Component);
@@ -67,6 +69,14 @@ Output.prototype.updateEvent = function(entity) {
     self.newPeers = [];
   }
 };
+
+Output.prototype.remove = function(entity) {
+  this.constructor.super_.remove.call(this, entity);
+  this.network.removeListener('newPeer', this.newPeerListener);
+};
+
+/* Private
+============================================================================= */
 
 Output.prototype.newPeer_ = function(id) {
   this.newPeers.push(id);
