@@ -2,11 +2,13 @@
 
 var util = require('util');
 var Component = require('../Component');
+var Entity = require('../Entity');
+var ExplosionGraphics = require('../graphics/ExplosionGraphics');
 
 
 var Physics = module.exports = function BallPhysics (settings) {
   this.constructor.super_.call(this, {
-    animateFor: 5
+    explosionDuration: 5
   }, settings);
 };
 
@@ -51,11 +53,17 @@ Physics.prototype.update = function(entity) {
     entity.x += this.dx;
     entity.y += this.dy;
   }
-  else if(this.dieIn && !entity.stopCollisionTests_) {
-    entity.stopCollisionTests_ = true;
-  }
-  else if(!(this.dieIn--)) {
-    // Allow to show some effect for a while, then die
+  else {
+    this.game.add(new Entity({
+      type_: 'masked',
+      x: entity.x,
+      y: entity.y,
+      radius: entity.radius,
+      graphics: new ExplosionGraphics({
+        duration: this.explosionDuration
+      })
+    }));
+
     entity.remove();
   }
 };
@@ -68,13 +76,11 @@ Physics.prototype.onCollision_ = function(type, response) {
   switch (type) {
     case 'obstacle':
       this.collided = true;
-      this.dieIn = this.animateFor;
       break;
 
     case 'collidable':
       if(response.weapon !== this.entity.weapon) {
         this.collided = true;
-        this.dieIn = this.animateFor;
       }
       break;
   }

@@ -18,7 +18,8 @@ module.exports = function (type, settings) {
   settings = utils.extend({
     type_: 'masked',
     physics: new model.components.Physics({
-      segments: this.map.segments
+      segments: this.map.segments,
+      game: game
     }),
     graphics: new model.components.Graphics(),
     collision: new model.components.Collision()
