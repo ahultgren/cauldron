@@ -3,8 +3,7 @@
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var Peerjs = require('peerjs');
-var PeerInput = require('../components/input/PeerInput');
-var PeerPlayerScript = require('../components/script/PeerPlayerScript');
+var Peer = require('./Peer');
 var $ = require('jquery');
 
 
@@ -56,44 +55,51 @@ util.inherits(Network, EventEmitter);
 
 
 Network.prototype.connect = function(id) {
-  console.log('connecting...');
+  console.log('connecting to', id);
   this.connection(id, this.localPeer.connect(id));
 };
-
 
 Network.prototype.connection = function(id, conn) {
   var self = this;
 
   conn.on('open', function () {
     console.log('PEER connection open ' + id);
-    self.connections[id] = conn;
 
-    self.game.factories.player({
-      input: new PeerInput({
-        conn: conn,
-        game: self.game
-      }),
-      script: new PeerPlayerScript()
-    });
-
+    self.createPeer(id, conn);
     self.emit('newPeer', id);
   });
 
   conn.on('error', function (err) {
-    console.log('peer connection error!');
-    console.log(err);
-    delete self.connections[id];
+    console.log('peer connection error!', err);
+
     self.emit('peerError', id);
+    self.removePeer(id);
+  });
+
+  conn.on('close', function () {
+    console.log(id + 'disconnected');
+    self.removePeer(id);
   });
 };
 
-
-Network.prototype.sendTo = function(id, data) {
-  if(this.connections[id].open) {
-    this.connections[id].send(data);
-  }
+Network.prototype.createPeer = function(id, conn) {
+  this.connections[id] = new Peer(this.game, id, conn);
 };
 
+Network.prototype.removePeer = function(id) {
+  this.connections[id].remove();
+  delete this.connections[id];
+};
+
+Network.prototype.disconnect = function() {
+  this.localPeer.destroy();
+};
+
+Network.prototype.sendTo = function(id, data) {
+  if(this.connections[id].conn.open) {
+    this.connections[id].conn.send(data);
+  }
+};
 
 Network.prototype.sendToAll = function(data) {
   var i, l;
@@ -112,7 +118,6 @@ Network.prototype.sendToAll = function(data) {
   }
 };
 
-
 Network.prototype.connectToAllPeers = function() {
   var self = this;
 
@@ -122,14 +127,12 @@ Network.prototype.connectToAllPeers = function() {
     success: function (data) {
       data.forEach(function (peerId) {
         if(peerId !== self.localPeer.id) {
-          console.log('connecting to', peerId);
           self.connect(peerId);
         }
       });
     }
   });
 };
-
 
 Network.prototype.updateEvent = function() {
   var outgoing = this.outgoing;
