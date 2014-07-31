@@ -13,7 +13,7 @@ util.inherits(Graphics, Component);
 
 Graphics.prototype.draw = function(entity, ctx) {
   if((entity.aliveFor++) >= entity.aliveUntil) {
-    entity.remove_ = true;
+    entity.remove();
     return;
   }
 

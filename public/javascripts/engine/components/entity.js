@@ -39,3 +39,11 @@ Entity.prototype.draw = function(ctx) {
 Entity.prototype.onCollision = function(type, response) {
   this.collision && this.collision.onCollision(this, type, response);
 };
+
+/**
+ * Should not be overwritten; tells the entity manager to remove the object from
+ * the loop.
+ */
+Entity.prototype.remove = function() {
+  this.remove_ = true;
+};

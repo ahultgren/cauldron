@@ -56,7 +56,7 @@ Physics.prototype.update = function(entity) {
   }
   else if(!(this.dieIn--)) {
     // Allow to show some effect for a while, then die
-    entity.remove_ = true;
+    entity.remove();
   }
 };
 
