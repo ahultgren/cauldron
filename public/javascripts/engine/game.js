@@ -22,7 +22,8 @@ var Game = module.exports = function (settings) {
   self.factories = {
     player: require('./factories/playerFactory').bind(self),
     weapon: require('./factories/weaponFactory').bind(self),
-    ammunition: require('./factories/ammunitionFactory').bind(self)
+    ammunition: require('./factories/ammunitionFactory').bind(self),
+    powerup: require('./factories/powerupFactory').bind(self)
   };
 
   // Map
@@ -57,6 +58,8 @@ var Game = module.exports = function (settings) {
 
   self.cursor = new Cursor();
   self.add(self.cursor);
+
+  self.add(self.factories.powerup());
 
   // Visibility polygon
 
