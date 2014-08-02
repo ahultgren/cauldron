@@ -44,10 +44,12 @@ Collisions.prototype.testMap = function(entity) {
   });
 
   if(x !== entity.x || y !== entity.y) {
-    return {
-      x: x,
-      y: y
-    };
+    if(entity.collision.response_ === 'obstaclePhobic') {
+      entity.x = x;
+      entity.y = y;
+    }
+
+    return true;
   }
   else {
     return false;

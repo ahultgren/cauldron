@@ -2,8 +2,6 @@
 
 var util = require('util');
 var Component = require('../Component');
-var Entity = require('../Entity');
-var ExplosionGraphics = require('../graphics/ExplosionGraphics');
 
 
 var Physics = module.exports = function BallPhysics (settings) {
@@ -39,49 +37,12 @@ Physics.prototype.init = function(entity) {
     x: entity.x,
     y: entity.y
   };
-
-  entity.collision.on('obstacle', this.onCollision_.bind(this, 'obstacle'));
-  entity.collision.on('collidable', this.onCollision_.bind(this, 'collidable'));
 };
 
 Physics.prototype.update = function(entity) {
-  if(!this.collided) {
-    entity.lastPos.x = entity.x;
-    entity.lastPos.y = entity.y;
+  entity.lastPos.x = entity.x;
+  entity.lastPos.y = entity.y;
 
-    // Move only until collided
-    entity.x += this.dx;
-    entity.y += this.dy;
-  }
-  else {
-    this.game.add(new Entity({
-      type_: 'masked',
-      x: entity.x,
-      y: entity.y,
-      radius: entity.radius,
-      graphics: new ExplosionGraphics({
-        duration: this.explosionDuration
-      })
-    }));
-
-    entity.remove();
-  }
-};
-
-
-/* Private
-============================================================================= */
-
-Physics.prototype.onCollision_ = function(type, response) {
-  switch (type) {
-    case 'obstacle':
-      this.collided = true;
-      break;
-
-    case 'collidable':
-      if(response.weapon !== this.entity.weapon) {
-        this.collided = true;
-      }
-      break;
-  }
+  entity.x += this.dx;
+  entity.y += this.dy;
 };

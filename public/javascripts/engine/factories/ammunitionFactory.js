@@ -22,7 +22,9 @@ module.exports = function (type, settings) {
       game: game
     }),
     graphics: new model.components.Graphics(),
-    collision: new model.components.Collision()
+    collision: new model.components.Collision({
+      game: game
+    })
   }, model.settings, settings);
 
   bullet = new Entity(settings);

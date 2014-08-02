@@ -4,7 +4,7 @@ var utils = require('../utils');
 var Entity = require('../components/Entity');
 var PlayerPhysics = require('../components/physics/PlayerPhysics');
 var PlayerGraphics = require('../components/graphics/PlayerGraphics');
-var Collision = require('../components/collision/ObstaclePhobicCollision');
+var Collision = require('../components/collision/PlayerCollision');
 
 var defaults = {
   type_: 'masked',

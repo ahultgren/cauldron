@@ -82,20 +82,17 @@ Loop.prototype.collide = function() {
   var i, l, ii, ll;
   var obstacles = this.obstacles;
   var collidable = this.collidable;
-  var response;
 
   // Check if a collidable collides with the map
   for(i = 0, l = collidable.length; i < l; i++) {
     if(this.collidable[i].remove_ || this.collidable[i].stopCollisionTests_) {
       this.collidable.splice(i--, 1);
       l--;
+      continue;
     }
-    else {
-      response = this.game.collisionManager.testMap(collidable[i]);
 
-      if(response) {
-        collidable[i].onCollision('obstacle', response);
-      }
+    if(this.game.collisionManager.testMap(collidable[i])) {
+      collidable[i].onCollision('obstacle');
     }
   }
 
