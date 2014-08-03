@@ -1,22 +1,23 @@
 'use strict';
 
-var utils = require('./utils');
+var util = require('util');
+var utils = require('../../utils');
+var Component = require('../Component');
 
 
-var VP = module.exports = function (segments, player) {
-  //## This is a bit ugly, refactor when you have a better idea
-  this.type_ = 'visibilityPolygons';
-
-  this.segments = segments;
-  this.player = player;
-  this.fuzzyRadius = 10;
+var Graphics = module.exports = function FOWGraphics (settings) {
+  this.constructor.super_.call(this, {
+    fuzzyRadius: 10
+  }, settings);
 };
 
+util.inherits(Graphics, Component);
 
-VP.prototype.draw = function (ctx) {
+
+Graphics.prototype.draw = function(entity, ctx) {
   var angle, dx, dy;
   var polygons = [
-    getSightPolygon(this.segments, this.player.x,this.player.y, this.player.angle)
+    getSightPolygon(this.segments, this.player.x, this.player.y, this.player.angle)
   ];
 
   for(angle = 0; angle < Math.PI*2; angle += (Math.PI*2)/10){
@@ -37,7 +38,10 @@ VP.prototype.draw = function (ctx) {
 };
 
 
-function getSightPolygon(segments, sightX, sightY, angle){
+/* Helpers
+============================================================================= */
+
+function getSightPolygon (segments, sightX, sightY, angle) {
   // Get all unique points
   var points = (function(segments){
     var a = [];
@@ -112,6 +116,4 @@ function getSightPolygon(segments, sightX, sightY, angle){
 
   // Polygon is intersects, in order of angle
   return intersects;
-
 }
-

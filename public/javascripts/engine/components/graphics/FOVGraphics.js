@@ -1,16 +1,15 @@
 'use strict';
 
-var utils = require('./utils');
+var util = require('util');
+var utils = require('../../utils');
+var Component = require('../Component');
 
-var Polygon = module.exports = function (segments, player) {
-  //## This is a bit ugly, refactor when you have a better idea
-  this.type_ = 'visibilityPolygons';
 
-  this.segments = segments;
-  this.player = player;
-  this.fuzzyRadius = 10;
-  this.fov = 0.8;
-  this.peripheryDistance = 20;
+var Graphics = module.exports = function FOVGraphics (settings) {
+  this.constructor.super_.call(this, {
+    fov: 0.8,
+    peripheryDistance: 20
+  }, settings);
 
   this.basePolygon = [
     /*{
@@ -40,7 +39,10 @@ var Polygon = module.exports = function (segments, player) {
   ];
 };
 
-Polygon.prototype.draw = function(ctx) {
+util.inherits(Graphics, Component);
+
+
+Graphics.prototype.draw = function(entity, ctx) {
   var polygon = this.basePolygon;
   var player = this.player;
 

@@ -6,8 +6,6 @@ var canvas = require('./canvas');
 var Loop = require('./loop');
 var Map = require('./map');
 var CollisionManager = require('./CollisionManager');
-var VisibilityPolygon = require('./visibility-polygon');
-var CVP = require('./conical-visibility-polygon');
 var Network = require('./system/network');
 var LocalInput = require('./components/input/LocalInput');
 var LocalPlayerScript = require('./components/script/LocalPlayerScript');
@@ -15,6 +13,8 @@ var PlayerOutput = require('./components/output/PlayerOutput');
 var Entity = require('./components/entity');
 var CursorGraphics = require('./components/graphics/CursorGraphics');
 var mouse = require('./system/mouse');
+var FOWGraphics = require('./components/graphics/FOWGraphics');
+var FOVGraphics = require('./components/graphics/FOVGraphics');
 
 
 var Game = module.exports = function (settings) {
@@ -70,11 +70,21 @@ var Game = module.exports = function (settings) {
 
   // Visibility polygon
 
-  self.visibilityPolygon = new VisibilityPolygon(self.map.segments, self.playerOne);
-  self.add(self.visibilityPolygon);
+  self.add(new Entity({
+    type_: 'visibilityPolygons',
+    graphics: new FOWGraphics({
+      segments: self.map.segments,
+      player: self.playerOne
+    })
+  }));
 
-  self.visibilityPolygon = new CVP(self.map.segments, self.playerOne);
-  self.add(self.visibilityPolygon);
+  self.add(new Entity({
+    type_: 'visibilityPolygons',
+    graphics: new FOVGraphics({
+      segments: self.map.segments,
+      player: self.playerOne
+    })
+  }));
 };
 
 
