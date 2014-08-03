@@ -4,7 +4,6 @@
 
 var canvas = require('./canvas');
 var Loop = require('./loop');
-var Map = require('./map');
 var CollisionManager = require('./CollisionManager');
 var Network = require('./system/network');
 var LocalInput = require('./components/input/LocalInput');
@@ -15,6 +14,7 @@ var CursorGraphics = require('./components/graphics/CursorGraphics');
 var mouse = require('./system/mouse');
 var FOWGraphics = require('./components/graphics/FOWGraphics');
 var FOVGraphics = require('./components/graphics/FOVGraphics');
+var MapGraphics = require('./components/graphics/MapGraphics');
 
 
 var Game = module.exports = function (settings) {
@@ -33,7 +33,12 @@ var Game = module.exports = function (settings) {
   self.canvas = canvas;
   self.loop = new Loop(self);
 
-  self.map = new Map(settings.map(self.canvas));
+  self.map = new Entity({
+    type_: 'masked',
+    segments: settings.map(self.canvas),
+    graphics: new MapGraphics()
+  });
+
   self.add(self.map);
 
   self.collisionManager = new CollisionManager({
