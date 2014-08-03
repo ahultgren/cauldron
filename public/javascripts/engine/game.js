@@ -6,13 +6,15 @@ var canvas = require('./canvas');
 var Loop = require('./loop');
 var Map = require('./map');
 var CollisionManager = require('./CollisionManager');
-var Cursor = require('./cursor');
 var VisibilityPolygon = require('./visibility-polygon');
 var CVP = require('./conical-visibility-polygon');
 var Network = require('./system/network');
 var LocalInput = require('./components/input/LocalInput');
 var LocalPlayerScript = require('./components/script/LocalPlayerScript');
 var PlayerOutput = require('./components/output/PlayerOutput');
+var Entity = require('./components/entity');
+var CursorGraphics = require('./components/graphics/CursorGraphics');
+var mouse = require('./system/mouse');
 
 
 var Game = module.exports = function (settings) {
@@ -56,8 +58,13 @@ var Game = module.exports = function (settings) {
       })
     });
 
-  self.cursor = new Cursor();
-  self.add(self.cursor);
+  self.add(new Entity({
+    type_: 'alwaysVisible',
+    fill: '#ccc',
+    graphics: new CursorGraphics({
+      mouse: mouse //## Use an input instance instead?
+    }),
+  }));
 
   self.add(self.factories.powerup());
 
