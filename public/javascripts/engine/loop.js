@@ -12,11 +12,13 @@ var Loop = module.exports = function (game) {
   this.paused = true;
   this.previousTime = 0;
 
-  this.obstacles = [];          // Objects not moving but collidable
-  this.collidable = [];         // Objects moving and collidable
   this.updating = [];           // Objects updating each tick
   this.eventUpdating = [];      // Objects updating each step but not each tick
-  this.visibilityPolygons = []; // Polygons masking the seen area
+
+  this.obstacles = [];          // Objects not moving but collidable
+  this.collidable = [];         // Objects moving and collidable
+
+  this.visibilityPolygons = []; // Objects masking the seen area
   this.antiMasked = [];         // Objects only visible when not looked at
   this.masked = [];             // Objects only seen when looked at
   this.alwaysVisible = [];      // Objects always seen

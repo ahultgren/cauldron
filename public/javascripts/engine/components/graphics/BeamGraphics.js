@@ -10,6 +10,7 @@ var Graphics = module.exports = function BeamGraphics (settings) {
 
 util.inherits(Graphics, Component);
 
+Graphics.prototype.type_ = 'masked';
 
 Graphics.prototype.draw = function(entity, ctx) {
   if((entity.aliveFor++) >= entity.aliveUntil) {

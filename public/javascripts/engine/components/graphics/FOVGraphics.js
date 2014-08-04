@@ -42,6 +42,8 @@ var Graphics = module.exports = function FOVGraphics (settings) {
 util.inherits(Graphics, Component);
 
 
+Graphics.prototype.type_ = 'visibilityPolygons';
+
 Graphics.prototype.draw = function(entity, ctx) {
   var polygon = this.basePolygon;
   var player = this.player;

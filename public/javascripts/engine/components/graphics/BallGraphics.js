@@ -14,6 +14,8 @@ var Graphics = module.exports = function BallGraphics (settings) {
 util.inherits(Graphics, Component);
 
 
+Graphics.prototype.type_ = 'masked';
+
 Graphics.prototype.draw = function(entity, ctx) {
   var radius = entity.radius;
   var fill = entity.fill;

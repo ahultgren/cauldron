@@ -14,13 +14,10 @@ module.exports = exports = function powerupFactory (settings) {
   var game = this;
 
   settings = utils.extend({
-    type_: 'masked',
     x: Math.random() * game.canvas.width,
     y: Math.random() * game.canvas.height,
     graphics: new Graphics()
   }, defaults, settings);
-
-  console.log(settings);
 
   return new Entity(settings);
 };

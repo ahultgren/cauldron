@@ -14,6 +14,8 @@ var Graphics = module.exports = function FOWGraphics (settings) {
 util.inherits(Graphics, Component);
 
 
+Graphics.prototype.type_ = 'visibilityPolygons';
+
 Graphics.prototype.draw = function(entity, ctx) {
   var angle, dx, dy;
   var polygons = [

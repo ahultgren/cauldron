@@ -12,6 +12,8 @@ var Graphics = module.exports = function CursorGraphics (settings) {
 util.inherits(Graphics, Component);
 
 
+Graphics.prototype.type_ = 'alwaysVisible';
+
 Graphics.prototype.draw = function(entity, ctx) {
   var angle, dx, dy;
   var fuzzyRadius = 10;

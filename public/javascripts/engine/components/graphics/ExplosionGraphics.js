@@ -26,6 +26,8 @@ var Graphics = module.exports = function ExplosionGraphics (settings) {
 util.inherits(Graphics, Component);
 
 
+Graphics.prototype.type_ = 'masked';
+
 Graphics.prototype.draw = function(entity, ctx) {
   if(this.currentStep > this.duration) {
     return entity.remove();

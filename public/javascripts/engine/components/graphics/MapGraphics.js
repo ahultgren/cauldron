@@ -11,6 +11,8 @@ var Graphics = module.exports = function MapGraphics (settings) {
 util.inherits(Graphics, Component);
 
 
+Graphics.prototype.type_ = 'masked';
+
 Graphics.prototype.draw = function(entity, ctx) {
   ctx.strokeStyle = '#c33';
   ctx.lineWidth = 2;

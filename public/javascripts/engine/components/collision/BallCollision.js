@@ -39,7 +39,6 @@ Collision.prototype.onCollision = function(entity, type, target) {
 
 Collision.prototype.spawn_ = function(entity) {
   this.game.add(new Entity({
-    type_: 'masked',
     x: entity.x,
     y: entity.y,
     radius: entity.radius,

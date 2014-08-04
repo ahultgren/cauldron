@@ -11,6 +11,8 @@ var Graphics = module.exports = function PowerupGraphics (settings) {
 util.inherits(Graphics, Component);
 
 
+Graphics.prototype.type_ = 'masked';
+
 Graphics.prototype.draw = function(entity, ctx) {
   ctx.beginPath();
   ctx.arc(entity.x, entity.y, entity.radius, 0, Math.PI * 2);

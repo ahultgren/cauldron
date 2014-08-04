@@ -7,7 +7,6 @@ var PlayerGraphics = require('../components/graphics/PlayerGraphics');
 var Collision = require('../components/collision/PlayerCollision');
 
 var defaults = {
-  type_: 'masked',
   radius: 5,
   x: 0,
   y: 0,

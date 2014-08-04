@@ -34,7 +34,6 @@ var Game = module.exports = function (settings) {
   self.loop = new Loop(self);
 
   self.map = new Entity({
-    type_: 'masked',
     segments: settings.map(self.canvas),
     graphics: new MapGraphics()
   });
@@ -64,7 +63,6 @@ var Game = module.exports = function (settings) {
     });
 
   self.add(new Entity({
-    type_: 'alwaysVisible',
     fill: '#ccc',
     graphics: new CursorGraphics({
       mouse: mouse //## Use an input instance instead?
@@ -76,7 +74,6 @@ var Game = module.exports = function (settings) {
   // Visibility polygon
 
   self.add(new Entity({
-    type_: 'visibilityPolygons',
     graphics: new FOWGraphics({
       segments: self.map.segments,
       player: self.playerOne
@@ -84,7 +81,6 @@ var Game = module.exports = function (settings) {
   }));
 
   self.add(new Entity({
-    type_: 'visibilityPolygons',
     graphics: new FOVGraphics({
       segments: self.map.segments,
       player: self.playerOne
@@ -94,8 +90,8 @@ var Game = module.exports = function (settings) {
 
 
 Game.prototype.add = function (entity) {
-  if(entity.type_ && this.loop[entity.type_]) {
-    this.loop[entity.type_].push(entity);
+  if(entity.graphics && entity.graphics.type_ && this.loop[entity.graphics.type_]) {
+    this.loop[entity.graphics.type_].push(entity);
   }
 
   if(entity.update) {
