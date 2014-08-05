@@ -15,7 +15,7 @@ var Loop = module.exports = function (game) {
   this.updating = [];           // Objects updating each tick
   this.eventUpdating = [];      // Objects updating each step but not each tick
 
-  this.obstacles = [];          // Objects not moving but collidable
+  this.obstacle = [];           // Objects not moving but collidable
   this.collidable = [];         // Objects moving and collidable
 
   this.visibilityPolygons = []; // Objects masking the seen area
@@ -82,7 +82,7 @@ Loop.prototype.update = function () {
 
 Loop.prototype.collide = function() {
   var i, l, ii, ll;
-  var obstacles = this.obstacles;
+  var obstacles = this.obstacle;
   var collidable = this.collidable;
 
   // Check if a collidable collides with the map
@@ -94,19 +94,21 @@ Loop.prototype.collide = function() {
     }
 
     if(this.game.collisionManager.testMap(collidable[i])) {
-      collidable[i].onCollision('obstacle');
+      collidable[i].onCollision('map');
     }
   }
 
   // Check if a collidable collides with an obstacle
   for(i = 0, l = collidable.length; i < l; i++) {
     for(ii = 0, ll = obstacles.length; ii < ll; ii++) {
-      //## Do something
+      if(this.game.collisionManager.test(collidable[i], obstacles[ii])) {
+        collidable[i].onCollision('obstacle', obstacles[ii]);
+        obstacles[ii].onCollision('collidable', collidable[i]);
+      }
     }
   }
 
   // Check if a collidable collides with another collidable
-  //## Assume for now that a collision response is never needed
   for(i = 0, l = collidable.length; i < l; i++) {
     for(ii = i + 1; ii < l; ii++) {
       if(this.game.collisionManager.test(collidable[i], collidable[ii])) {

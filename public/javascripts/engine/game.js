@@ -94,15 +94,12 @@ Game.prototype.add = function (entity) {
     this.loop[entity.graphics.type_].push(entity);
   }
 
-  if(entity.update) {
-    this.loop.updating.push(entity);
-  }
-  else if(entity.isObstacle_) {
-    this.loop.obstacles.push(entity);
+  if(entity.collision && entity.collision.type_ && this.loop[entity.collision.type_]) {
+    this.loop[entity.collision.type_].push(entity);
   }
 
-  if(entity.collision) {
-    this.loop.collidable.push(entity);
+  if(entity.update) {
+    this.loop.updating.push(entity);
   }
 
   if(entity.updateEvent) {

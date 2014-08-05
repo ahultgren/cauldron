@@ -61,6 +61,8 @@ Collisions.prototype.testMap = function(entity) {
  */
 Collisions.prototype.test = function(entity1, entity2) {
   //## Test other stuff than circles
+  //## CCD will be needed eventually
+  //## Handle response automatically?
   var a = new SAT.Circle(new SAT.V(entity1.x, entity1.y), entity1.radius);
   var b = new SAT.Circle(new SAT.V(entity2.x, entity2.y), entity2.radius);
 
