@@ -21,7 +21,7 @@ module.exports = function (type, settings) {
       game: game
     }),
     graphics: new model.components.Graphics(),
-    collision: new model.components.Collision({
+    collision: model.components.Collision && new model.components.Collision({
       game: game
     })
   }, model.settings, settings);

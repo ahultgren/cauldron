@@ -52,15 +52,15 @@ var Game = module.exports = function (settings) {
   // Player one
 
   self.playerOne = self.factories.player({
-      input: new LocalInput(),
-      x: self.canvas.width/2,
-      y: self.canvas.height/2,
-      weapon: self.factories.weapon('PlasmaRifle'),
-      script: new LocalPlayerScript(),
-      output: new PlayerOutput({
-        network: self.network
-      })
-    });
+    input: new LocalInput(),
+    x: self.canvas.width/2,
+    y: self.canvas.height/2,
+    weapon: self.factories.weapon('PlasmaRifle'),
+    script: new LocalPlayerScript(),
+    output: new PlayerOutput({
+      network: self.network
+    })
+  });
 
   self.add(new Entity({
     fill: '#ccc',
@@ -69,7 +69,10 @@ var Game = module.exports = function (settings) {
     }),
   }));
 
-  self.add(self.factories.powerup());
+  self.add(self.factories.powerup({
+    powerupType: 'weapon',
+    powerupData: 'AutoLaserCannon'
+  }));
 
   // Visibility polygon
 

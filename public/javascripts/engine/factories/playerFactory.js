@@ -28,7 +28,9 @@ module.exports = function playerFactory (playerSettings) {
       game: game
     }),
     graphics: new PlayerGraphics(),
-    collision: new Collision()
+    collision: new Collision({
+      game: game
+    })
   });
 
   var player = new Entity(settings);

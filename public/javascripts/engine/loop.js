@@ -87,8 +87,8 @@ Loop.prototype.collide = function() {
 
   // Check if a collidable collides with the map
   for(i = 0, l = collidable.length; i < l; i++) {
-    if(this.collidable[i].remove_ || this.collidable[i].stopCollisionTests_) {
-      this.collidable.splice(i--, 1);
+    if(collidable[i].remove_ || collidable[i].stopCollisionTests_) {
+      collidable.splice(i--, 1);
       l--;
       continue;
     }
@@ -101,6 +101,12 @@ Loop.prototype.collide = function() {
   // Check if a collidable collides with an obstacle
   for(i = 0, l = collidable.length; i < l; i++) {
     for(ii = 0, ll = obstacles.length; ii < ll; ii++) {
+      if(obstacles[ii].remove_) {
+        obstacles.splice(ii--, 1);
+        ll--;
+        continue;
+      }
+
       if(this.game.collisionManager.test(collidable[i], obstacles[ii])) {
         collidable[i].onCollision('obstacle', obstacles[ii]);
         obstacles[ii].onCollision('collidable', collidable[i]);

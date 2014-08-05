@@ -3,6 +3,7 @@
 var utils = require('../utils');
 var Entity = require('../components/Entity');
 var Graphics = require('../components/graphics/PowerupGraphics');
+var Collision = require('../components/collision/PowerupCollision');
 var defaults = {
   stroke: '#2d0',
   radius: 10,
@@ -16,7 +17,8 @@ module.exports = exports = function powerupFactory (settings) {
   settings = utils.extend({
     x: Math.random() * game.canvas.width,
     y: Math.random() * game.canvas.height,
-    graphics: new Graphics()
+    graphics: new Graphics(),
+    collision: new Collision()
   }, defaults, settings);
 
   return new Entity(settings);
