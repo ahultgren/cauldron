@@ -55,4 +55,5 @@ Physics.prototype.makeLine_ = function(entity) {
   b.y = minIntersection.y;
 
   entity.b = b;
+  entity.angle = angle;
 };
