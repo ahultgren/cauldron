@@ -9,6 +9,7 @@ var Network = require('./system/network');
 var LocalInput = require('./components/input/LocalInput');
 var LocalPlayerScript = require('./components/script/LocalPlayerScript');
 var PlayerOutput = require('./components/output/PlayerOutput');
+var LocalPlayerPowerups = require('./components/powerups/LocalPlayerPowerups');
 var Entity = require('./components/entity');
 var CursorGraphics = require('./components/graphics/CursorGraphics');
 var mouse = require('./system/mouse');
@@ -59,6 +60,9 @@ var Game = module.exports = function (settings) {
     script: new LocalPlayerScript(),
     output: new PlayerOutput({
       network: self.network
+    }),
+    powerups: new LocalPlayerPowerups({
+      game: self
     })
   });
 

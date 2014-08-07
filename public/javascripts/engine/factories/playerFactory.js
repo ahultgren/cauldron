@@ -15,7 +15,8 @@ var defaults = {
   dy: 0,
   acc: 0.8,
   friction: 0.8,
-  fill: '#'+(Math.random().toString(16)+'000').slice(2,5)
+  fill: '#'+(Math.random().toString(16)+'000').slice(2,5),
+  isPlayer_: true
 };
 
 

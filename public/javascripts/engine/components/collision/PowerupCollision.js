@@ -16,8 +16,12 @@ Collision.prototype.response_ = 'zone';
 
 Collision.prototype.update = function() {};
 Collision.prototype.onCollision = function(entity, type, target) {
-  if(target.collision.powerup) {
-    target.collision.powerup(entity.powerupType, entity.powerupData);
+  if(target.isPlayer_) {
+    target.powerups.add({
+      type: entity.powerupType,
+      data: entity.powerupData
+    });
+
     entity.remove();
   }
 };
