@@ -11,7 +11,8 @@ var defaults = {
     right: false,
     up: false,
     down: false
-  }
+  },
+  powerups: []
 };
 
 var Peer = module.exports = function PeerInput (settings) {
@@ -44,6 +45,11 @@ Peer.prototype.update = function(entity) {
     entity.weapon.script.shoot(entity.weapon, this.shootData.from, this.shootData.toward, this.shootData.spread);
     this.shootData = null;
   }
+
+  if(this.powerups.length) {
+    entity.powerups.newPowerups = this.powerups;
+    this.powerups = [];
+  }
 };
 
 Peer.prototype.onData = function(data) {
@@ -51,13 +57,8 @@ Peer.prototype.onData = function(data) {
 
   data = JSON.parse(data);
 
-  if(!Array.isArray(data)) {
-    this.dispatch(data);
-  }
-  else {
-    for(i = 0, l = data.length; i < l; i++) {
-      this.dispatch_(data[i]);
-    }
+  for(i = 0, l = data.length; i < l; i++) {
+    this.dispatch_(data[i]);
   }
 };
 
@@ -97,6 +98,10 @@ Peer.prototype.onPosition_ = function(data) {
   else {
     this.newPosition = data;
   }
+};
+
+Peer.prototype.onNewPowerup_ = function(data) {
+  this.powerups.push(data);
 };
 
 

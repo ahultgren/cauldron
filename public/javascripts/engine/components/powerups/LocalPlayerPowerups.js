@@ -29,4 +29,5 @@ Powerups.prototype.update = function(entity) {
 
 Powerups.prototype.add = function(powerup) {
   this.newPowerups.push(powerup);
+  this.emit('newPowerup', powerup);
 };

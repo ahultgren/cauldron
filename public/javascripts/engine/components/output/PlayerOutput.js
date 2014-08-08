@@ -36,6 +36,13 @@ Output.prototype.init = function(entity) {
     entity.weapon.removeListener('action', actionWeaponListener);
     newComponent.on('action', actionWeaponListener);
   });
+
+  entity.powerups.on('newPowerup', function (powerup) {
+    self.network.outgoing.push({
+      type: 'newPowerup',
+      data: powerup
+    });
+  });
 };
 
 Output.prototype.updateEvent = function(entity) {
