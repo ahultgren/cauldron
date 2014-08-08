@@ -44,8 +44,8 @@ Physics.prototype.makeLine_ = function(entity) {
   ];
 
   // ...find the closest intersecting map segment...
-  for(i = 0, l = this.segments.length; i < l; i++) {
-    intersection = utils.getIntersection(line, this.segments[i]);
+  for(i = 0, l = this.paths.length; i < l; i++) {
+    intersection = utils.getIntersection(line, this.paths[i]);
 
     if(!minIntersection && intersection || minIntersection && intersection && intersection.param < minIntersection.param) {
       minIntersection = intersection;

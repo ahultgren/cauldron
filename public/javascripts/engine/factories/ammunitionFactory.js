@@ -19,7 +19,7 @@ module.exports = function (type, components, data) {
 
   bullet = new Entity({
     physics: new model.components.Physics({
-      segments: this.map.data.segments,
+      paths: this.map.data.paths,
       game: game
     }),
     graphics: new model.components.Graphics(),

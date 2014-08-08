@@ -37,13 +37,13 @@ var Game = module.exports = function (settings) {
   self.map = new Entity({}, {
     graphics: new MapGraphics()
   }, {
-    segments: settings.map(self.canvas)
+    paths: settings.map(self.canvas)
   });
 
   self.add(self.map);
 
   self.collisionManager = new CollisionManager({
-    segments: self.map.data.segments
+    paths: self.map.data.paths
   });
 
   // Network
@@ -85,14 +85,14 @@ var Game = module.exports = function (settings) {
 
   self.add(new Entity({
     graphics: new FOWGraphics({
-      segments: self.map.data.segments,
+      paths: self.map.data.paths,
       player: self.playerOne
     })
   }));
 
   self.add(new Entity({
     graphics: new FOVGraphics({
-      segments: self.map.data.segments,
+      paths: self.map.data.paths,
       player: self.playerOne
     })
   }));

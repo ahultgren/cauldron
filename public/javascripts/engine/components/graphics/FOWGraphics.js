@@ -19,7 +19,7 @@ Graphics.prototype.type_ = 'visibilityPolygons';
 Graphics.prototype.draw = function(entity, ctx) {
   var angle, dx, dy;
   var polygons = [
-    getSightPolygon(this.segments, this.player.data.x, this.player.data.y)
+    getSightPolygon(this.paths, this.player.data.x, this.player.data.y)
   ];
 
   for(angle = 0; angle < Math.PI*2; angle += (Math.PI*2)/10){
@@ -27,7 +27,7 @@ Graphics.prototype.draw = function(entity, ctx) {
     dy = Math.sin(angle)*this.fuzzyRadius;
 
     polygons.push(
-      getSightPolygon(this.segments, this.player.data.x+dx, this.player.data.y+dy)
+      getSightPolygon(this.paths, this.player.data.x+dx, this.player.data.y+dy)
     );
   }
 
@@ -43,9 +43,9 @@ Graphics.prototype.draw = function(entity, ctx) {
 /* Helpers
 ============================================================================= */
 
-function getSightPolygon (segments, sightX, sightY) {
+function getSightPolygon (paths, sightX, sightY) {
   // Get all unique points
-  var points = segments.reduce(function(points, seg){
+  var points = paths.reduce(function(points, seg){
     points.push(seg[0], seg[1]);
     return points;
   }, []);
@@ -92,8 +92,8 @@ function getSightPolygon (segments, sightX, sightY) {
 
     // Find CLOSEST intersection
     var closestIntersect = null;
-    for(var i=0;i<segments.length;i++){
-      var intersect = utils.getIntersection(ray,segments[i]);
+    for(var i=0;i<paths.length;i++){
+      var intersect = utils.getIntersection(ray,paths[i]);
       if(!intersect) { continue; }
       if(!closestIntersect || intersect.param<closestIntersect.param){
         closestIntersect=intersect;
