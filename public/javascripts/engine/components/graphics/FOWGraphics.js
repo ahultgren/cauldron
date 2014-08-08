@@ -19,7 +19,7 @@ Graphics.prototype.type_ = 'visibilityPolygons';
 Graphics.prototype.draw = function(entity, ctx) {
   var angle, dx, dy;
   var polygons = [
-    getSightPolygon(this.segments, this.player.x, this.player.y, this.player.angle)
+    getSightPolygon(this.segments, this.player.data.x, this.player.data.y)
   ];
 
   for(angle = 0; angle < Math.PI*2; angle += (Math.PI*2)/10){
@@ -27,7 +27,7 @@ Graphics.prototype.draw = function(entity, ctx) {
     dy = Math.sin(angle)*this.fuzzyRadius;
 
     polygons.push(
-      getSightPolygon(this.segments, this.player.x+dx, this.player.y+dy)
+      getSightPolygon(this.segments, this.player.data.x+dx, this.player.data.y+dy)
     );
   }
 
@@ -43,7 +43,7 @@ Graphics.prototype.draw = function(entity, ctx) {
 /* Helpers
 ============================================================================= */
 
-function getSightPolygon (segments, sightX, sightY, angle) {
+function getSightPolygon (segments, sightX, sightY) {
   // Get all unique points
   var points = (function(segments){
     var a = [];
@@ -67,6 +67,7 @@ function getSightPolygon (segments, sightX, sightY, angle) {
   })(points);
 
   // Get all angles
+  var angle;
   var uniqueAngles = [];
   var j;
 

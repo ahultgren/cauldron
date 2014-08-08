@@ -16,10 +16,10 @@ Graphics.prototype.type_ = 'masked';
 
 Graphics.prototype.draw = function(entity, ctx) {
   ctx.beginPath();
-  ctx.arc(entity.x, entity.y, entity.radius, entity.a + 0.5, entity.a + Math.PI + 0.5, false);
-  ctx.fillStyle = entity.fill;
+  ctx.arc(entity.data.x, entity.data.y, entity.data.radius, entity.data.a + 0.5, entity.data.a + Math.PI + 0.5, false);
+  ctx.fillStyle = entity.data.fill;
   ctx.fill();
   ctx.beginPath();
-  ctx.arc(entity.x, entity.y, entity.radius, entity.a + 0.75 * Math.PI, entity.a + 1.75 * Math.PI, false);
+  ctx.arc(entity.data.x, entity.data.y, entity.data.radius, entity.data.a + 0.75 * Math.PI, entity.data.a + 1.75 * Math.PI, false);
   ctx.fill();
 };

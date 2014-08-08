@@ -10,19 +10,19 @@ var Collisions = module.exports = function Collisions (settings) {
 
 
 Collisions.prototype.testMap = function(entity) {
-  var x = entity.x;
-  var y = entity.y;
+  var x = entity.data.x;
+  var y = entity.data.y;
   var segments = this.segments;
 
   segments.forEach(function (seg) {
     var line = new SAT.Polygon(new SAT.V(),
       [new SAT.V(seg.a.x, seg.a.y), new SAT.V(seg.b.x, seg.b.y)]);
 
-    var circle = new SAT.Circle(new SAT.V(x, y), entity.radius);
+    var circle = new SAT.Circle(new SAT.V(x, y), entity.data.radius);
 
     // Continuous collision testing
     // Try extending the ray backwards and forwards
-    var ray = new SAT.Polygon(new SAT.V(), extend(entity.lastPos, entity));
+    var ray = new SAT.Polygon(new SAT.V(), extend(entity.data.last.position, entity));
 
     var CCDResponse = new SAT.Response();
     if(SAT.testPolygonPolygon(ray, line, CCDResponse)) {
@@ -32,7 +32,7 @@ Collisions.prototype.testMap = function(entity) {
       y -= CCDResponse.overlapV.y;
 
       // Recreate player collision tester object
-      circle = new SAT.Circle(new SAT.V(x, y), entity.radius);
+      circle = new SAT.Circle(new SAT.V(x, y), entity.data.radius);
     }
 
     // Normal collision testing
@@ -43,10 +43,10 @@ Collisions.prototype.testMap = function(entity) {
     }
   });
 
-  if(x !== entity.x || y !== entity.y) {
+  if(x !== entity.data.x || y !== entity.data.y) {
     if(entity.collision.response_ === 'obstaclePhobic') {
-      entity.x = x;
-      entity.y = y;
+      entity.data.x = x;
+      entity.data.y = y;
     }
 
     return true;
@@ -75,7 +75,7 @@ Collisions.prototype.test = function(entity1, entity2) {
 function getShape (entity) {
   switch (entity.collision.boundingBox_) {
     case 'circle':
-      return new SAT.Circle(new SAT.V(entity.x, entity.y), entity.radius);
+      return new SAT.Circle(new SAT.V(entity.data.x, entity.data.y), entity.data.radius);
     case 'polygon':
       return new SAT.Polygon(new SAT.V(), entity.path.map(function (point) {
         return new SAT.V(point.x, point.y);

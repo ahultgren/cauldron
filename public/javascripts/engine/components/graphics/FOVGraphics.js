@@ -52,10 +52,10 @@ Graphics.prototype.draw = function(entity, ctx) {
 
   // Translate polygon relative to player
   polygon.map(function (point) {
-    var a = point.da + player.a;
+    var a = point.da + player.data.a;
 
-    point.x = player.x + point.d * Math.cos(a);
-    point.y = player.y + point.d * Math.sin(a);
+    point.x = player.data.x + point.d * Math.cos(a);
+    point.y = player.data.y + point.d * Math.sin(a);
   });
 
   utils.drawPolygon(polygon, ctx, '#fff');

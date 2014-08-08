@@ -26,10 +26,10 @@ util.inherits(LocalInput, Component);
 
 
 LocalInput.prototype.update = function(entity) {
-  entity.dx += this.isDown('left') && -entity.acc || this.isDown('right') && entity.acc || 0;
-  entity.dy += this.isDown('up') && -entity.acc || this.isDown('down') && entity.acc || 0;
+  entity.data.dx += this.isDown('left') && -entity.data.acc || this.isDown('right') && entity.data.acc || 0;
+  entity.data.dy += this.isDown('up') && -entity.data.acc || this.isDown('down') && entity.data.acc || 0;
 
-  entity.a = Math.atan2(this.getPosition('y')-entity.y, this.getPosition('x')-entity.x);
+  entity.data.a = Math.atan2(this.getPosition('y')-entity.data.y, this.getPosition('x')-entity.data.x);
 };
 
 LocalInput.prototype.isDown = function (key) {

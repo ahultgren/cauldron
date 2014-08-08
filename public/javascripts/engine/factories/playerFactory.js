@@ -6,7 +6,7 @@ var PlayerPhysics = require('../components/physics/PlayerPhysics');
 var PlayerGraphics = require('../components/graphics/PlayerGraphics');
 var Collision = require('../components/collision/PlayerCollision');
 
-var defaults = {
+var defaultData = {
   radius: 5,
   x: 0,
   y: 0,
@@ -20,10 +20,13 @@ var defaults = {
 };
 
 
-module.exports = function playerFactory (playerSettings) {
+module.exports = function playerFactory (components, data) {
   var game = this;
+  var player;
 
-  var settings = utils.extend({}, defaults, playerSettings, {
+  data = utils.extend({}, defaultData, data);
+
+  player = new Entity({
     physics: new PlayerPhysics({
       map: game.map,
       game: game
@@ -32,9 +35,7 @@ module.exports = function playerFactory (playerSettings) {
     collision: new Collision({
       game: game
     })
-  });
-
-  var player = new Entity(settings);
+  }, components, data);
 
   game.add(player);
 

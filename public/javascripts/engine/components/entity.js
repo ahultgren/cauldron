@@ -4,11 +4,14 @@
 
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
+var Data = require('./Data');
 var utils = require('../utils');
 
 
-var Entity = module.exports = function Entity (defaults, settings) {
+var Entity = module.exports = function Entity (defaults, settings, data) {
   utils.extend(this, defaults, settings);
+
+  this.data = new Data(data);
 
   this.input && this.input.init(this);
   this.physics && this.physics.init(this);
@@ -23,6 +26,7 @@ util.inherits(Entity, EventEmitter);
 
 
 Entity.prototype.update = function() {
+  this.data.update(this);
   this.input && this.input.update(this);
   this.physics && this.physics.update(this);
   this.collision && this.collision.update(this);

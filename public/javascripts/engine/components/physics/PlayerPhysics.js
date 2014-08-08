@@ -13,14 +13,9 @@ util.inherits(Physics, Component);
 
 
 Physics.prototype.update = function(entity) {
-  entity.lastPos = {
-    x: entity.x,
-    y: entity.y
-  };
+  entity.data.dx *= entity.data.friction;
+  entity.data.dy *= entity.data.friction;
 
-  entity.dx *= entity.friction;
-  entity.dy *= entity.friction;
-
-  entity.x += entity.dx;
-  entity.y += entity.dy;
+  entity.data.x += entity.data.dx;
+  entity.data.y += entity.data.dy;
 };

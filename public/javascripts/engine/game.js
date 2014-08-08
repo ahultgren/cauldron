@@ -54,8 +54,6 @@ var Game = module.exports = function (settings) {
 
   self.playerOne = self.factories.player({
     input: new LocalInput(),
-    x: self.canvas.width/2,
-    y: self.canvas.height/2,
     weapon: self.factories.weapon('PlasmaRifle'),
     script: new LocalPlayerScript(),
     output: new PlayerOutput({
@@ -64,6 +62,9 @@ var Game = module.exports = function (settings) {
     powerups: new LocalPlayerPowerups({
       game: self
     })
+  }, {
+    x: self.canvas.width/2,
+    y: self.canvas.height/2
   });
 
   self.add(new Entity({
