@@ -20,29 +20,21 @@ Physics.prototype.init = function(entity) {
   this.entity = entity;
 
   // Set position
-  entity.x = entity.from.x;
-  entity.y = entity.from.y;
+  entity.data.x = entity.from.data.x;
+  entity.data.y = entity.from.data.y;
 
   // Calculate velocity
-  angle = Math.atan2(entity.toward.y - entity.from.y, entity.toward.x - entity.from.x);
-  angle += entity.spread;
+  angle = Math.atan2(entity.toward.y - entity.from.data.y, entity.toward.x - entity.from.data.x);
+  angle += entity.data.spread;
 
-  this.dx = Math.cos(angle) * entity.speed;
-  this.dy = Math.sin(angle) * entity.speed;
+  this.dx = Math.cos(angle) * entity.data.speed;
+  this.dy = Math.sin(angle) * entity.data.speed;
 
-  entity.x += Math.cos(angle) * (entity.radius + 1);
-  entity.y += Math.sin(angle) * (entity.radius + 1);
-
-  entity.lastPos = {
-    x: entity.x,
-    y: entity.y
-  };
+  entity.data.x += Math.cos(angle) * (entity.data.radius + 1);
+  entity.data.y += Math.sin(angle) * (entity.data.radius + 1);
 };
 
 Physics.prototype.update = function(entity) {
-  entity.lastPos.x = entity.x;
-  entity.lastPos.y = entity.y;
-
-  entity.x += this.dx;
-  entity.y += this.dy;
+  entity.data.x += this.dx;
+  entity.data.y += this.dy;
 };

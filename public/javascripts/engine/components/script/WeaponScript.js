@@ -30,40 +30,45 @@ Script.prototype.triggerEnd = function() {
 
 Script.prototype.update = function(entity) {
   // Whether to shoot or not
-  if(this.shooting && entity.lastShot <= 0) {
-    entity.lastShot = entity.shotInterval;
-    this.shoot(entity, this.from, this.toward, entity.spread);
+  if(this.shooting && entity.data.lastShot <= 0) {
+    entity.data.lastShot = entity.data.shotInterval;
+    this.shoot(entity, this.from, this.toward, entity.data.spread);
 
-    if(entity.singleAction) {
+    if(entity.data.singleAction) {
       this.shooting = false;
     }
 
     // Increase spreadRange based on accuracy
-    entity.spreadRange = entity.minAccuracy;
+    entity.data.spreadRange = entity.data.minAccuracy;
   }
   else {
-    entity.lastShot--;
+    entity.data.lastShot--;
   }
 
   // Reduce spreadRange
   //## different reduction based on weight or something?
-  entity.spreadRange -= (entity.spreadRange - entity.maxAccuracy) * 0.05;
+  entity.data.spreadRange -= (entity.data.spreadRange - entity.data.maxAccuracy) * 0.05;
 
-  entity.spread = (Math.random() * entity.spreadRange - entity.spreadRange/2) * (Math.random() * entity.spreadRange - entity.spreadRange/2);
+  entity.data.spread = (Math.random() * entity.data.spreadRange - entity.data.spreadRange/2) * (Math.random() * entity.data.spreadRange - entity.data.spreadRange/2);
 };
 
 Script.prototype.shoot = function(entity, from, toward, spread) {
-  this.game.factories.ammunition(entity.ammunition, utils.extend({
+  this.game.factories.ammunition(entity.data.ammunition, {
     from: from,
     toward: toward,
-    spread: spread,
     weapon: entity
-  }, entity.ammunitionData));
+  },
+  utils.extend(
+    {
+      spread: spread,
+    },
+    entity.data.ammunitionData
+  ));
 
   entity.emit('action', 'shoot', {
     from: {
-      x: from.x,
-      y: from.y
+      x: from.data.x,
+      y: from.data.y
     },
     toward: {
       x: toward.x,

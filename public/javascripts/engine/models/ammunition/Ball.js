@@ -6,7 +6,7 @@ module.exports = {
     Graphics: require('../../components/graphics/BallGraphics'),
     Collision: require('../../components/collision/BallCollision')
   },
-  settings: {
+  data: {
     boundingBoxShape_: 'circle',
     radius: 8,
     fill: 'cyan',

@@ -6,7 +6,7 @@ module.exports = {
     Graphics: require('../../components/graphics/BeamGraphics'),
     Collision: require('../../components/collision/BeamCollision')
   },
-  settings: {
+  data: {
     aliveUntil: 2,
     aliveFor: 0
   }

@@ -3,8 +3,12 @@
 var utils = require('../utils');
 
 
-var Data = module.exports = function Data (settings) {
+var Data = module.exports = function Data (settings, doNotExtend) {
   utils.extend(this, settings);
+
+  if(doNotExtend !== true) {
+    this.last = new this.constructor(settings, true);
+  }
 };
 
 

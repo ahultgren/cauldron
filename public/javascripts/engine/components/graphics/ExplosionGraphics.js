@@ -34,15 +34,15 @@ Graphics.prototype.draw = function(entity, ctx) {
     return entity.remove();
   }
 
-  entity.radius += this.inflationSpeed;
-  entity.fill = this.gradient[this.currentStep++] || this.gradient[this.gradient.length - 1];
+  entity.data.radius += this.inflationSpeed;
+  entity.data.fill = this.gradient[this.currentStep++] || this.gradient[this.gradient.length - 1];
 
   this.drawBall(entity, ctx);
 };
 
 Graphics.prototype.drawBall = function(entity, ctx) {
   ctx.beginPath();
-  ctx.arc(entity.x, entity.y, entity.radius, 0, Math.PI * 2);
-  ctx.fillStyle = entity.fill;
+  ctx.arc(entity.data.x, entity.data.y, entity.data.radius, 0, Math.PI * 2);
+  ctx.fillStyle = entity.data.fill;
   ctx.fill();
 };

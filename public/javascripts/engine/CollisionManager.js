@@ -22,6 +22,9 @@ Collisions.prototype.testMap = function(entity) {
 
     // Continuous collision testing
     // Try extending the ray backwards and forwards
+    if(!entity.data.last.position) {
+      console.log(entity.data.last);
+    }
     var ray = new SAT.Polygon(new SAT.V(), extend(entity.data.last.position, entity));
 
     var CCDResponse = new SAT.Response();
@@ -77,7 +80,7 @@ function getShape (entity) {
     case 'circle':
       return new SAT.Circle(new SAT.V(entity.data.x, entity.data.y), entity.data.radius);
     case 'polygon':
-      return new SAT.Polygon(new SAT.V(), entity.path.map(function (point) {
+      return new SAT.Polygon(new SAT.V(), entity.data.path.map(function (point) {
         return new SAT.V(point.x, point.y);
       }));
   }

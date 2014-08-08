@@ -28,11 +28,11 @@ util.inherits(Peer, Component);
 Peer.prototype.update = function(entity) {
   //## States are not used yet, but when they are it's really only for position
   // prediction/interpolation
-  entity.dx += this.isDown('left') && -entity.acc || this.isDown('right') && entity.acc || 0;
-  entity.dy += this.isDown('up') && -entity.acc || this.isDown('down') && entity.acc || 0;
+  entity.data.dx += this.isDown('left') && -entity.data.acc || this.isDown('right') && entity.data.acc || 0;
+  entity.data.dy += this.isDown('up') && -entity.data.acc || this.isDown('down') && entity.data.acc || 0;
 
   if(this.newPosition) {
-    utils.extend(entity, this.newPosition);
+    utils.extend(entity.data, this.newPosition);
     this.newPosition = null;
   }
 
@@ -42,7 +42,10 @@ Peer.prototype.update = function(entity) {
   }
 
   if(this.shootData) {
-    entity.weapon.script.shoot(entity.weapon, this.shootData.from, this.shootData.toward, this.shootData.spread);
+    entity.weapon.script.shoot(entity.weapon, {
+      data: this.shootData.from
+    }, this.shootData.toward, this.shootData.spread);
+
     this.shootData = null;
   }
 

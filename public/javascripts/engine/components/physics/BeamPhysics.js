@@ -14,7 +14,7 @@ util.inherits(Physics, Component);
 
 Physics.prototype.init = function(entity) {
   // Allow for setting a and b
-  if(!entity.b) {
+  if(!entity.data.b) {
     this.makeLine_(entity);
   }
 };
@@ -30,17 +30,24 @@ Physics.prototype.makeLine_ = function(entity) {
   var i, l, intersection, minIntersection, angle, line;
   var b = {};
 
-  angle = Math.atan2(entity.toward.y - entity.from.y, entity.toward.x - entity.from.x);
+  angle = Math.atan2(entity.toward.y - entity.from.data.y, entity.toward.x - entity.from.data.x);
 
   // Accuracy
-  angle = angle + entity.spread;
+  angle = angle + entity.data.spread;
 
   // First just make the line really long
   b.x = Math.cos(angle)*1000000;
   b.y = Math.sin(angle)*1000000;
 
   // Find closest intersecting segment
-  line = { a: entity.from, b: b };
+  line = {
+    a: {
+      x: entity.from.data.x,
+      y: entity.from.data.y
+    },
+    b: b
+  };
+
   for(i = 0, l = this.segments.length; i < l; i++) {
     intersection = utils.getIntersection(line, this.segments[i]);
 
@@ -53,12 +60,12 @@ Physics.prototype.makeLine_ = function(entity) {
   b.x = minIntersection.x;
   b.y = minIntersection.y;
 
-  entity.b = b;
-  entity.angle = angle;
+  entity.data.b = b;
+  entity.data.angle = angle;
 
   //## Should use some standardized path-handling later
-  entity.path = [
-    entity.from,
-    entity.b
+  entity.data.path = [
+    entity.from.data,
+    entity.data.b
   ];
 };

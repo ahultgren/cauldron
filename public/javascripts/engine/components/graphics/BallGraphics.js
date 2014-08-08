@@ -17,8 +17,8 @@ util.inherits(Graphics, Component);
 Graphics.prototype.type_ = 'masked';
 
 Graphics.prototype.draw = function(entity, ctx) {
-  var radius = entity.radius;
-  var fill = entity.fill;
+  var radius = entity.data.radius;
+  var fill = entity.data.fill;
 
   // Muzzle flash
   if(!this.flashed) {
@@ -28,7 +28,7 @@ Graphics.prototype.draw = function(entity, ctx) {
   }
 
   ctx.beginPath();
-  ctx.arc(entity.x, entity.y, radius, 0, Math.PI * 2);
+  ctx.arc(entity.data.x, entity.data.y, radius, 0, Math.PI * 2);
   ctx.fillStyle = fill;
   ctx.fill();
 };

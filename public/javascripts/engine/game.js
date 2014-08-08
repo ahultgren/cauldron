@@ -34,15 +34,16 @@ var Game = module.exports = function (settings) {
   self.canvas = canvas;
   self.loop = new Loop(self);
 
-  self.map = new Entity({
-    segments: settings.map(self.canvas),
+  self.map = new Entity({}, {
     graphics: new MapGraphics()
+  }, {
+    segments: settings.map(self.canvas)
   });
 
   self.add(self.map);
 
   self.collisionManager = new CollisionManager({
-    segments: self.map.segments
+    segments: self.map.data.segments
   });
 
   // Network
@@ -67,14 +68,15 @@ var Game = module.exports = function (settings) {
     y: self.canvas.height/2
   });
 
-  self.add(new Entity({
-    fill: '#ccc',
+  self.add(new Entity({}, {
     graphics: new CursorGraphics({
       mouse: mouse //## Use an input instance instead?
-    }),
+    })
+  }, {
+    fill: '#ccc'
   }));
 
-  self.add(self.factories.powerup({
+  self.add(self.factories.powerup({}, {
     powerupType: 'weapon',
     powerupData: 'AutoLaserCannon'
   }));
@@ -83,14 +85,14 @@ var Game = module.exports = function (settings) {
 
   self.add(new Entity({
     graphics: new FOWGraphics({
-      segments: self.map.segments,
+      segments: self.map.data.segments,
       player: self.playerOne
     })
   }));
 
   self.add(new Entity({
     graphics: new FOVGraphics({
-      segments: self.map.segments,
+      segments: self.map.data.segments,
       player: self.playerOne
     })
   }));

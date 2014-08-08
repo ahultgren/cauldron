@@ -52,9 +52,9 @@ Output.prototype.updateEvent = function(entity) {
   self.network.outgoing.push({
     type: 'position',
     data: {
-      x: entity.x,
-      y: entity.y,
-      a: entity.a
+      x: entity.data.x,
+      y: entity.data.y,
+      a: entity.data.a
     }
   });
 
@@ -70,10 +70,10 @@ Output.prototype.updateEvent = function(entity) {
         {
           type: 'position',
           data: {
-            x: entity.x,
-            y: entity.y,
-            a: entity.a,
-            fill: entity.fill
+            x: entity.data.x,
+            y: entity.data.y,
+            a: entity.data.a,
+            fill: entity.data.fill
           }
         }
       ]));

@@ -18,8 +18,8 @@ Graphics.prototype.draw = function(entity, ctx) {
   var angle, dx, dy;
   var fuzzyRadius = 10;
 
-  ctx.fillStyle = entity.fill;
   ctx.beginPath();
+  ctx.fillStyle = entity.data.fill;
   ctx.arc(this.mouse.x, this.mouse.y, 2, 0, 2*Math.PI, false);
   ctx.fill();
 

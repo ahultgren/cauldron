@@ -10,7 +10,8 @@ var utils = require('../utils');
 var Entity = require('../components/entity');
 var WeaponScript = require('../components/script/WeaponScript');
 var weaponModels = '../models/weapons/';
-var defaults = {
+
+var defaultData = {
   lastShot: 0,
   shotInterval: 6,
   minAccuracy: 1,
@@ -20,20 +21,19 @@ var defaults = {
 };
 
 
-module.exports = function weaponFactory (name, settings) {
+module.exports = function weaponFactory (name, components, data) {
   var game = this;
 
-  settings = utils.extend({
+  data = utils.extend({}, defaultData, require(weaponModels + name), data);
+
+  var weapon = new Entity({
+    name: name,
     script: new WeaponScript({
       game: game,
       map: game.map
     })
     //factory: ammunitionFactory.bind(game) // is this a good way to decouple game from entities?
-  }, defaults, require(weaponModels + name), settings);
-
-  var weapon = new Entity(settings);
-
-  weapon.name = name;
+  }, components, data);
 
   game.add(weapon);
 

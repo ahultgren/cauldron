@@ -40,12 +40,13 @@ Collision.prototype.onCollision = function(entity, type, target) {
 ============================================================================= */
 
 Collision.prototype.spawn_ = function(entity) {
-  this.game.add(new Entity({
-    x: entity.x,
-    y: entity.y,
-    radius: entity.radius,
+  this.game.add(new Entity({}, {
     graphics: new ExplosionGraphics({
-      duration: entity.explosionDuration
+      duration: entity.data.explosionDuration
     })
+  }, {
+    x: entity.data.x,
+    y: entity.data.y,
+    radius: entity.data.radius
   }));
 };

@@ -17,10 +17,10 @@ Collision.prototype.boundingBox_ = 'circle';
 
 Collision.prototype.update = function() {};
 Collision.prototype.onCollision = function(entity, type, target) {
-  if(target.isPlayer_) {
+  if(target.data.isPlayer_) {
     target.powerups.add({
-      type: entity.powerupType,
-      data: entity.powerupData
+      type: entity.data.powerupType,
+      data: entity.data.powerupData
     });
 
     entity.remove();
