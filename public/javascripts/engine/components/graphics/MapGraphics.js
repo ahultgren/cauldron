@@ -19,8 +19,8 @@ Graphics.prototype.draw = function(entity, ctx) {
   ctx.beginPath();
 
   entity.data.segments.forEach(function (segment) {
-    ctx.moveTo(segment.a.x, segment.a.y);
-    ctx.lineTo(segment.b.x, segment.b.y);
+    ctx.moveTo(segment[0].x, segment[0].y);
+    ctx.lineTo(segment[1].x, segment[1].y);
   });
 
   ctx.stroke();

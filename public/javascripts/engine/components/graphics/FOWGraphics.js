@@ -45,13 +45,10 @@ Graphics.prototype.draw = function(entity, ctx) {
 
 function getSightPolygon (segments, sightX, sightY) {
   // Get all unique points
-  var points = (function(segments){
-    var a = [];
-    segments.forEach(function(seg){
-      a.push(seg.a,seg.b);
-    });
-    return a;
-  })(segments);
+  var points = segments.reduce(function(points, seg){
+    points.push(seg[0], seg[1]);
+    return points;
+  }, []);
 
   var uniquePoints = (function(points){
     var set = {};
@@ -88,10 +85,10 @@ function getSightPolygon (segments, sightX, sightY) {
     var dy = Math.sin(angle);
 
     // Ray from center of screen to mouse
-    var ray = {
-      a:{x:sightX,y:sightY},
-      b:{x:sightX+dx,y:sightY+dy}
-    };
+    var ray = [
+      {x: sightX,y: sightY},
+      {x: sightX + dx,y: sightY + dy}
+    ];
 
     // Find CLOSEST intersection
     var closestIntersect = null;

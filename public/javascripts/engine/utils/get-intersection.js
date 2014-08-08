@@ -2,16 +2,16 @@
 
 module.exports = function getIntersection (ray, segment) {
   // RAY in parametric: Point + Delta*T1
-  var rPx = ray.a.x;
-  var rPy = ray.a.y;
-  var rDx = ray.b.x-ray.a.x;
-  var rDy = ray.b.y-ray.a.y;
+  var rPx = ray[0].x;
+  var rPy = ray[0].y;
+  var rDx = ray[1].x-ray[0].x;
+  var rDy = ray[1].y-ray[0].y;
 
   // SEGMENT in parametric: Point + Delta*T2
-  var sPx = segment.a.x;
-  var sPy = segment.a.y;
-  var sDx = segment.b.x-segment.a.x;
-  var sDy = segment.b.y-segment.a.y;
+  var sPx = segment[0].x;
+  var sPy = segment[0].y;
+  var sDx = segment[1].x-segment[0].x;
+  var sDy = segment[1].y-segment[0].y;
 
   // Are they parallel? If so, no intersect
   var rMag = Math.sqrt(rDx*rDx+rDy*rDy);

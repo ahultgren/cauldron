@@ -16,7 +16,7 @@ Collisions.prototype.testMap = function(entity) {
 
   segments.forEach(function (seg) {
     var line = new SAT.Polygon(new SAT.V(),
-      [new SAT.V(seg.a.x, seg.a.y), new SAT.V(seg.b.x, seg.b.y)]);
+      [new SAT.V(seg[0].x, seg[0].y), new SAT.V(seg[1].x, seg[1].y)]);
 
     var circle = new SAT.Circle(new SAT.V(x, y), entity.data.radius);
 

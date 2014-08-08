@@ -34,27 +34,25 @@ Physics.prototype.makeLine_ = function(entity) {
   // Accuracy
   angle = angle + entity.data.spread;
 
-  line = {
-    a: {
-      x: entity.from.data.x,
-      y: entity.from.data.y
-    },
-    // Start with a really long line...
-    b: {
+  // Start with a really long line...
+  entity.data.path = line = [
+    entity.from.data,
+    {
       x: entity.from.data.x + Math.cos(angle)*1000000,
       y: entity.from.data.y + Math.sin(angle)*1000000
     }
-  };
+  ];
 
-  // ...find intersecting map segments...
+  // ...find the closest intersecting map segment...
   for(i = 0, l = this.segments.length; i < l; i++) {
     intersection = utils.getIntersection(line, this.segments[i]);
 
     if(!minIntersection && intersection || minIntersection && intersection && intersection.param < minIntersection.param) {
-      // ...and make the line as short as possible
       minIntersection = intersection;
     }
   }
 
-  entity.data.path = [entity.from.data, minIntersection];
+  // ...and shorten the line
+  line[1].x = minIntersection.x;
+  line[1].y = minIntersection.y;
 };
