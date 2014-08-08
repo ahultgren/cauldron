@@ -3,7 +3,8 @@
 module.exports = {
   components: {
     Physics: require('../../components/physics/BeamPhysics'),
-    Graphics: require('../../components/graphics/BeamGraphics')
+    Graphics: require('../../components/graphics/BeamGraphics'),
+    Collision: require('../../components/collision/BeamCollision')
   },
   settings: {
     aliveUntil: 2,

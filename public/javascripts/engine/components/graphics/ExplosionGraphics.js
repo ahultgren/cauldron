@@ -15,7 +15,8 @@ var defaults = {
   currentStep: 0,
   gradient: gradient,
   inflationSpeed: 5,
-  duration: 5
+  duration: 5,
+  radius: 8
 };
 
 
@@ -34,7 +35,7 @@ Graphics.prototype.draw = function(entity, ctx) {
   }
 
   entity.radius += this.inflationSpeed;
-  entity.fill = this.gradient[this.currentStep++] || this.gradient[this.gradient.last];
+  entity.fill = this.gradient[this.currentStep++] || this.gradient[this.gradient.length - 1];
 
   this.drawBall(entity, ctx);
 };

@@ -15,6 +15,7 @@ util.inherits(Collision, Component);
 
 Collision.prototype.type_ = 'collidable';
 Collision.prototype.response_ = 'obstaclePhobic';
+Collision.prototype.boundingBox_ = 'circle';
 
 Collision.prototype.update = function() {};
 

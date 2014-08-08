@@ -13,6 +13,7 @@ util.inherits(Collision, Component);
 
 Collision.prototype.type_ = 'obstacle';
 Collision.prototype.response_ = 'zone';
+Collision.prototype.boundingBox_ = 'circle';
 
 Collision.prototype.update = function() {};
 Collision.prototype.onCollision = function(entity, type, target) {

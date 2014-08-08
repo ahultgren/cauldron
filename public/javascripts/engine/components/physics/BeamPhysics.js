@@ -20,7 +20,6 @@ Physics.prototype.init = function(entity) {
 };
 
 Physics.prototype.update = function() {
-  //## Collision test for other moving objects
 };
 
 
@@ -56,4 +55,10 @@ Physics.prototype.makeLine_ = function(entity) {
 
   entity.b = b;
   entity.angle = angle;
+
+  //## Should use some standardized path-handling later
+  entity.path = [
+    entity.from,
+    entity.b
+  ];
 };

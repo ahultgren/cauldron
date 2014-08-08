@@ -60,18 +60,47 @@ Collisions.prototype.testMap = function(entity) {
  * Test collision and don't care about response
  */
 Collisions.prototype.test = function(entity1, entity2) {
-  //## Test other stuff than circles
   //## CCD will be needed eventually
   //## Handle response automatically?
-  var a = new SAT.Circle(new SAT.V(entity1.x, entity1.y), entity1.radius);
-  var b = new SAT.Circle(new SAT.V(entity2.x, entity2.y), entity2.radius);
+  var a = getShape(entity1);
+  var b = getShape(entity2);
 
-  return SAT.testCircleCircle(a, b);
+  return testXtoY(a, b);
 };
 
 
 /* Private
 ============================================================================= */
+
+function getShape (entity) {
+  switch (entity.collision.boundingBox_) {
+    case 'circle':
+      return new SAT.Circle(new SAT.V(entity.x, entity.y), entity.radius);
+    case 'polygon':
+      return new SAT.Polygon(new SAT.V(), entity.path.map(function (point) {
+        return new SAT.V(point.x, point.y);
+      }));
+  }
+}
+
+function testXtoY (a, b) {
+  if(isCircle(a) && isCircle(b)) {
+    return SAT.testCircleCircle(a, b);
+  }
+  if(!isCircle(a) && !isCircle(b)) {
+    return SAT.testPolygonPolygon(a, b);
+  }
+  if(isCircle(a) && !isCircle(b)) {
+    return SAT.testCirclePolygon(a, b);
+  }
+  if(!isCircle(a) && isCircle(b)) {
+    return SAT.testPolygonCircle(a, b);
+  }
+}
+
+function isCircle (shape) {
+  return 'r' in shape;
+}
 
 function extend (from, to) {
   var newFrom = {
