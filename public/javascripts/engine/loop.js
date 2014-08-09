@@ -138,19 +138,23 @@ Loop.prototype.draw = function () {
 
   // Clear canvas
   ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+  ctx.save();
 
   // Draw each registered layer in turn and in place
   this.drawEach('destination-over', this.visibilityPolygons);
   this.drawEach('destination-over', this.antiMasked);
   this.drawEach('source-atop', this.masked);
   this.drawEach('source-over', this.alwaysVisible);
+
+  ctx.restore();
 };
 
 
 Loop.prototype.drawEach = function(gco, objects) {
-  var i, l;
+  var i, l, data;
+  var ctx = this.canvas.ctx;
 
-  this.canvas.ctx.globalCompositeOperation = gco;
+  ctx.globalCompositeOperation = gco;
 
   for(i = 0, l = objects.length; i < l; i++) {
     if(objects[i].remove_) {
@@ -158,7 +162,19 @@ Loop.prototype.drawEach = function(gco, objects) {
       l--;
     }
     else {
-      objects[i].draw(this.canvas.ctx);
+      data = objects[i].data;
+
+      if(data.isPlayer_) {
+        ctx.save();
+        ctx.translate(data.x || 0, data.y || 0);
+        ctx.rotate(data.a || 0);
+      }
+
+      objects[i].draw(ctx);
+
+      if(data.isPlayer_) {
+        ctx.restore();
+      }
     }
   }
 };

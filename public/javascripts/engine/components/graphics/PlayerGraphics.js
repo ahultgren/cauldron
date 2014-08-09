@@ -2,7 +2,10 @@
 
 var util = require('util');
 var Component = require('../Component');
-var defaults = {};
+var defaults = {
+  start: Math.PI * 0.25,
+  end: 1.75 * Math.PI
+};
 
 
 var Graphics = module.exports = exports = function Graphics (settings) {
@@ -16,10 +19,8 @@ Graphics.prototype.type_ = 'masked';
 
 Graphics.prototype.draw = function(entity, ctx) {
   ctx.beginPath();
-  ctx.arc(entity.data.x, entity.data.y, entity.data.radius, entity.data.a + 0.5, entity.data.a + Math.PI + 0.5, false);
   ctx.fillStyle = entity.data.fill;
-  ctx.fill();
-  ctx.beginPath();
-  ctx.arc(entity.data.x, entity.data.y, entity.data.radius, entity.data.a + 0.75 * Math.PI, entity.data.a + 1.75 * Math.PI, false);
+  ctx.arc(0, 0, entity.data.radius, this.start, this.end, false);
+  ctx.lineTo(0, 0);
   ctx.fill();
 };
