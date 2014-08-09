@@ -16,9 +16,6 @@ util.inherits(Physics, Component);
 Physics.prototype.init = function(entity) {
   var angle;
 
-  //## Is it right/better to cheat like this?
-  this.entity = entity;
-
   // Set position
   entity.data.x = entity.from.data.x;
   entity.data.y = entity.from.data.y;
