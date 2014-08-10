@@ -28,7 +28,7 @@ Graphics.prototype.draw = function(entity, ctx) {
   }
 
   ctx.beginPath();
-  ctx.arc(entity.data.x, entity.data.y, radius, 0, Math.PI * 2);
   ctx.fillStyle = fill;
+  ctx.arc(0, 0, radius, 0, Math.PI * 2);
   ctx.fill();
 };

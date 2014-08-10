@@ -42,7 +42,7 @@ Graphics.prototype.draw = function(entity, ctx) {
 
 Graphics.prototype.drawBall = function(entity, ctx) {
   ctx.beginPath();
-  ctx.arc(entity.data.x, entity.data.y, entity.data.radius, 0, Math.PI * 2);
   ctx.fillStyle = entity.data.fill;
+  ctx.arc(0, 0, entity.data.radius, 0, Math.PI * 2);
   ctx.fill();
 };

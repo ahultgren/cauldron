@@ -164,17 +164,11 @@ Loop.prototype.drawEach = function(gco, objects) {
     else {
       data = objects[i].data;
 
-      if(data.isPlayer_) {
-        ctx.save();
-        ctx.translate(data.x || 0, data.y || 0);
-        ctx.rotate(data.a || 0);
-      }
-
+      ctx.save();
+      ctx.translate(data.x || 0, data.y || 0);
+      ctx.rotate(data.a || 0);
       objects[i].draw(ctx);
-
-      if(data.isPlayer_) {
-        ctx.restore();
-      }
+      ctx.restore();
     }
   }
 };
