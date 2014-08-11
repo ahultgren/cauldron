@@ -11,7 +11,7 @@ var Graphics = module.exports = function FOVGraphics (settings) {
     peripheryDistance: 20
   }, settings);
 
-  this.basePolygon = [
+  var basePolygon = [
     /*{
       da - delta angle (difference from player angle)
       d - distance (from player)
@@ -37,6 +37,14 @@ var Graphics = module.exports = function FOVGraphics (settings) {
       d: 9999
     }
   ];
+
+  // Convert to cartesian coordinates
+  this.path = basePolygon.map(function (point) {
+    return {
+      x: point.d * Math.cos(point.da),
+      y: point.d * Math.sin(point.da)
+    };
+  });
 };
 
 util.inherits(Graphics, Component);
@@ -44,19 +52,13 @@ util.inherits(Graphics, Component);
 
 Graphics.prototype.type_ = 'visibilityPolygons';
 
-Graphics.prototype.draw = function(entity, ctx) {
-  var polygon = this.basePolygon;
-  var player = this.player;
+Graphics.prototype.init = function(entity) {
+  // Stalk player
+  entity.data = this.player.data;
+};
 
+Graphics.prototype.draw = function(entity, ctx) {
   ctx.globalCompositeOperation = 'destination-in';
 
-  // Translate polygon relative to player
-  polygon.map(function (point) {
-    var a = point.da + player.data.a;
-
-    point.x = player.data.x + point.d * Math.cos(a);
-    point.y = player.data.y + point.d * Math.sin(a);
-  });
-
-  utils.drawPolygon(polygon, ctx, '#fff');
+  utils.drawPolygon(this.path, ctx, '#fff');
 };
