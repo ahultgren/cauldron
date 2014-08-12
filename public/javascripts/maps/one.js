@@ -1,13 +1,7 @@
 'use strict';
 
-module.exports = function (canvas) {
-  return [
-    // Border
-    [{x:0,y:0}, {x:canvas.width,y:0}],
-    [{x:canvas.width,y:0}, {x:canvas.width,y:canvas.height}],
-    [{x:canvas.width,y:canvas.height}, {x:0,y:canvas.height}],
-    [{x:0,y:canvas.height}, {x:0,y:0}],
-
+module.exports = function () {
+  var map = [
     // Polygon #1
     [{x:140,y:130}, {x:120,y:50}],
     [{x:120,y:50}, {x:200,y:80}],
@@ -44,4 +38,9 @@ module.exports = function (canvas) {
     [{x:400,y:100}, {x:400,y:200}],
     [{x:400,y:150}, {x:500,y:150}]
   ];
+
+  map.width = 1600;
+  map.height = 1600;
+
+  return map;
 };

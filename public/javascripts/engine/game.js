@@ -37,7 +37,7 @@ var Game = module.exports = function (settings) {
   self.map = new Entity({}, {
     graphics: new MapGraphics()
   }, {
-    paths: settings.map(self.canvas)
+    paths: settings.map()
   });
 
   self.add(self.map);
@@ -64,8 +64,8 @@ var Game = module.exports = function (settings) {
       game: self
     })
   }, {
-    x: self.canvas.width/2,
-    y: self.canvas.height/2
+    x: 20,
+    y: 20
   });
 
   self.add(new Entity({}, {

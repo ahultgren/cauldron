@@ -13,6 +13,20 @@ util.inherits(Graphics, Component);
 
 Graphics.prototype.type_ = 'masked';
 
+Graphics.prototype.init = function(entity) {
+  var map = entity.data.paths;
+
+  // Add map borders
+  map.unshift(
+    [{x: 0, y: 0}, {x: map.width, y: 0}],
+    [{x: map.width, y: 0}, {x: map.width, y: map.height}],
+    [{x: map.width, y: map.height}, {x: 0, y: map.height}],
+    [{x: 0, y: map.height}, {x: 0, y: 0}]
+  );
+
+  entity.data.map = map; // Alias for paths
+};
+
 Graphics.prototype.draw = function(entity, ctx) {
   ctx.strokeStyle = '#c33';
   ctx.lineWidth = 2;
