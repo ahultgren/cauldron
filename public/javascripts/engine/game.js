@@ -4,6 +4,7 @@
 
 var canvas = require('./canvas');
 var Loop = require('./loop');
+var Camera = require('./Camera');
 var CollisionManager = require('./CollisionManager');
 var Network = require('./system/network');
 var LocalInput = require('./components/input/LocalInput');
@@ -96,6 +97,13 @@ var Game = module.exports = function (settings) {
       player: self.playerOne
     })
   }));
+
+  self.camera = new Camera({
+    player: self.playerOne,
+    canvas: self.canvas
+  });
+
+  self.add(self.camera);
 };
 
 

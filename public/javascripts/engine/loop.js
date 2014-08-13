@@ -140,6 +140,8 @@ Loop.prototype.draw = function () {
   ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   ctx.save();
 
+  ctx.translate(this.game.camera.x, this.game.camera.y);
+
   // Draw each registered layer in turn and in place
   this.drawEach('destination-over', this.visibilityPolygons);
   this.drawEach('destination-over', this.antiMasked);
