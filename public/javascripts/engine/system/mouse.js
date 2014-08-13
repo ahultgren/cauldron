@@ -8,12 +8,17 @@ var canvas = require('../canvas');
 var Mouse = function () {
   var self = this;
 
+  this.camera = {
+    x: 0,
+    y: 0
+  };
+
   this.x = canvas.width/2;
   this.y = canvas.height/2;
 
   window.addEventListener('mousemove', function (e) {
-    self.x = e.layerX;
-    self.y = e.layerY;
+    self.mouseX = e.layerX;
+    self.mouseY = e.layerY;
   }, false);
 
   window.addEventListener('mousedown', this.emit.bind(this, 'mousedown'), false);
@@ -21,5 +26,16 @@ var Mouse = function () {
 };
 
 util.inherits(Mouse, EventEmitter);
+
+
+Mouse.prototype.update = function() {
+  this.x = this.mouseX - this.camera.x;
+  this.y = this.mouseY - this.camera.y;
+};
+
+Mouse.prototype.correct = function(camera) {
+  this.camera = camera;
+};
+
 
 module.exports = new Mouse();

@@ -3,8 +3,19 @@
 var utils = require('./utils');
 
 var Camera = module.exports = function Camera (settings) {
+  var self = this;
+
+  this.x = 0;
+  this.y = 0;
+
   utils.extend(this, settings);
   // player, canvas
+
+  // A bit hacky solution for calculating coordinates that are not relative to
+  // the map.
+  settings.corrected.forEach(function (object) {
+    object.correct(self);
+  });
 };
 
 
