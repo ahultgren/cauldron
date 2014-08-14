@@ -24,7 +24,12 @@ Graphics.prototype.init = function(entity) {
     [{x: 0, y: map.height}, {x: 0, y: 0}]
   );
 
-  entity.data.map = map; // Alias for paths
+  // Alias for paths
+  entity.data.map = map;
+
+  // Expose height and width
+  entity.data.width = map.width;
+  entity.data.height = map.height;
 };
 
 Graphics.prototype.draw = function(entity, ctx) {

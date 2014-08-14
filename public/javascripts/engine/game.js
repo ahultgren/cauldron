@@ -101,6 +101,7 @@ var Game = module.exports = function (settings) {
   self.camera = new Camera({
     player: self.playerOne,
     canvas: self.canvas,
+    map: self.map,
     corrected: [mouse]
   });
 
