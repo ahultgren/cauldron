@@ -4,6 +4,7 @@
 require('../models/weapons/LaserCannon');
 require('../models/weapons/AutoLaserCannon');
 require('../models/weapons/PlasmaRifle');
+require('../models/weapons/RocketLauncher');
 
 
 var utils = require('../utils');

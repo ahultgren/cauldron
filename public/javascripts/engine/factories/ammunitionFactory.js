@@ -3,6 +3,7 @@
 // Fulhack to convince browserify to require all weapons...
 require('../models/ammunition/Beam');
 require('../models/ammunition/Ball');
+require('../models/ammunition/Rocket');
 
 
 var utils = require('../utils');

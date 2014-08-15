@@ -4,7 +4,7 @@ var util = require('util');
 var Component = require('../Component');
 
 
-var Physics = module.exports = function BallPhysics (settings) {
+var Physics = module.exports = function RocketPhysics (settings) {
   this.constructor.super_.call(this, {}, settings);
 };
 
@@ -25,8 +25,8 @@ Physics.prototype.init = function(entity) {
   this.dx = Math.cos(angle) * entity.data.speed;
   this.dy = Math.sin(angle) * entity.data.speed;
 
-  entity.data.x += Math.cos(angle) * (entity.data.radius + 1);
-  entity.data.y += Math.sin(angle) * (entity.data.radius + 1);
+  entity.data.x += entity.from.data.radius;
+  entity.data.a = angle;
 };
 
 Physics.prototype.update = function(entity) {

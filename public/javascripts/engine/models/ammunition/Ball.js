@@ -7,7 +7,6 @@ module.exports = {
     Collision: require('../../components/collision/BallCollision')
   },
   data: {
-    boundingBoxShape_: 'circle',
     radius: 8,
     fill: 'cyan',
     explosionDuration: 5
