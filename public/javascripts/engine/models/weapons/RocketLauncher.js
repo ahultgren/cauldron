@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  shotInterval: 10,
+  shotInterval: 20,
   ammunition: 'Rocket',
   ammunitionData: {
     initialSpeed: 2,

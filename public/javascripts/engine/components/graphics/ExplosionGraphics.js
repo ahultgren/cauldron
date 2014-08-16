@@ -15,8 +15,7 @@ var defaults = {
   currentStep: 0,
   gradient: gradient,
   inflationSpeed: 5,
-  duration: 5,
-  radius: 8
+  duration: 5
 };
 
 

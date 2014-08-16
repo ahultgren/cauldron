@@ -18,29 +18,24 @@ Collisions.prototype.testMap = function(entity) {
     var line = new SAT.Polygon(new SAT.V(),
       [new SAT.V(seg[0].x, seg[0].y), new SAT.V(seg[1].x, seg[1].y)]);
 
-    var circle = new SAT.Circle(new SAT.V(x, y), entity.data.radius);
+    var entityTest = getShape(entity);
 
     // Continuous collision testing
     // Try extending the ray backwards and forwards
-    if(!entity.data.last.position) {
-      console.log(entity.data.last);
-    }
-    var ray = new SAT.Polygon(new SAT.V(), extend(entity.data.last.position, entity));
+    var ray = new SAT.Polygon(new SAT.V(), extend(entity.data.last.position, entity.data));
 
     var CCDResponse = new SAT.Response();
     if(SAT.testPolygonPolygon(ray, line, CCDResponse)) {
-      //if(CCDResponse.overlapV.x !== 0) console.log('collide', CCDResponse);
-
       x -= CCDResponse.overlapV.x;
       y -= CCDResponse.overlapV.y;
 
       // Recreate player collision tester object
-      circle = new SAT.Circle(new SAT.V(x, y), entity.data.radius);
+      entityTest = getShape(entity);
     }
 
     // Normal collision testing
     var response = new SAT.Response();
-    if(SAT.testCirclePolygon(circle, line, response)) {
+    if(testXtoMap(entityTest, line, response)) {
       x -= response.overlapV.x;
       y -= response.overlapV.y;
     }
@@ -80,9 +75,10 @@ function getShape (entity) {
     case 'circle':
       return new SAT.Circle(new SAT.V(entity.data.x, entity.data.y), entity.data.radius);
     case 'polygon':
-      return new SAT.Polygon(new SAT.V(), entity.data.path.map(function (point) {
-        return new SAT.V(point.x, point.y);
-      }));
+      return new SAT.Polygon(new SAT.V(entity.data.x, entity.data.y),
+        entity.data.path.map(function (point) {
+          return new SAT.V(point.x, point.y);
+        }));
   }
 }
 
@@ -101,18 +97,30 @@ function testXtoY (a, b) {
   }
 }
 
+function testXtoMap (a, map, response) {
+  if(isCircle(a)) {
+    return SAT.testCirclePolygon(a, map, response);
+  }
+  else {
+    return SAT.testPolygonPolygon(a, map, response);
+  }
+}
+
 function isCircle (shape) {
   return 'r' in shape;
 }
 
 function extend (from, to) {
+  var fx = from.x !== undefined ? from.x : to.x;
+  var fy = from.y !== undefined ? from.y : to.y;
+
   var newFrom = {
-    x: from.x + from.x - to.x,
-    y: from.y + from.y - to.y
+    x: fx + fx - to.x,
+    y: fy + fy - to.y
   };
   var newTo = {
-    x: to.x + to.x - from.x,
-    y: to.y + to.y - from.y
+    x: to.x + to.x - fx,
+    y: to.y + to.y - fy
   };
 
   return [
