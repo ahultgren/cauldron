@@ -6,7 +6,7 @@ module.exports = {
     Graphics: require('../../components/graphics/RocketGraphics')
   },
   data: {
-    fill: '#500',
+    fill: '#999',
     explosionDuration: 5,
     path: [{x: 10, y: 0}, {x: -5, y: 5}, {x: -5, y: -5}]
   }

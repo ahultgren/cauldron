@@ -4,6 +4,8 @@ module.exports = {
   shotInterval: 10,
   ammunition: 'Rocket',
   ammunitionData: {
-    speed: 12
+    initialSpeed: 2,
+    acc: 1.2,
+    maxSpeed: 20
   }
 };

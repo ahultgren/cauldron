@@ -22,14 +22,20 @@ Physics.prototype.init = function(entity) {
   angle = Math.atan2(entity.toward.y - entity.from.data.y, entity.toward.x - entity.from.data.x);
   angle += entity.data.spread;
 
-  this.dx = Math.cos(angle) * entity.data.speed;
-  this.dy = Math.sin(angle) * entity.data.speed;
+  this.dx = Math.cos(angle) * entity.data.initialSpeed;
+  this.dy = Math.sin(angle) * entity.data.initialSpeed;
+  this.speed = entity.data.initialSpeed;
 
-  entity.data.x += entity.from.data.radius;
   entity.data.a = angle;
 };
 
 Physics.prototype.update = function(entity) {
+  if(this.speed < entity.data.maxSpeed) {
+    this.speed *= entity.data.acc;
+    this.dx = Math.cos(entity.data.a) * this.speed;
+    this.dy = Math.sin(entity.data.a) * this.speed;
+  }
+
   entity.data.x += this.dx;
   entity.data.y += this.dy;
 };
