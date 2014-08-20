@@ -75,10 +75,13 @@ function getShape (entity) {
     case 'circle':
       return new SAT.Circle(new SAT.V(entity.data.x, entity.data.y), entity.data.radius);
     case 'polygon':
-      return new SAT.Polygon(new SAT.V(entity.data.x, entity.data.y),
+      var polygon = new SAT.Polygon(new SAT.V(entity.data.x, entity.data.y),
         entity.data.path.map(function (point) {
           return new SAT.V(point.x, point.y);
         }));
+
+      polygon.setAngle(entity.data.a || 0);
+      return polygon;
   }
 }
 
