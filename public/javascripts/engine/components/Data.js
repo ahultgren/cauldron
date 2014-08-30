@@ -9,6 +9,10 @@ var Data = module.exports = function Data (settings, doNotExtend) {
   if(doNotExtend !== true) {
     this.last = new this.constructor(settings, true);
   }
+  else {
+    //## Somehow .last is copied even though it isn't enumerable. Force it to not recurse
+    this.last = null;
+  }
 };
 
 
