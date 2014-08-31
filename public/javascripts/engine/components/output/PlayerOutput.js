@@ -47,6 +47,7 @@ Output.prototype.init = function(entity) {
 
 Output.prototype.updateEvent = function(entity) {
   var self = this;
+  var i, l, id;
 
   //## Check if update is needed; Object.observe?
   self.network.outgoing.push({
@@ -59,7 +60,8 @@ Output.prototype.updateEvent = function(entity) {
   });
 
   if(self.newPeers.length) {
-    self.newPeers.forEach(function (id) {
+    for(i = 0, l = self.newPeers.length; i < l; i++) {
+      id = self.newPeers[i];
       self.network.sendTo(id, JSON.stringify([
         {
           type: 'weapon',
@@ -77,7 +79,7 @@ Output.prototype.updateEvent = function(entity) {
           }
         }
       ]));
-    });
+    }
 
     self.newPeers = [];
   }

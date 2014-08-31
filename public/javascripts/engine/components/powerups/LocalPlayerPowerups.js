@@ -15,14 +15,17 @@ util.inherits(Powerups, Component);
 
 Powerups.prototype.update = function(entity) {
   var self = this;
+  var i, l, powerup;
 
-  self.newPowerups.forEach(function (powerup) {
+  for(i = 0, l = self.newPowerups.length; i < l; i++) {
+    powerup = self.newPowerups[i];
+
     switch (powerup.type) {
       case 'weapon':
         entity.replace('weapon', self.game.factories.weapon(powerup.data));
         break;
     }
-  });
+  }
 
   self.newPowerups = [];
 };

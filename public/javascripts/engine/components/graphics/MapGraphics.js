@@ -35,14 +35,18 @@ Graphics.prototype.init = function(entity) {
 };
 
 Graphics.prototype.draw = function(entity, ctx) {
+  var paths = entity.data.paths;
+  var i, l, path;
+
   ctx.strokeStyle = '#c33';
   ctx.lineWidth = 2;
   ctx.beginPath();
 
-  entity.data.paths.forEach(function (path) {
+  for(i = 0, l = paths.length; i < l; i++) {
+    path = paths[i];
     ctx.moveTo(path[0].x, path[0].y);
     ctx.lineTo(path[1].x, path[1].y);
-  });
+  }
 
   ctx.stroke();
 };

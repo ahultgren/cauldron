@@ -15,7 +15,6 @@ var Collisions = module.exports = function Collisions (settings) {
 
 
 Collisions.prototype.mapTests = function(collidable) {
-  var self = this;
   var i, l, ii, ll;
   var entity, seg, line;
   var paths = this.paths;
@@ -44,14 +43,13 @@ Collisions.prototype.mapTests = function(collidable) {
 
         if(testAabbAabb(entity.aabb, seg.aabb)) {
           // Normal SAT test
-          response = self.response;
+          response = this.response;
 
           //## All entities should have an entity.shape which is instance of SAT.P|C and updates itself
-          if(testXtoMap(getShape(entity), line, response)) {
+          if(testXtoMap(getShape(entity), line, response.clear())) {
             if(entity.collision.response_ === 'obstaclePhobic') {
               entity.data.x -= response.overlapV.x;
               entity.data.y -= response.overlapV.y;
-              response.clear();
             }
 
             collidable[i].onCollision('map');
@@ -69,39 +67,41 @@ Collisions.prototype.mapTests = function(collidable) {
 };
 
 Collisions.prototype.testMap = function(entity) {
-  var self = this;
   var x = entity.data.x;
   var y = entity.data.y;
   var paths = this.paths;
+  var response = this.response;
+  var seg, line, entityTest, ray;
+  var i, l;
 
-  paths.forEach(function (seg) {
-    var line = new SAT.Polygon(new SAT.V(),
+  for(i = 0, l = paths.length; i < l; i++) {
+    seg = paths[i];
+
+    line = new SAT.Polygon(new SAT.V(),
       [new SAT.V(seg[0].x, seg[0].y), new SAT.V(seg[1].x, seg[1].y)]);
 
-    var entityTest = getShape(entity);
+    entityTest = getShape(entity);
 
     // Continuous collision testing
     // Try extending the ray backwards and forwards
-    var ray = new SAT.Polygon(new SAT.V(), extend(entity.data.last.position, entity.data));
+    ray = new SAT.Polygon(new SAT.V(), extend(entity.data.last.position, entity.data));
 
-    var CCDResponse = new SAT.Response();
-    if(SAT.testPolygonPolygon(ray, line, CCDResponse)) {
-      x -= CCDResponse.overlapV.x;
-      y -= CCDResponse.overlapV.y;
+    if(SAT.testPolygonPolygon(ray, line, response.clear())) {
+      x -= response.overlapV.x;
+      y -= response.overlapV.y;
+      response.clear();
 
       // Recreate player collision tester object
       entityTest = getShape(entity);
     }
 
     // Normal collision testing
-    var response = self.response;
-
-    if(testXtoMap(entityTest, line, response)) {
+    if(testXtoMap(entityTest, line, response.clear())) {
       x -= response.overlapV.x;
       y -= response.overlapV.y;
       response.clear();
     }
-  });
+  }
 
   if(x !== entity.data.x || y !== entity.data.y) {
     if(entity.collision.response_ === 'obstaclePhobic') {
