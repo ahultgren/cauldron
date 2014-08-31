@@ -8,6 +8,7 @@ require('../models/ammunition/Rocket');
 
 var utils = require('../utils');
 var Entity = require('../components/Entity');
+var AABB = require('../components/bounds/aabb');
 var ammunitionModels = '../models/ammunition/';
 
 
@@ -26,7 +27,8 @@ module.exports = function (type, components, data) {
     graphics: new model.components.Graphics(),
     collision: model.components.Collision && new model.components.Collision({
       game: game
-    })
+    }),
+    aabb: new AABB()
   }, components, data);
 
   game.add(bullet);

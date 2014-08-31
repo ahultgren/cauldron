@@ -3,13 +3,73 @@
 var SAT = require('sat');
 var utils = require('./utils');
 
+var ALMOST_ZERO = 0.01;
+
+
 var Collisions = module.exports = function Collisions (settings) {
   utils.extend(this, settings);
   // paths
+
+  this.response = new SAT.Response();
 };
 
 
+Collisions.prototype.mapTests = function(collidable) {
+  var self = this;
+  var i, l, ii, ll;
+  var entity, seg, line;
+  var paths = this.paths;
+  var response;
+
+  for(i = 0, l = collidable.length; i < l; i++) {
+    entity = collidable[i];
+
+    if(
+      Math.abs(entity.data.dx) < ALMOST_ZERO &&
+      Math.abs(entity.data.dy) < ALMOST_ZERO
+    ) {
+      continue;
+    }
+
+    if(
+      entity.aabb &&
+      entity.data.dx < entity.aabb.halfWidth &&
+      entity.data.dy < entity.aabb.halfHeight
+    ) {
+      // aabb-aabb test
+      for(ii = 0, ll = paths.length; ii < ll; ii++) {
+        seg = paths[ii];
+        line = new SAT.Polygon(new SAT.V(),
+          [new SAT.V(seg[0].x, seg[0].y), new SAT.V(seg[1].x, seg[1].y)]);
+
+        if(testAabbAabb(entity.aabb, seg.aabb)) {
+          // Normal SAT test
+          response = self.response;
+
+          //## All entities should have an entity.shape which is instance of SAT.P|C and updates itself
+          if(testXtoMap(getShape(entity), line, response)) {
+            if(entity.collision.response_ === 'obstaclePhobic') {
+              entity.data.x -= response.overlapV.x;
+              entity.data.y -= response.overlapV.y;
+              response.clear();
+            }
+
+            collidable[i].onCollision('map');
+          }
+        }
+      }
+    }
+    else {
+      //## Sweep aabb-aabb test
+      if(this.testMap(entity)) {
+        collidable[i].onCollision('map');
+      }
+    }
+  }
+};
+
 Collisions.prototype.testMap = function(entity) {
+  var self = this;
   var x = entity.data.x;
   var y = entity.data.y;
   var paths = this.paths;
@@ -34,10 +94,12 @@ Collisions.prototype.testMap = function(entity) {
     }
 
     // Normal collision testing
-    var response = new SAT.Response();
+    var response = self.response;
+
     if(testXtoMap(entityTest, line, response)) {
       x -= response.overlapV.x;
       y -= response.overlapV.y;
+      response.clear();
     }
   });
 
@@ -107,6 +169,18 @@ function testXtoMap (a, map, response) {
   else {
     return SAT.testPolygonPolygon(a, map, response);
   }
+}
+
+function testAabbAabb (a, b) {
+  var distanceX = a.x - b.x;
+  var distanceY = a.y - b.y;
+
+  return Math.abs(distanceX) < a.halfWidth + b.halfWidth &&
+    Math.abs(distanceY) < a.halfHeight + b.halfHeight &&
+    {
+      x: distanceX < a.halfWidth + b.halfWidth,
+      y: distanceY < a.halfHeight + b.halfHeight
+    };
 }
 
 function isCircle (shape) {

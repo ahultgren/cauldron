@@ -30,6 +30,8 @@ Graphics.prototype.init = function(entity) {
   // Expose height and width
   entity.data.width = map.width;
   entity.data.height = map.height;
+
+  createAabb(map);
 };
 
 Graphics.prototype.draw = function(entity, ctx) {
@@ -44,3 +46,20 @@ Graphics.prototype.draw = function(entity, ctx) {
 
   ctx.stroke();
 };
+
+/* Private
+============================================================================= */
+
+/**
+ * Create an AABB for each map segment
+ */
+function createAabb (paths) {
+  paths.forEach(function (path) {
+    path.aabb = {
+      x: Math.abs(path[0].x + path[1].x)/2,
+      y: Math.abs(path[0].y + path[1].y)/2,
+      halfWidth: Math.abs(path[0].x - path[1].x)/2,
+      halfHeight: Math.abs(path[0].y - path[1].y)/2
+    };
+  });
+}
