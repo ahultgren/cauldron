@@ -31,7 +31,6 @@ Collisions.prototype.mapTests = function(collidable) {
     }
 
     if(
-      entity.aabb &&
       entity.data.dx < entity.aabb.halfWidth &&
       entity.data.dy < entity.aabb.halfHeight
     ) {
@@ -92,7 +91,21 @@ Collisions.prototype.obstacleTests = function(collidable, obstacles) {
       }
     }
   }
+};
 
+Collisions.prototype.collidableTests = function(collidable) {
+  var i, l, ii;
+
+  for(i = 0, l = collidable.length; i < l; i++) {
+    for(ii = i + 1; ii < l; ii++) {
+      if(testAabbAabb(collidable[i].aabb, collidable[ii].aabb)) {
+        if(this.test(collidable[i], collidable[ii])) {
+          collidable[i].onCollision('collidable', collidable[ii]);
+          collidable[ii].onCollision('collidable', collidable[i]);
+        }
+      }
+    }
+  }
 };
 
 Collisions.prototype.testMap = function(entity) {
