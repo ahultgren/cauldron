@@ -5,6 +5,7 @@ var Entity = require('../components/Entity');
 var PlayerPhysics = require('../components/physics/PlayerPhysics');
 var PlayerGraphics = require('../components/graphics/PlayerGraphics');
 var Collision = require('../components/collision/PlayerCollision');
+var AABB = require('../components/bounds/aabb');
 
 var defaultData = {
   radius: 5,
@@ -34,7 +35,8 @@ module.exports = function playerFactory (components, data) {
     graphics: new PlayerGraphics(),
     collision: new Collision({
       game: game
-    })
+    }),
+    aabb: new AABB()
   }, components, data);
 
   game.add(player);

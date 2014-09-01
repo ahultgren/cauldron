@@ -81,7 +81,7 @@ Loop.prototype.update = function () {
 };
 
 Loop.prototype.collide = function() {
-  var i, l, ii, ll;
+  var i, l, ii;
   var obstacles = this.obstacle;
   var collidable = this.collidable;
 
@@ -94,23 +94,17 @@ Loop.prototype.collide = function() {
     }
   }
 
-  this.game.collisionManager.mapTests(collidable);
-
-  // Check if a collidable collides with an obstacle
-  for(i = 0, l = collidable.length; i < l; i++) {
-    for(ii = 0, ll = obstacles.length; ii < ll; ii++) {
-      if(obstacles[ii].remove_) {
-        obstacles.splice(ii--, 1);
-        ll--;
-        continue;
-      }
-
-      if(this.game.collisionManager.test(collidable[i], obstacles[ii])) {
-        collidable[i].onCollision('obstacle', obstacles[ii]);
-        obstacles[ii].onCollision('collidable', collidable[i]);
-      }
+  // Remove obstacle if removed
+  for(i = 0, l = obstacles.length; i < l; i++) {
+    if(obstacles[i].remove_) {
+      obstacles.splice(i--, 1);
+      l--;
+      continue;
     }
   }
+
+  this.game.collisionManager.mapTests(collidable);
+  this.game.collisionManager.obstacleTests(collidable, obstacles);
 
   // Check if a collidable collides with another collidable
   for(i = 0, l = collidable.length; i < l; i++) {

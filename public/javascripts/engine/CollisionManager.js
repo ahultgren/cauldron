@@ -66,6 +66,35 @@ Collisions.prototype.mapTests = function(collidable) {
   }
 };
 
+Collisions.prototype.obstacleTests = function(collidable, obstacles) {
+  var i, l, ii, ll, entity, obstacle;
+
+  for(i = 0, l = collidable.length; i < l; i++) {
+    entity = collidable[i];
+
+    if(
+      Math.abs(entity.data.dx) < ALMOST_ZERO &&
+      Math.abs(entity.data.dy) < ALMOST_ZERO
+    ) {
+      continue;
+    }
+
+    for(ii = 0, ll = obstacles.length; ii < ll; ii++) {
+      obstacle = obstacles[ii];
+
+      //## Implement sweep-tests here if either party is moving fast
+
+      if(testAabbAabb(entity.aabb, obstacle.aabb)) {
+        if(this.test(entity, obstacle)) {
+          entity.onCollision('obstacle', obstacle);
+          obstacle.onCollision('collidable', entity);
+        }
+      }
+    }
+  }
+
+};
+
 Collisions.prototype.testMap = function(entity) {
   var x = entity.data.x;
   var y = entity.data.y;
