@@ -120,18 +120,16 @@ Loop.prototype.draw = function () {
   var ctx = this.canvas.ctx;
 
   // Clear canvas
+  this.cameraTransform(0, 0);
+  this.transform(ctx);
   ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-  ctx.save();
-
-  ctx.translate(this.game.camera.x, this.game.camera.y);
+  this.cameraTransform(this.game.camera.x, this.game.camera.y);
 
   // Draw each registered layer in turn and in place
   this.drawEach('destination-over', this.visibilityPolygons);
   this.drawEach('destination-over', this.antiMasked);
   this.drawEach('source-atop', this.masked);
   this.drawEach('source-over', this.alwaysVisible);
-
-  ctx.restore();
 };
 
 
@@ -149,11 +147,32 @@ Loop.prototype.drawEach = function(gco, objects) {
     else {
       data = objects[i].data;
 
-      ctx.save();
-      ctx.translate(data.x || 0, data.y || 0);
-      ctx.rotate(data.a || 0);
+      this.transform(ctx, data.x, data.y, data.a);
       objects[i].draw(ctx);
-      ctx.restore();
     }
   }
+};
+
+Loop.prototype.transform = function(ctx, x, y, a) {
+  var offsetX = this.cameraX + (x || 0);
+  var offsetY = this.cameraY + (y || 0);
+  var offsetA = a || 0;
+  var angleSine = 0;
+  var angleCosine = 1;
+
+  if(offsetA) {
+    angleSine = Math.sin(offsetA);
+    angleCosine = Math.cos(offsetA);
+  }
+
+  ctx.setTransform(
+    angleCosine, angleSine,
+    -angleSine, angleCosine,
+    offsetX, offsetY
+  );
+};
+
+Loop.prototype.cameraTransform = function(x, y) {
+  this.cameraX = x;
+  this.cameraY = y;
 };
