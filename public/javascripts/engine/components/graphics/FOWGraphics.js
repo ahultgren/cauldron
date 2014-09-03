@@ -9,6 +9,8 @@ var Graphics = module.exports = function FOWGraphics (settings) {
   this.constructor.super_.call(this, {
     fuzzyRadius: 10
   }, settings);
+
+  this.uniquePoints = calculateUniquePoints(this.paths);
 };
 
 util.inherits(Graphics, Component);
@@ -19,7 +21,7 @@ Graphics.prototype.type_ = 'visibilityPolygons';
 Graphics.prototype.draw = function(entity, ctx) {
   var angle, dx, dy;
   var polygons = [
-    getSightPolygon(this.paths, this.player.data.x, this.player.data.y)
+    getSightPolygon(this.paths, this.uniquePoints, this.player.data.x, this.player.data.y)
   ];
 
   for(angle = 0; angle < Math.PI*2; angle += (Math.PI*2)/10){
@@ -27,7 +29,7 @@ Graphics.prototype.draw = function(entity, ctx) {
     dy = Math.sin(angle)*this.fuzzyRadius;
 
     polygons.push(
-      getSightPolygon(this.paths, this.player.data.x+dx, this.player.data.y+dy)
+      getSightPolygon(this.paths, this.uniquePoints, this.player.data.x+dx, this.player.data.y+dy)
     );
   }
 
@@ -43,29 +45,10 @@ Graphics.prototype.draw = function(entity, ctx) {
 /* Helpers
 ============================================================================= */
 
-function getSightPolygon (paths, sightX, sightY) {
-  // Get all unique points
-  var points = paths.reduce(function(points, seg){
-    points.push(seg[0], seg[1]);
-    return points;
-  }, []);
-
-  var uniquePoints = (function(points){
-    var set = {};
-    return points.filter(function(p){
-      var key = p.x+','+p.y;
-      if(key in set){
-        return false;
-      }else{
-        set[key]=true;
-        return true;
-      }
-    });
-  })(points);
-
+function getSightPolygon (paths, uniquePoints, sightX, sightY) {
   // Get all angles
-  var angle;
   var uniqueAngles = [];
+  var angle;
   var j;
 
   for(j=0;j<uniquePoints.length;j++){
@@ -116,4 +99,25 @@ function getSightPolygon (paths, sightX, sightY) {
 
   // Polygon is intersects, in order of angle
   return intersects;
+}
+
+function calculateUniquePoints (paths) {
+  //## Is it possible to use a Set here?
+  var set = {};
+  var points = paths.reduce(function(points, seg){
+    points.push(seg[0], seg[1]);
+    return points;
+  }, []);
+
+  return points.filter(function(p){
+    var key = p.x+','+p.y;
+
+    if(key in set) {
+      return false;
+    }
+    else {
+      set[key] = true;
+      return true;
+    }
+  });
 }
