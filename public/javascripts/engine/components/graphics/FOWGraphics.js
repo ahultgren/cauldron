@@ -24,7 +24,7 @@ Graphics.prototype.draw = function(entity, ctx) {
     getSightPolygon(this.paths, this.uniquePoints, this.player.data.x, this.player.data.y)
   ];
 
-  for(angle = 0; angle < Math.PI*2; angle += (Math.PI*2)/10){
+  for(angle = 0; angle < Math.PI*2; angle += (Math.PI*2)/3.1){
     dx = Math.cos(angle)*this.fuzzyRadius;
     dy = Math.sin(angle)*this.fuzzyRadius;
 
