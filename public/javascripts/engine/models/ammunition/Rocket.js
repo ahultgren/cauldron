@@ -4,7 +4,8 @@ module.exports = {
   components: {
     Physics: require('../../components/physics/RocketPhysics'),
     Graphics: require('../../components/graphics/RocketGraphics'),
-    Collision: require('../../components/collision/RocketCollision')
+    Collision: require('../../components/collision/RocketCollision'),
+    Shape: require('../../components/shapes/polygon')
   },
   data: {
     fill: '#999',

@@ -21,6 +21,7 @@ var Entity = module.exports = function Entity (defaults, settings, data) {
   this.output && this.output.init(this);
   this.powerups && this.powerups.init(this);
   this.aabb && this.aabb.init(this);
+  this.shape && this.shape.init(this);
 };
 
 util.inherits(Entity, EventEmitter);
@@ -34,6 +35,7 @@ Entity.prototype.update = function() {
   this.script && this.script.update(this);
   this.powerups && this.powerups.update(this);
   this.aabb && this.aabb.update(this);
+  this.shape && this.shape.update(this);
 };
 
 Entity.prototype.updateEvent = function() {

@@ -5,6 +5,7 @@ var Entity = require('../components/Entity');
 var Graphics = require('../components/graphics/PowerupGraphics');
 var Collision = require('../components/collision/PowerupCollision');
 var AABB = require('../components/bounds/aabb');
+var Circle = require('../components/shapes/circle');
 
 var defaultData = {
   stroke: '#2d0',
@@ -24,6 +25,7 @@ module.exports = exports = function powerupFactory (components, data) {
   return new Entity({
     graphics: new Graphics(),
     collision: new Collision(),
-    aabb: new AABB()
+    aabb: new AABB(),
+    shape: new Circle()
   }, components, data);
 };

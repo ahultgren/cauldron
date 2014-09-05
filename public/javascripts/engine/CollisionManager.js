@@ -162,7 +162,7 @@ Collisions.prototype.testMap = function(entity) {
  * Test collision and don't care about response
  */
 Collisions.prototype.test = function(entity1, entity2) {
-  //## CCD will be needed eventually
+  //## Sweeping will be needed eventually
   //## Handle response automatically?
   var a = getShape(entity1);
   var b = getShape(entity2);
@@ -175,18 +175,11 @@ Collisions.prototype.test = function(entity1, entity2) {
 ============================================================================= */
 
 function getShape (entity) {
-  switch (entity.collision.boundingBox_) {
-    case 'circle':
-      return new SAT.Circle(new SAT.V(entity.data.x, entity.data.y), entity.data.radius);
-    case 'polygon':
-      var polygon = new SAT.Polygon(new SAT.V(entity.data.x, entity.data.y),
-        entity.data.path.map(function (point) {
-          return new SAT.V(point.x, point.y);
-        }));
-
-      polygon.setAngle(entity.data.a || 0);
-      return polygon;
+  if(!entity.shape) {
+    throw new Error('Entity has no shape');
   }
+
+  return entity.shape;
 }
 
 function testXtoY (a, b) {
@@ -226,7 +219,7 @@ function testAabbAabb (a, b) {
 }
 
 function isCircle (shape) {
-  return 'r' in shape;
+  return shape.isCircle;
 }
 
 function extend (from, to) {

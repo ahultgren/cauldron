@@ -28,7 +28,8 @@ module.exports = function (type, components, data) {
     collision: model.components.Collision && new model.components.Collision({
       game: game
     }),
-    aabb: new AABB()
+    aabb: new AABB(),
+    shape: model.components.Shape && new model.components.Shape()
   }, components, data);
 
   game.add(bullet);
