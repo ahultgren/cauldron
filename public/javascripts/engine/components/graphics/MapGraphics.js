@@ -2,6 +2,7 @@
 
 var util = require('util');
 var Component = require('../Component');
+var SAT = require('sat');
 
 
 var Graphics = module.exports = function MapGraphics (settings) {
@@ -32,6 +33,7 @@ Graphics.prototype.init = function(entity) {
   entity.data.height = map.height;
 
   createAabb(map);
+  createShape(map);
 };
 
 Graphics.prototype.draw = function(entity, ctx) {
@@ -65,5 +67,15 @@ function createAabb (paths) {
       halfWidth: Math.abs(path[0].x - path[1].x)/2,
       halfHeight: Math.abs(path[0].y - path[1].y)/2
     };
+  });
+}
+
+/**
+ * Create an instance of SAT.Polygon as .line on each segment
+ */
+function createShape (paths) {
+  paths.forEach(function (path) {
+    path.line = new SAT.Polygon(new SAT.V(),
+      [new SAT.V(path[0].x, path[0].y), new SAT.V(path[1].x, path[1].y)]);
   });
 }

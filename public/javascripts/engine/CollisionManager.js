@@ -111,16 +111,15 @@ Collisions.prototype.collidableTests = function(collidable) {
 Collisions.prototype.testMap = function(entity) {
   var x = entity.data.x;
   var y = entity.data.y;
-  var paths = this.paths;
+  var segments = this.paths;
   var response = this.response;
   var seg, line, entityTest, ray;
   var i, l;
 
-  for(i = 0, l = paths.length; i < l; i++) {
-    seg = paths[i];
+  for(i = 0, l = segments.length; i < l; i++) {
+    seg = segments[i];
 
-    line = new SAT.Polygon(new SAT.V(),
-      [new SAT.V(seg[0].x, seg[0].y), new SAT.V(seg[1].x, seg[1].y)]);
+    line = seg.line;
 
     entityTest = getShape(entity);
 
