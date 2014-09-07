@@ -5,7 +5,7 @@ var Entity = require('../components/Entity');
 var PlayerPhysics = require('../components/physics/PlayerPhysics');
 var PlayerGraphics = require('../components/graphics/PlayerGraphics');
 var Collision = require('../components/collision/PlayerCollision');
-var AABB = require('../components/bounds/aabb');
+var AABB = require('../components/shapes/aabb');
 var Circle = require('../components/shapes/circle');
 
 var defaultData = {

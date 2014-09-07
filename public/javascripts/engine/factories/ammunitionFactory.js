@@ -8,7 +8,7 @@ require('../models/ammunition/Rocket');
 
 var utils = require('../utils');
 var Entity = require('../components/Entity');
-var AABB = require('../components/bounds/aabb');
+var AABB = require('../components/shapes/aabb');
 var ammunitionModels = '../models/ammunition/';
 
 

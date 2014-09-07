@@ -4,7 +4,7 @@ var utils = require('../utils');
 var Entity = require('../components/Entity');
 var Graphics = require('../components/graphics/PowerupGraphics');
 var Collision = require('../components/collision/PowerupCollision');
-var AABB = require('../components/bounds/aabb');
+var AABB = require('../components/shapes/aabb');
 var Circle = require('../components/shapes/circle');
 
 var defaultData = {
