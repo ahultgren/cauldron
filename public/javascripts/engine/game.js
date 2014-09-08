@@ -2,18 +2,18 @@
 
 /*jshint -W079 */
 
-var canvas = require('./canvas');
+var canvas = require('./system/canvas');
+var Network = require('./system/network');
+var mouse = require('./system/mouse');
 var Loop = require('./loop');
 var Camera = require('./Camera');
 var CollisionManager = require('./CollisionManager');
-var Network = require('./system/network');
 var LocalInput = require('./components/input/LocalInput');
 var LocalPlayerScript = require('./components/script/LocalPlayerScript');
 var PlayerOutput = require('./components/output/PlayerOutput');
 var LocalPlayerPowerups = require('./components/powerups/LocalPlayerPowerups');
 var Entity = require('./components/entity');
 var CursorGraphics = require('./components/graphics/CursorGraphics');
-var mouse = require('./system/mouse');
 var FOWGraphics = require('./components/graphics/FOWGraphics');
 var FOVGraphics = require('./components/graphics/FOVGraphics');
 var MapGraphics = require('./components/graphics/MapGraphics');

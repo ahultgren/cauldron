@@ -1,10 +1,10 @@
 'use strict';
 
 var util = require('util');
+var utils = require('../utils');
 var EventEmitter = require('events').EventEmitter;
 var Peerjs = require('peerjs');
 var Peer = require('./Peer');
-var $ = require('jquery');
 
 
 var Network = module.exports = function (game) {
@@ -121,16 +121,14 @@ Network.prototype.sendToAll = function(data) {
 Network.prototype.connectToAllPeers = function() {
   var self = this;
 
-  $.ajax({
-    url: '/peerjs/peers',
-    dataType: 'json',
-    success: function (data) {
-      data.forEach(function (peerId) {
-        if(peerId !== self.localPeer.id) {
-          self.connect(peerId);
-        }
-      });
-    }
+  utils.ajax('GET', '/peerjs/peers', function (err, result) {
+    var data = JSON.parse(result);
+
+    data.forEach(function (peerId) {
+      if(peerId !== self.localPeer.id) {
+        self.connect(peerId);
+      }
+    });
   });
 };
 

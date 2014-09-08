@@ -2,7 +2,6 @@
 
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
-var canvas = require('../canvas');
 
 
 var Mouse = function () {
@@ -13,8 +12,8 @@ var Mouse = function () {
     y: 0
   };
 
-  this.x = canvas.width/2;
-  this.y = canvas.height/2;
+  this.x = 0;
+  this.y = 0;
 
   window.addEventListener('mousemove', function (e) {
     self.mouseX = e.layerX;
