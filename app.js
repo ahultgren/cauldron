@@ -1,23 +1,20 @@
 'use strict';
 
-var restify = require('peer/node_modules/restify');
+var express = require('peer/node_modules/express');
+var ExpressPeerServer = require('peer').ExpressPeerServer;
+var app = express();
 var port = process.env.PORT || 3000;
-var PeerServer = require('peer').PeerServer;
-var peerServer = new PeerServer({
-  port: port,
-  'allow_discovery': true
+var server;
+
+server = app.listen(port, function () {
+  console.log('Listening on port %s', port);
 });
 
-console.log('Listening on port %s', port);
+app.use(express.static(__dirname + '/public'));
+app.use(new ExpressPeerServer(server, {
+  port: port,
+  'allow_discovery': true
+}));
 
 //## .on('connection') could be used here to connect clients automatically
 //## or implement own socket-solution for creating games (might be easier)
-
-
-/* Static files
-============================================================================= */
-
-peerServer._app.get(/.*/, restify.serveStatic({
-  directory: 'public',
-  default: 'index.html'
-}));

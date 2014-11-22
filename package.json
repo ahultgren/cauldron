@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "main": "./bin/www",
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "build": "gulp"
   },
   "dependencies": {
-    "peer": "^0.2.6",
+    "peer": "^0.2.8",
     "peerjs": "^0.3.9",
     "sat": "^0.4.1",
     "static-favicon": "~1.0.0"
