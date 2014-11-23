@@ -17,6 +17,10 @@ var clientJsMin = 'main.min.js';
 
 var serverJsGlob = ['package.json', 'gulpfile.js', 'app.js', 'bin/*.js'];
 
+var lessSrc = 'public/less/main.less';
+var lessSrcGlob = 'public/less/**/*.less';
+var lessDest = 'public/dist';
+
 
 gulp.task('lint', function() {
   gulp.src([clientJsDir + '/**/*.js'])
@@ -64,13 +68,25 @@ gulp.task('browserify', function() {
     .pipe(gulp.dest(clientJsDest));
 });
 
+gulp.task('less', function () {
+  gulp.src(lessSrc)
+    .pipe(less({
+      paths: [],
+      compress: true
+    }))
+    .on('error', handleError)
+    .pipe(gulp.dest(lessDest));
+});
+
 gulp.task('watch', function () {
   gulp.watch([clientJsDir + '/**/*.js'], ['build_js']);
   gulp.watch(serverJsGlob, ['lint']);
+  gulp.watch(lessSrcGlob, ['build_css']);
 });
 
-gulp.task('build', ['build_js']);
+gulp.task('build', ['build_js', 'build_css']);
 gulp.task('build_js', ['lint', 'browserify']);
+gulp.task('build_css', ['less']);
 
 gulp.task('default', ['build', 'watch']);
 

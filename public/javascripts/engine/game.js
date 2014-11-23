@@ -56,7 +56,7 @@ var Game = module.exports = function (settings) {
 
   self.playerOne = self.factories.player({
     input: new LocalInput(),
-    weapon: self.factories.weapon('RocketLauncher'),
+    weapon: self.factories.weapon('LaserCannon'),
     script: new LocalPlayerScript(),
     output: new PlayerOutput({
       network: self.network

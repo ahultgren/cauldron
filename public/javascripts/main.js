@@ -1,7 +1,7 @@
 'use strict';
 
-var Game = require('./engine'),
-    map1 = require('./maps/one');
+var Game = require('./engine');
+var map1 = require('./maps/one');
 
 var game = new Game({
   map: map1,
