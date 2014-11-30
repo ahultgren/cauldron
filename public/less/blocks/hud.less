@@ -1,0 +1,37 @@
+.hud {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: @z-hud;
+
+  -webkit-transform: translate3d(0,0,0);
+  -moz-transform: translate3d(0,0,0);
+  -ms-transform: translate3d(0,0,0);
+  -o-transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0);
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+  &-item {
+    position: absolute;
+    color: #933;
+    font-size: 30px;
+  }
+
+  &-score {
+    top: 20px;
+    left: 20px;
+  }
+
+  &-name {
+    top: 20px;
+    right: 20px;
+  }
+}

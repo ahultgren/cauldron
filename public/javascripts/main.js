@@ -2,6 +2,7 @@
 
 var Game = require('./engine');
 var map1 = require('./maps/one');
+var ui = require('./ui');
 
 var game = new Game({
   map: map1,
@@ -15,3 +16,7 @@ window.onload = function () {
     game.network.connectToAllPeers();
   });
 };
+
+game.playerOne.on('hitEnemyPlayer', function () {
+  ui.onScore(100);
+});
