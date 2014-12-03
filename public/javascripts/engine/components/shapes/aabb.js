@@ -9,11 +9,12 @@ var AABB = module.exports = function AABB () {
 
 
 AABB.prototype.init = function(entity) {
-  this.halfWidth = this.halfHeight = entity.data.influenceArea || entity.data.radius || 0;
+  this.halfWidth = entity.data.halfWidth || entity.data.radius || 0;
+  this.halfHeight = entity.data.halfHeight || entity.data.radius || 0;
   this.update(entity);
 };
 
 AABB.prototype.update = function(entity) {
-  this.x = entity.data.x;
-  this.y = entity.data.y;
+  this.x = entity.data.aabbX || entity.data.x || 0;
+  this.y = entity.data.aabbY || entity.data.y || 0;
 };

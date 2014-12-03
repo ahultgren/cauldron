@@ -16,9 +16,12 @@ Collision.prototype.response_ = 'obstaclePhobic';
 Collision.prototype.boundingBox_ = 'circle';
 
 Collision.prototype.onCollision = function(enitity, type, target) {
-  if(target && target.weapon && enitity.weapon !== target.weapon) {
-    //## Differ between player and ammunition. Or create an abstract way of identifying anything. Damn components
+  var isAmmo = target && target.data.isAmmo_;
+  var isSelf = target && target.weapon === enitity.weapon;
+
+  if(isAmmo && !isSelf) {
     enitity.emit('hit', type, target);
+    target.weapon.player.emit('hitEnemyPlayer', enitity);
   }
 };
 Collision.prototype.update = function() {};

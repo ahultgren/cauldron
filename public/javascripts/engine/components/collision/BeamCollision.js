@@ -23,7 +23,7 @@ var Collision = module.exports = function BeamCollision (settings) {
 util.inherits(Collision, Component);
 
 
-Collision.prototype.type_ = 'obstacle';
+Collision.prototype.type_ = 'collidable';
 Collision.prototype.response_ = 'none';
 Collision.prototype.boundingBox_ = 'polygon';
 

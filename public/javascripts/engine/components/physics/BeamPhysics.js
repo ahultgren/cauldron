@@ -17,6 +17,13 @@ Physics.prototype.init = function(entity) {
   if(!entity.data.b) {
     this.makeLine_(entity);
   }
+
+  // Generate aabb-data
+  entity.data.halfWidth = Math.abs(entity.data.path[0].x - entity.data.path[1].x)/2;
+  entity.data.halfHeight = Math.abs(entity.data.path[0].y - entity.data.path[1].y)/2;
+
+  entity.data.aabbX = Math.min(entity.data.path[0].x, entity.data.path[1].x) + entity.data.halfWidth;
+  entity.data.aabbY = Math.min(entity.data.path[0].y, entity.data.path[1].y) + entity.data.halfHeight;
 };
 
 Physics.prototype.update = function() {
