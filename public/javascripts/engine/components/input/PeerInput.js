@@ -37,7 +37,9 @@ Peer.prototype.update = function(entity) {
   }
 
   if(this.newWeapon) {
-    entity.weapon = this.game.factories.weapon(this.newWeapon.weapon);
+    entity.weapon = this.game.factories.weapon(this.newWeapon.weapon, {
+      player: entity
+    });
     this.newWeapon = null;
   }
 

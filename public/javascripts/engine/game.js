@@ -75,9 +75,6 @@ var Game = module.exports = function (settings) {
     input: new MockInput(),
     weapon: self.factories.weapon('LaserCannon'),
     script: new LocalPlayerScript(),
-    output: new PlayerOutput({
-      network: self.network
-    }),
     powerups: new LocalPlayerPowerups({
       game: self
     })

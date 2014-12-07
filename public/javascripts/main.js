@@ -20,3 +20,7 @@ window.onload = function () {
 game.playerOne.on('hitEnemyPlayer', function () {
   ui.onScore(100);
 });
+
+game.playerOne.on('hit', function () {
+  ui.onScore(-50);
+});

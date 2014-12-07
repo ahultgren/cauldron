@@ -41,7 +41,9 @@ module.exports = function playerFactory (components, data) {
     shape: new Circle()
   }, components, data);
 
-  player.weapon.player = player;
+  if(player.weapon) {
+    player.weapon.player = player;
+  }
 
   game.add(player);
 
