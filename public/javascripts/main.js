@@ -17,6 +17,7 @@ window.onload = function () {
   });
 };
 
+// Score
 game.playerOne.on('hitEnemyPlayer', function () {
   ui.onScore(100);
 });
