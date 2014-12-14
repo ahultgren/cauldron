@@ -2,5 +2,6 @@
 
 // [TODO] Use some kind of framework
 require('./name');
-require('./score');
 require('./fullscreen');
+
+exports.score = require('./score');
