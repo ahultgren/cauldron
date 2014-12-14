@@ -8,10 +8,22 @@ var hudScore = document.querySelector('#hud-score');
 var fullscreenToggle = document.querySelector('#fullscreen');
 var score = 0;
 
+// Name
 nameInput.addEventListener('input', function () {
   hudName.innerHTML = nameInput.value;
+  window.localStorage.setItem('playerName', nameInput.value);
 }, false);
 
+(function () {
+  var name = window.localStorage.getItem('playerName');
+
+  if(name) {
+    hudName.innerHTML = name;
+    nameInput.value = name;
+  }
+}());
+
+// Score
 exports.onScore = function (points) {
   score += points;
 
