@@ -1,35 +1,32 @@
 'use strict';
 
-var Rx = require('rx/dist/rx.lite.min');
-var pluck = Rx.helpers.pluck;
-
-Rx.config.useNativeEvents = true;
+var R = require('ramda');
+var Bacon = require('baconjs');
 
 var nameInput = document.querySelector('#player-name');
 var hudName = document.querySelector('#hud-name');
 
-Rx.Observable.fromEvent(nameInput, 'input')
-  .map(pluck('target'))
-  .map(pluck('value'))
-  .do(setHudName)
-  .do(saveName)
-  .subscribe();
+var currentName = Bacon.fromEventTarget(nameInput, 'input')
+  .map(R.path('target.value'))
+  .toProperty(loadName());
 
-Rx.Observable.fromArray([window.localStorage.getItem('playerName')])
-  .take(1)
-  .filter(Boolean)
-  .do(setHudName)
-  .do(setInputName)
-  .subscribe();
+// [TODO] This does not seem idiomatic
+currentName.onValue(setInputName);
+currentName.onValue(setHudName);
+currentName.onValue(saveName);
 
 function setHudName (name) {
   hudName.innerHTML = name;
+}
+
+function setInputName (name) {
+  nameInput.value = name;
 }
 
 function saveName (name) {
   window.localStorage.setItem('playerName', name);
 }
 
-function setInputName (name) {
-  nameInput.value = name;
+function loadName () {
+  return window.localStorage.getItem('playerName') || '';
 }
