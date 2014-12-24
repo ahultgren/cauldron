@@ -17,6 +17,10 @@ Collision.prototype.type_ = 'collidable';
 Collision.prototype.response_ = 'obstaclePhobic';
 Collision.prototype.boundingBox_ = 'polygon';
 
+Collision.prototype.init = function(entity) {
+  entity.mediator.on('collision', this.onCollision.bind(this));
+};
+
 Collision.prototype.update = function() {};
 
 Collision.prototype.onCollision = function(entity, type, target) {

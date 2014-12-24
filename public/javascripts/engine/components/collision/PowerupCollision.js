@@ -15,6 +15,10 @@ Collision.prototype.type_ = 'obstacle';
 Collision.prototype.response_ = 'zone';
 Collision.prototype.boundingBox_ = 'circle';
 
+Collision.prototype.init = function(enitity) {
+  enitity.mediator.on('collision', this.onCollision);
+};
+
 Collision.prototype.update = function() {};
 Collision.prototype.onCollision = function(entity, type, target) {
   if(target.data.isPlayer_) {

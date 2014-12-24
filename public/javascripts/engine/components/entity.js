@@ -48,7 +48,8 @@ Entity.prototype.draw = function(ctx) {
 };
 
 Entity.prototype.onCollision = function(type, response) {
-  this.collision && this.collision.onCollision(this, type, response);
+  this.mediator.emit('collision', this, type, response);
+  //## this.mediator.emit('collision-' + type, this, response); // Good idea?
 };
 
 /**

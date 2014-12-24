@@ -15,6 +15,10 @@ Collision.prototype.type_ = 'collidable';
 Collision.prototype.response_ = 'obstaclePhobic';
 Collision.prototype.boundingBox_ = 'circle';
 
+Collision.prototype.init = function(enitity) {
+  enitity.mediator.on('collision', this.onCollision);
+};
+
 Collision.prototype.onCollision = function(enitity, type, target) {
   var isAmmo = target && target.data.isAmmo_;
   var isSelf = target && target.weapon === enitity.weapon;
