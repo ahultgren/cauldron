@@ -31,7 +31,7 @@ Collision.prototype.onCollision = function(entity, type, target) {
       break;
 
     case 'collidable':
-      if(target.weapon !== entity.weapon) {
+      if(target.data.playerId !== entity.data.playerId) {
         this.spawn_(entity);
         entity.remove();
       }

@@ -19,13 +19,14 @@ Collision.prototype.init = function(enitity) {
   enitity.mediator.on('collision', this.onCollision);
 };
 
-Collision.prototype.onCollision = function(enitity, type, target) {
+Collision.prototype.onCollision = function(entity, type, target) {
   var isAmmo = target && target.data.isAmmo_;
-  var isSelf = target && target.weapon === enitity.weapon;
+  var isSelf = target && target.data.playerId === entity.data.playerId;
 
   if(isAmmo && !isSelf) {
-    enitity.emit('hit', type, target);
-    target.weapon.player.emit('hitEnemyPlayer', enitity);
+    entity.emit('hit', type, target);
+    target.weapon.player.emit('hitEnemyPlayer', entity);
   }
 };
+
 Collision.prototype.update = function() {};

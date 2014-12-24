@@ -25,6 +25,7 @@ Powerups.prototype.update = function(entity) {
         entity.replace('weapon', self.game.factories.weapon(powerup.data, {
           // [TODO] Is this still needed?
           player: entity,
+        }, {
           playerId: entity.data.playerId
         }));
         break;
