@@ -1,9 +1,12 @@
 'use strict';
 
-var fullscreenToggle = document.querySelector('#fullscreen');
+var mainMenu = document.querySelector('#main-menu');
 
 // Fullscreen
-fullscreenToggle.addEventListener('click', function (e) {
+mainMenu.addEventListener('click', function (e) {
+  if(!e.target.attributes.getNamedItem('ui-fullscreen')) {
+    return;
+  }
   var body = document.querySelector('body');
 
   e.preventDefault();

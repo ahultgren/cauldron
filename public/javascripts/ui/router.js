@@ -5,7 +5,7 @@ var Bacon = require('baconjs');
 var Route = require('./route');
 var routes = [];
 
-var extractHash = R.compose(R.prop(1), R.split('#'));
+var extractHash = R.compose(R.or(R.prop(1), R.always('/')), R.split('#'));
 var matchPathOnEachRoute = R.nAry(1, R.compose(
   R.prop(0),
   R.flip(R.filter)(routes),

@@ -60,7 +60,8 @@ gulp.task('browserify', function() {
           path: 'node_modules/peerjs/dist/peer.min.js',
           exports: 'Peer'
         }
-      }
+      },
+      transform: ['brfs']
     }))
     .on('error', handleError)
     .pipe(uglify())

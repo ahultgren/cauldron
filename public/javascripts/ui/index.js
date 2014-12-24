@@ -1,15 +1,31 @@
 'use strict';
 
 // [TODO] Use some kind of framework
+var fs = require('fs');
+var hb = require('handlebars');
 var router = require('./router');
 
-require('./name');
-require('./fullscreen');
+var mainMenu = document.querySelector('#main-menu');
 
+exports.name = require('./name');
+exports.fullscreen = require('./fullscreen');
 exports.score = require('./score');
 
+var TEMPLATES = {
+  create: hb.compile(fs.readFileSync('public/partials/create.hbs').toString()),
+  start: hb.compile(fs.readFileSync('public/partials/start.hbs').toString())
+};
+
+router.route('/', function () {
+  //## Ensure main menu is shown?
+  mainMenu.innerHTML = TEMPLATES.start({
+    playerName: exports.name.loadName()
+  });
+});
+
 router.route('/create', function () {
-  //## Render and show game creation ui
+  //## Ensure main menu is shown?
+  mainMenu.innerHTML = TEMPLATES.create({});
 });
 
 router.route('/game/:gameId', function () {
