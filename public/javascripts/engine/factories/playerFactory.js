@@ -26,7 +26,9 @@ module.exports = function playerFactory (components, data) {
   var game = this;
   var player;
 
-  data = utils.extend({}, defaultData, data);
+  data = utils.extend({
+    playerId: generateId() + generateId() + generateId()
+  }, defaultData, data);
 
   player = new Entity({
     physics: new PlayerPhysics({
@@ -42,10 +44,16 @@ module.exports = function playerFactory (components, data) {
   }, components, data);
 
   if(player.weapon) {
+    // [TODO] Is this still needed?
     player.weapon.player = player;
+    player.weapon.data.playerId = data.playerId;
   }
 
   game.add(player);
 
   return player;
 };
+
+function generateId () {
+  return Math.random().toString(16).substring(2);
+}

@@ -61,6 +61,7 @@ Script.prototype.shoot = function(entity, from, toward, spread) {
   utils.extend(
     {
       spread: spread,
+      playerId: entity.data.playerId
     },
     entity.data.ammunitionData
   ));

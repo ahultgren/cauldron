@@ -12,6 +12,7 @@ var Entity = module.exports = function Entity (defaults, settings, data) {
   utils.extend(this, defaults, settings);
 
   this.data = new Data(data);
+  this.mediator = new EventEmitter();
 
   this.input && this.input.init(this);
   this.physics && this.physics.init(this);

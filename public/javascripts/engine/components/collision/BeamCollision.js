@@ -36,8 +36,8 @@ Collision.prototype.onCollision = function(entity, type, target) {
       break;
 
     case 'collidable':
-      if(target.weapon !== entity.weapon) {
-        //## Need point of collision
+      if(target.data.playerId !== entity.data.playerId) {
+        // [TODO] Need point of collision
         this.spawn_(entity, target);
       }
       break;
