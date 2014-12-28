@@ -14,6 +14,7 @@ var LocalPlayerScript = require('./components/script/LocalPlayerScript');
 var PlayerOutput = require('./components/output/PlayerOutput');
 var LocalPlayerPowerups = require('./components/powerups/LocalPlayerPowerups');
 var Entity = require('./components/entity');
+var EntityV2 = require('./components/entity.v2');
 var CursorGraphics = require('./components/graphics/CursorGraphics');
 var FOWGraphics = require('./components/graphics/FOWGraphics');
 var FOVGraphics = require('./components/graphics/FOVGraphics');
@@ -36,11 +37,11 @@ var Game = module.exports = function (settings) {
   self.canvas = canvas;
   self.loop = new Loop(self);
 
-  self.map = new Entity({}, {
-    graphics: new MapGraphics()
-  }, {
+  self.map = new EntityV2({
     paths: settings.map()
   });
+  self.map.addStage2Component(MapGraphics.create());
+  self.map.init();
 
   self.add(self.map);
 
@@ -127,6 +128,11 @@ var Game = module.exports = function (settings) {
 Game.prototype.add = function (entity) {
   if(entity.graphics && entity.graphics.type_ && this.loop[entity.graphics.type_]) {
     this.loop[entity.graphics.type_].push(entity);
+  }
+
+  // v2 graphics
+  if(entity.data && entity.data.gco_ && this.loop[entity.data.gco_]) {
+    this.loop[entity.data.gco_].push(entity);
   }
 
   if(entity.collision && entity.collision.type_ && this.loop[entity.collision.type_]) {
