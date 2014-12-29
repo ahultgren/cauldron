@@ -16,7 +16,7 @@ Graphics.init = function(entity) {
 };
 
 Graphics.draw = function(entity, ctx) {
-  var flashX, flashY, angle;
+  var flashX, flashY;
   var path = entity.data.path;
 
   if((entity.data.aliveFor++) >= entity.data.aliveUntil) {
@@ -26,13 +26,11 @@ Graphics.draw = function(entity, ctx) {
 
   // Muzzle flash
   if(!entity.data.flashed) {
-    // [TODO] How to not be dependent on weapon here? Offset the beam when created?
-    angle = entity.weapon.player.data.a;
-    flashX = path[0].x + Math.cos(angle)*5;
-    flashY = path[0].y + Math.sin(angle)*5;
+    flashX = path[0].x;
+    flashY = path[0].y;
 
     ctx.beginPath();
-    ctx.arc(flashX, flashY, 10, 0, Math.PI * 2);
+    ctx.arc(flashX, flashY, 15, 0, Math.PI * 2);
     ctx.fillStyle = entity.data.flashColor;
     ctx.fill();
 

@@ -43,7 +43,10 @@ Physics.prototype.makeLine_ = function(entity) {
 
   // Start with a really long line...
   entity.data.path = line = [
-    entity.from.data,
+    {
+      x: entity.from.data.x + Math.cos(angle)*5,
+      y: entity.from.data.y + Math.sin(angle)*5
+    },
     {
       x: entity.from.data.x + Math.cos(angle)*1000000,
       y: entity.from.data.y + Math.sin(angle)*1000000
