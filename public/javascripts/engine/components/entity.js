@@ -27,6 +27,10 @@ var Entity = module.exports = function Entity (defaults, settings, data) {
 
 util.inherits(Entity, EventEmitter);
 
+Entity.create = function (defaults, settings, data) {
+  return new Entity(defaults, settings, data);
+};
+
 
 Entity.prototype.update = function() {
   this.data.update(this);

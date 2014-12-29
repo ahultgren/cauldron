@@ -21,7 +21,7 @@ module.exports = function (type, components, data) {
     isAmmo_: true
   }, model.data, data);
 
-  bullet = new Entity({
+  bullet = Entity.create({
     physics: new model.components.Physics({
       paths: game.map.data.paths,
       game: game
