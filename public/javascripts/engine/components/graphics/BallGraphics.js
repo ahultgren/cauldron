@@ -1,34 +1,31 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
+var Graphics = module.exports = exports;
 
+Graphics.type_ = 'masked';
 
-var Graphics = module.exports = function BallGraphics (settings) {
-  this.constructor.super_.call(this, {
-    flashed: false,
-    flashColor: '#fd0'
-  }, settings);
+Graphics.create = function () {
+  return Graphics;
 };
 
-util.inherits(Graphics, Component);
+Graphics.init = function(entity, settings) {
+  settings = settings || {};
 
-Graphics.create = function (settings) {
-  return new Graphics(settings);
+  entity.data.flashed = settings.flashed || false;
+  entity.data.flashColor = settings.flashColor || '#fd0';
+
+  entity.data.gco_ = Graphics.type_;
 };
 
-
-Graphics.prototype.type_ = 'masked';
-
-Graphics.prototype.draw = function(entity, ctx) {
+Graphics.draw = function(entity, ctx) {
   var radius = entity.data.radius;
   var fill = entity.data.fill;
 
   // Muzzle flash
-  if(!this.flashed) {
+  if(!entity.data.flashed) {
     radius *= 2;
-    fill = this.flashColor;
-    this.flashed = true;
+    fill = entity.data.flashColor;
+    entity.data.flashed = true;
   }
 
   ctx.beginPath();
@@ -36,3 +33,6 @@ Graphics.prototype.draw = function(entity, ctx) {
   ctx.arc(0, 0, radius, 0, Math.PI * 2);
   ctx.fill();
 };
+
+// [TODO] Remove when v1 entity is gone
+Graphics.remove = function(){};

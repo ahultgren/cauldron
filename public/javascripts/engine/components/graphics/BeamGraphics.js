@@ -11,8 +11,8 @@ Graphics.create = function () {
 Graphics.init = function(entity, settings) {
   settings = settings || {};
 
-  entity.data.flashed = entity.data.flashed || settings.flashed;
-  entity.data.flashColor = entity.data.flashColor || settings.flashColor;
+  entity.data.flashed = settings.flashed || false;
+  entity.data.flashColor = settings.flashColor || '#fd0';
 
   entity.data.gco_ = Graphics.type_;
 };
