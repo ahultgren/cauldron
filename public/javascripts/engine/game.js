@@ -54,7 +54,7 @@ var Game = module.exports = function (settings) {
   self.network = new Network(self);
   self.add(self.network);
 
-  // Player one
+  // Player
 
   self.playerOne = self.factories.player({
     input: new LocalInput(),
@@ -84,13 +84,16 @@ var Game = module.exports = function (settings) {
     y: 100
   });
 
-  self.add(new Entity({}, {
-    graphics: new CursorGraphics({
-      mouse: mouse //## Use an input instance instead?
-    })
-  }, {
-    fill: '#ccc'
-  }));
+  // Cursor
+
+  var cursor = EntityV2.create({
+    fill: self.playerOne.data.fill,
+    mouse: mouse //## Use an input instance instead?
+  })
+  .addStage2Component(CursorGraphics.create())
+  .init();
+
+  self.add(cursor);
 
   self.add(self.factories.powerup({}, {
     powerupType: 'weapon',

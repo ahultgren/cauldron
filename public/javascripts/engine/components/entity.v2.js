@@ -11,6 +11,10 @@ var Entity = module.exports = function Entity (data) {
   this.stage2Components = [];
 };
 
+Entity.create = function (data) {
+  return new Entity(data);
+};
+
 Entity.prototype.init = function() {
   var self = this;
 
@@ -21,6 +25,8 @@ Entity.prototype.init = function() {
   self.stage2Components.forEach(function (component) {
     component.init(self);
   });
+
+  return this;
 };
 
 Entity.prototype.update = function() {
@@ -31,6 +37,8 @@ Entity.prototype.update = function() {
   self.components.forEach(function (component) {
     component.update(self);
   });
+
+  return this;
 };
 
 Entity.prototype.updateStage2 = function(ctx) {
@@ -39,6 +47,8 @@ Entity.prototype.updateStage2 = function(ctx) {
   self.stage2Components.forEach(function (component) {
     component.update(self, ctx);
   });
+
+  return this;
 };
 
 // Alias
@@ -75,4 +85,6 @@ Entity.prototype.remove = function() {
 
   self.mediator.removeAllListeners();
   self.remove_ = true;
+
+  return this;
 };
