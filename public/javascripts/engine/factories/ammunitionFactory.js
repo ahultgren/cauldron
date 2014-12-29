@@ -26,7 +26,7 @@ module.exports = function (type, components, data) {
       paths: game.map.data.paths,
       game: game
     }),
-    graphics: new model.components.Graphics(),
+    graphics: model.components.Graphics.create(),
     collision: model.components.Collision && new model.components.Collision({
       game: game
     }),

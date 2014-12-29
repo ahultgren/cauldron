@@ -13,6 +13,10 @@ var Graphics = module.exports = function BallGraphics (settings) {
 
 util.inherits(Graphics, Component);
 
+Graphics.create = function (settings) {
+  return new Graphics(settings);
+};
+
 
 Graphics.prototype.type_ = 'masked';
 

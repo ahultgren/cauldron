@@ -11,6 +11,10 @@ var Graphics = module.exports = function CursorGraphics (settings) {
 
 util.inherits(Graphics, Component);
 
+Graphics.create = function (settings) {
+  return new Graphics(settings);
+};
+
 
 Graphics.prototype.type_ = 'alwaysVisible';
 

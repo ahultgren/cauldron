@@ -14,6 +14,10 @@ var Graphics = module.exports = exports = function Graphics (settings) {
 
 util.inherits(Graphics, Component);
 
+Graphics.create = function (settings) {
+  return new Graphics(settings);
+};
+
 
 Graphics.prototype.type_ = 'masked';
 

@@ -49,6 +49,10 @@ var Graphics = module.exports = function FOVGraphics (settings) {
 
 util.inherits(Graphics, Component);
 
+Graphics.create = function (settings) {
+  return new Graphics(settings);
+};
+
 
 Graphics.prototype.type_ = 'visibilityPolygons';
 
