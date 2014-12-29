@@ -8,11 +8,9 @@ Graphics.create = function () {
   return Graphics;
 };
 
-Graphics.init = function(entity, settings) {
-  settings = settings || {};
-
-  entity.data.flashed = settings.flashed || false;
-  entity.data.flashColor = settings.flashColor || '#fd0';
+Graphics.init = function(entity) {
+  entity.data.flashed = entity.data.flashed || false;
+  entity.data.flashColor = entity.data.flashColor || '#fd0';
 
   entity.data.gco_ = Graphics.type_;
 };

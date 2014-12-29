@@ -1,15 +1,15 @@
 'use strict';
 
 var SAT = require('sat');
+var Graphics = module.exports = exports;
 
+Graphics.type_ = 'masked';
 
-exports.type_ = 'masked';
-
-exports.create = function () {
-  return exports;
+Graphics.create = function () {
+  return Graphics;
 };
 
-exports.init = function(entity) {
+Graphics.init = function(entity) {
   var map = entity.data.paths;
 
   // Add map borders
@@ -30,10 +30,10 @@ exports.init = function(entity) {
   createAabb(map);
   createShape(map);
 
-  entity.data.gco_ = exports.type_;
+  entity.data.gco_ = Graphics.type_;
 };
 
-exports.update = function(entity, ctx) {
+Graphics.update = function(entity, ctx) {
   var paths = entity.data.paths;
   var i, l, path;
 
