@@ -2,7 +2,7 @@
 
 var util = require('util');
 var Component = require('../Component');
-var Entity = require('../Entity');
+var Entity = require('../Entity.v2');
 var ExplosionGraphics = require('../graphics/ExplosionGraphics');
 
 
@@ -53,15 +53,15 @@ Collision.prototype.onCollision = function(entity, type, target) {
 ============================================================================= */
 
 Collision.prototype.spawn_ = function(entity, target) {
-  this.game.add(new Entity({}, {
-    graphics: new ExplosionGraphics({
-      gradient: this.explosionGradient,
-      duration: this.explosionDuration
-    })
-  }, {
+  var explosion = Entity.create({
+    gradient: this.explosionGradient,
+    duration: this.explosionDuration,
     x: target.data.x,
     y: target.data.y,
     radius: this.explosionRadius
-  }));
-};
+  })
+  .addStage2Component(ExplosionGraphics.create())
+  .init();
 
+  this.game.add(explosion);
+};
