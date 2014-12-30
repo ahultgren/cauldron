@@ -35,7 +35,7 @@ module.exports = function playerFactory (components, data) {
       map: game.map,
       game: game
     }),
-    graphics: new PlayerGraphics(),
+    graphics: PlayerGraphics.create(),
     collision: new Collision({
       game: game
     }),
