@@ -21,14 +21,6 @@ Graphics.init = function (entity) {
 
 Graphics.update = function(entity, ctx) {
   ctx.globalCompositeOperation = 'destination-in';
-
-  // [TODO] This should cause the FOV to lag behind a tiny bit.
-  // Use a separate stage 1 component to fix it.
-  // Maybe a general stalk-component can be used for that? like:
-  // fov.addComponent(stalker.create(player, ['x', 'y', 'a']))
-  entity.data.x = entity.data.player.data.x;
-  entity.data.y = entity.data.player.data.y;
-  entity.data.a = entity.data.player.data.a;
   utils.drawPolygon(entity.data.path, ctx, '#fff');
 };
 

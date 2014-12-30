@@ -18,6 +18,7 @@ var CursorGraphics = require('./components/graphics/CursorGraphics');
 var FOWGraphics = require('./components/graphics/FOWGraphics');
 var FOVGraphics = require('./components/graphics/FOVGraphics');
 var MapGraphics = require('./components/graphics/MapGraphics');
+var Stalker = require('./components/misc/Stalker.js');
 
 
 var Game = module.exports = function (settings) {
@@ -112,6 +113,7 @@ var Game = module.exports = function (settings) {
     paths: self.map.data.paths,
     player: self.playerOne
   })
+  .addComponent(Stalker.create(self.playerOne, ['x', 'y', 'a']))
   .addStage2Component(FOVGraphics.create())
   .init());
 
