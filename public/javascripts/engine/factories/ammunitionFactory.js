@@ -17,14 +17,12 @@ module.exports = function (type, components, data) {
   var model = require(ammunitionModels + type);
 
   data = utils.extend({
+    mapPaths: game.map.data.paths,
     isAmmo_: true
   }, model.data, data);
 
   return Entity.create({
-    physics: new model.components.Physics({
-      paths: game.map.data.paths,
-      game: game
-    }),
+    physics: model.components.Physics.create(),
     graphics: model.components.Graphics.create(),
     collision: model.components.Collision && new model.components.Collision({
       game: game

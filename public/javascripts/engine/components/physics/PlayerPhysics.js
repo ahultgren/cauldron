@@ -1,18 +1,14 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
+var Physics = module.exports = exports;
 
-
-var Physics = module.exports = exports = function Physics (settings) {
-  this.constructor.super_.call(this, {}, settings);
-  // this.map
+Physics.create = function () {
+  return Physics;
 };
 
-util.inherits(Physics, Component);
+Physics.init = function(){};
 
-
-Physics.prototype.update = function(entity) {
+Physics.update = function(entity) {
   entity.data.dx *= entity.data.friction;
   entity.data.dy *= entity.data.friction;
 

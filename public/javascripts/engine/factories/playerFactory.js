@@ -31,10 +31,7 @@ module.exports = function playerFactory (components, data) {
   }, defaultData, data);
 
   player = new Entity({
-    physics: new PlayerPhysics({
-      map: game.map,
-      game: game
-    }),
+    physics: PlayerPhysics.create(),
     graphics: PlayerGraphics.create(),
     collision: new Collision({
       game: game
