@@ -16,8 +16,8 @@ var Mouse = function () {
   this.y = 0;
 
   window.addEventListener('mousemove', function (e) {
-    self.mouseX = e.layerX;
-    self.mouseY = e.layerY;
+    self.mouseX = e.pageX;
+    self.mouseY = e.pageY;
   }, false);
 
   window.addEventListener('mousedown', this.emit.bind(this, 'mousedown'), false);
