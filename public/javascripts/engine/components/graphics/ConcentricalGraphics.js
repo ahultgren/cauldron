@@ -1,5 +1,7 @@
 'use strict';
 
+var R = require('ramda');
+var largestRadius = R.compose(R.max, R.map(R.prop('radius')));
 var DEFAULT_CIRCLES = [
   {
     stroke: '#2d0',
@@ -23,6 +25,7 @@ Graphics.create = function () {
 
 Graphics.init = function (entity) {
   entity.data.concircles = entity.data.concircles || DEFAULT_CIRCLES;
+  entity.data.radius = entity.data.radius || largestRadius(entity.data.concircles);
 };
 
 Graphics.draw = function(entity, ctx) {
