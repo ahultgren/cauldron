@@ -40,7 +40,7 @@ Collisions.prototype.mapTests = function(collidable) {
         line = new SAT.Polygon(new SAT.V(),
           [new SAT.V(seg[0].x, seg[0].y), new SAT.V(seg[1].x, seg[1].y)]);
 
-        if(testAabbAabb(entity.aabb, seg.aabb)) {
+        if(testAabbAabb(entity.data, seg.aabb)) {
           // Normal SAT test
           response = this.response;
 
@@ -83,7 +83,7 @@ Collisions.prototype.obstacleTests = function(collidable, obstacles) {
 
       //## Implement sweep-tests here if either party is moving fast
 
-      if(testAabbAabb(entity.aabb, obstacle.aabb)) {
+      if(testAabbAabb(entity.data, obstacle.data)) {
         if(this.test(entity, obstacle)) {
           entity.onCollision('obstacle', obstacle);
           obstacle.onCollision('collidable', entity);
@@ -98,7 +98,7 @@ Collisions.prototype.collidableTests = function(collidable) {
 
   for(i = 0, l = collidable.length; i < l; i++) {
     for(ii = i + 1; ii < l; ii++) {
-      if(testAabbAabb(collidable[i].aabb, collidable[ii].aabb)) {
+      if(testAabbAabb(collidable[i].data, collidable[ii].data)) {
         if(this.test(collidable[i], collidable[ii])) {
           collidable[i].onCollision('collidable', collidable[ii]);
           collidable[ii].onCollision('collidable', collidable[i]);
@@ -206,8 +206,8 @@ function testXtoMap (a, map, response) {
 }
 
 function testAabbAabb (a, b) {
-  var distanceX = a.x - b.x;
-  var distanceY = a.y - b.y;
+  var distanceX = a.aabbX - b.aabbX;
+  var distanceY = a.aabbY - b.aabbY;
 
   return Math.abs(distanceX) < a.halfWidth + b.halfWidth &&
     Math.abs(distanceY) < a.halfHeight + b.halfHeight &&

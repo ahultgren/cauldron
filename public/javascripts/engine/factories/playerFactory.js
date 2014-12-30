@@ -36,7 +36,7 @@ module.exports = function playerFactory (components, data) {
     collision: new Collision({
       game: game
     }),
-    aabb: new AABB(),
+    aabb: AABB.create(),
     shape: Circle.create()
   }, components, data);
 

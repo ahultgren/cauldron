@@ -18,7 +18,7 @@ module.exports = exports = function powerupFactory (components, data) {
   return new Entity({
     graphics: ConcentricalGraphics.create(),
     collision: new Collision(),
-    aabb: new AABB(),
+    aabb: AABB.create(),
     shape: Circle.create()
   }, components, data);
 };

@@ -27,7 +27,7 @@ module.exports = function (type, components, data) {
     collision: model.components.Collision && new model.components.Collision({
       game: game
     }),
-    aabb: new AABB(),
+    aabb: AABB.create(),
     shape: model.components.Shape && model.components.Shape.create()
   }, components, data)
   .addTo(game);
