@@ -178,7 +178,7 @@ function getShape (entity) {
     throw new Error('Entity has no shape');
   }
 
-  return entity.shape;
+  return entity.data.shape;
 }
 
 function testXtoY (a, b) {

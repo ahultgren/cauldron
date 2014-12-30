@@ -37,7 +37,7 @@ module.exports = function playerFactory (components, data) {
       game: game
     }),
     aabb: new AABB(),
-    shape: new Circle()
+    shape: Circle.create()
   }, components, data);
 
   if(player.weapon) {

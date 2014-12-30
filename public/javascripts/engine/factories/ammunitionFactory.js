@@ -28,7 +28,7 @@ module.exports = function (type, components, data) {
       game: game
     }),
     aabb: new AABB(),
-    shape: model.components.Shape && new model.components.Shape()
+    shape: model.components.Shape && model.components.Shape.create()
   }, components, data)
   .addTo(game);
 };
