@@ -22,11 +22,11 @@ Graphics.create = function () {
 };
 
 Graphics.init = function (entity) {
-  entity.data.puCircles = entity.data.puCircles || DEFAULT_CIRCLES;
+  entity.data.concircles = entity.data.concircles || DEFAULT_CIRCLES;
 };
 
 Graphics.draw = function(entity, ctx) {
-  entity.data.puCircles.forEach(function (circle) {
+  entity.data.concircles.forEach(function (circle) {
     ctx.beginPath();
     ctx.arc(0, 0, circle.radius, 0, Math.PI * 2);
     ctx.strokeStyle = circle.stroke;

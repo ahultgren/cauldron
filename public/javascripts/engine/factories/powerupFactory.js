@@ -2,7 +2,7 @@
 
 var utils = require('../utils');
 var Entity = require('../components/Entity');
-var PowerupGraphics = require('../components/graphics/PowerupGraphics');
+var ConcentricalGraphics = require('../components/graphics/ConcentricalGraphics');
 var Collision = require('../components/collision/PowerupCollision');
 var AABB = require('../components/shapes/aabb');
 var Circle = require('../components/shapes/circle');
@@ -16,7 +16,7 @@ module.exports = exports = function powerupFactory (components, data) {
   }, data);
 
   return new Entity({
-    graphics: PowerupGraphics.create(),
+    graphics: ConcentricalGraphics.create(),
     collision: new Collision(),
     aabb: new AABB(),
     shape: new Circle()
