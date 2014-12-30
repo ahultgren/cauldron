@@ -1,32 +1,38 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
+var DEFAULT_CIRCLES = [
+  {
+    stroke: '#2d0',
+    radius: 10,
+    strokeWidth: 2
+  },
+  {
+    stroke: '#af0',
+    radius: 14,
+    strokeWidth: 2
+  }
+];
 
+var Graphics = module.exports = exports;
 
-var Graphics = module.exports = function PowerupGraphics (settings) {
-  this.constructor.super_.call(this, {}, settings);
+Graphics.type_ = 'masked';
+
+Graphics.create = function () {
+  return Graphics;
 };
 
-util.inherits(Graphics, Component);
-
-Graphics.create = function (settings) {
-  return new Graphics(settings);
+Graphics.init = function (entity) {
+  entity.data.puCircles = entity.data.puCircles || DEFAULT_CIRCLES;
 };
 
-
-Graphics.prototype.type_ = 'masked';
-
-Graphics.prototype.draw = function(entity, ctx) {
-  ctx.beginPath();
-  ctx.arc(0, 0, entity.data.radius, 0, Math.PI * 2);
-  ctx.strokeStyle = entity.data.stroke;
-  ctx.lineWidth = entity.data.strokeWidth;
-  ctx.stroke();
-
-  //## Use this to easily variate between different powerups
-  ctx.beginPath();
-  ctx.arc(0, 0, entity.data.radius + entity.data.strokeWidth*2, 0, Math.PI * 2);
-  ctx.strokeStyle = '#990';
-  ctx.stroke();
+Graphics.draw = function(entity, ctx) {
+  entity.data.puCircles.forEach(function (circle) {
+    ctx.beginPath();
+    ctx.arc(0, 0, circle.radius, 0, Math.PI * 2);
+    ctx.strokeStyle = circle.stroke;
+    ctx.lineWidth = circle.strokeWidth;
+    ctx.stroke();
+  });
 };
+
+Graphics.remove = function() {};
