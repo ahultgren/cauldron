@@ -13,8 +13,7 @@ var MockInput = require('./components/input/MockInput');
 var LocalPlayerScript = require('./components/script/LocalPlayerScript');
 var PlayerOutput = require('./components/output/PlayerOutput');
 var LocalPlayerPowerups = require('./components/powerups/LocalPlayerPowerups');
-var Entity = require('./components/entity');
-var EntityV2 = require('./components/entity.v2');
+var Entity = require('./components/entity.v2');
 var CursorGraphics = require('./components/graphics/CursorGraphics');
 var FOWGraphics = require('./components/graphics/FOWGraphics');
 var FOVGraphics = require('./components/graphics/FOVGraphics');
@@ -37,7 +36,7 @@ var Game = module.exports = function (settings) {
   self.canvas = canvas;
   self.loop = new Loop(self);
 
-  self.map = new EntityV2({
+  self.map = new Entity({
     paths: settings.map()
   });
   self.map.addStage2Component(MapGraphics.create());
@@ -86,7 +85,7 @@ var Game = module.exports = function (settings) {
 
   // Cursor
 
-  var cursor = EntityV2.create({
+  var cursor = Entity.create({
     fill: self.playerOne.data.fill,
     mouse: mouse //## Use an input instance instead?
   })
@@ -102,19 +101,19 @@ var Game = module.exports = function (settings) {
 
   // Visibility polygon
 
-  self.add(new Entity({
-    graphics: new FOWGraphics({
-      paths: self.map.data.paths,
-      player: self.playerOne
-    })
-  }));
+  self.add(new Entity.create({
+    paths: self.map.data.paths,
+    player: self.playerOne
+  })
+  .addStage2Component(FOWGraphics.create())
+  .init());
 
-  self.add(new Entity({
-    graphics: new FOVGraphics({
-      paths: self.map.data.paths,
-      player: self.playerOne
-    })
-  }));
+  self.add(Entity.create({
+    paths: self.map.data.paths,
+    player: self.playerOne
+  })
+  .addStage2Component(FOVGraphics.create())
+  .init());
 
   self.camera = new Camera({
     player: self.playerOne,

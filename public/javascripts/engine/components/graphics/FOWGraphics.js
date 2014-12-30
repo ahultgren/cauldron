@@ -1,39 +1,33 @@
 'use strict';
 
-var util = require('util');
 var utils = require('../../utils');
-var Component = require('../Component');
+var Graphics = module.exports = exports;
 
+Graphics.type_ = 'visibilityPolygons';
 
-var Graphics = module.exports = function FOWGraphics (settings) {
-  this.constructor.super_.call(this, {
-    fuzzyRadius: 10
-  }, settings);
-
-  this.uniquePoints = calculateUniquePoints(this.paths);
+Graphics.create = function () {
+  return Graphics;
 };
 
-util.inherits(Graphics, Component);
+Graphics.init = function(entity) {
+  entity.data.fuzzyRadius = entity.data.fuzzyRadius || 10;
+  entity.data.uniquePoints = calculateUniquePoints(entity.data.paths);
 
-Graphics.create = function (settings) {
-  return new Graphics(settings);
+  entity.data.gco_ = Graphics.type_;
 };
 
-
-Graphics.prototype.type_ = 'visibilityPolygons';
-
-Graphics.prototype.draw = function(entity, ctx) {
+Graphics.update = function(entity, ctx) {
   var angle, dx, dy;
   var polygons = [
-    getSightPolygon(this.paths, this.uniquePoints, this.player.data.x, this.player.data.y)
+    getSightPolygon(entity.data.paths, entity.data.uniquePoints, entity.data.player.data.x, entity.data.player.data.y)
   ];
 
   for(angle = 0; angle < Math.PI*2; angle += (Math.PI*2)/3.1){
-    dx = Math.cos(angle)*this.fuzzyRadius;
-    dy = Math.sin(angle)*this.fuzzyRadius;
+    dx = Math.cos(angle)*entity.data.fuzzyRadius;
+    dy = Math.sin(angle)*entity.data.fuzzyRadius;
 
     polygons.push(
-      getSightPolygon(this.paths, this.uniquePoints, this.player.data.x+dx, this.player.data.y+dy)
+      getSightPolygon(entity.data.paths, entity.data.uniquePoints, entity.data.player.data.x+dx, entity.data.player.data.y+dy)
     );
   }
 
