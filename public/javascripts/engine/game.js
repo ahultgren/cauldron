@@ -37,13 +37,12 @@ var Game = module.exports = function (settings) {
   self.canvas = canvas;
   self.loop = new Loop(self);
 
-  self.map = new Entity({
+  self.map = Entity.create({
     paths: settings.map()
-  });
-  self.map.addStage2Component(MapGraphics.create());
-  self.map.init();
-
-  self.add(self.map);
+  })
+  .addStage2Component(MapGraphics.create())
+  .init()
+  .addTo(self);
 
   self.collisionManager = new CollisionManager({
     paths: self.map.data.paths
@@ -86,14 +85,13 @@ var Game = module.exports = function (settings) {
 
   // Cursor
 
-  var cursor = Entity.create({
+  Entity.create({
     fill: self.playerOne.data.fill,
     mouse: mouse //## Use an input instance instead?
   })
   .addStage2Component(CursorGraphics.create())
-  .init();
-
-  self.add(cursor);
+  .init()
+  .addTo(self);
 
   self.add(self.factories.powerup({}, {
     powerupType: 'weapon',
@@ -102,20 +100,22 @@ var Game = module.exports = function (settings) {
 
   // Visibility polygon
 
-  self.add(new Entity.create({
+  Entity.create({
     paths: self.map.data.paths,
     player: self.playerOne
   })
   .addStage2Component(FOWGraphics.create())
-  .init());
+  .init()
+  .addTo(self);
 
-  self.add(Entity.create({
+  Entity.create({
     paths: self.map.data.paths,
     player: self.playerOne
   })
   .addComponent(Stalker.create(self.playerOne, ['x', 'y', 'a']))
   .addStage2Component(FOVGraphics.create())
-  .init());
+  .init()
+  .addTo(self);
 
   self.camera = new Camera({
     player: self.playerOne,

@@ -15,13 +15,12 @@ var ammunitionModels = '../models/ammunition/';
 module.exports = function (type, components, data) {
   var game = this;
   var model = require(ammunitionModels + type);
-  var bullet;
 
   data = utils.extend({
     isAmmo_: true
   }, model.data, data);
 
-  bullet = Entity.create({
+  return Entity.create({
     physics: new model.components.Physics({
       paths: game.map.data.paths,
       game: game
@@ -32,9 +31,6 @@ module.exports = function (type, components, data) {
     }),
     aabb: new AABB(),
     shape: model.components.Shape && new model.components.Shape()
-  }, components, data);
-
-  game.add(bullet);
-
-  return bullet;
+  }, components, data)
+  .addTo(game);
 };

@@ -69,6 +69,14 @@ Entity.prototype.onCollision = function(type, response) {
 };
 
 /**
+ * Opposite of game.add()
+ */
+Entity.prototype.addTo = function(target) {
+  target.add(this);
+  return this;
+};
+
+/**
  * Should not be overwritten; tells the entity manager to remove the object from
  * the loop.
  */
