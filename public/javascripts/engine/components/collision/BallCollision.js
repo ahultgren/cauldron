@@ -13,6 +13,10 @@ var Collision = module.exports = function BallCollision (settings) {
 util.inherits(Collision, Component);
 
 
+Collision.create = function (settings) {
+  return new Collision(settings);
+};
+
 Collision.prototype.type_ = 'collidable';
 Collision.prototype.response_ = 'obstaclePhobic';
 Collision.prototype.boundingBox_ = 'circle';

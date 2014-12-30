@@ -11,6 +11,10 @@ var Collision = module.exports = function PowerupCollision (settings) {
 util.inherits(Collision, Component);
 
 
+Collision.create = function (settings) {
+  return new Collision(settings);
+};
+
 Collision.prototype.type_ = 'obstacle';
 Collision.prototype.response_ = 'zone';
 Collision.prototype.boundingBox_ = 'circle';

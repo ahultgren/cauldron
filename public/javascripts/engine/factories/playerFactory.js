@@ -33,7 +33,7 @@ module.exports = function playerFactory (components, data) {
   player = new Entity({
     physics: PlayerPhysics.create(),
     graphics: PlayerGraphics.create(),
-    collision: new Collision({
+    collision: Collision.create({
       game: game
     }),
     aabb: AABB.create(),
