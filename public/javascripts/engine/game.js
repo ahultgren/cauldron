@@ -151,6 +151,8 @@ Game.prototype.add = function (entity) {
     this.loop.eventUpdating.push(entity);
   }
 
+  entity.game = this;
+
   return this;
 };
 
