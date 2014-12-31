@@ -9,7 +9,6 @@ var Loop = require('./loop');
 var Camera = require('./Camera');
 var CollisionManager = require('./CollisionManager');
 var LocalInput = require('./components/input/LocalInput');
-var MockInput = require('./components/input/MockInput');
 var LocalPlayerScript = require('./components/script/LocalPlayerScript');
 var PlayerOutput = require('./components/output/PlayerOutput');
 var LocalPlayerPowerups = require('./components/powerups/LocalPlayerPowerups');
@@ -56,7 +55,7 @@ var Game = module.exports = function (settings) {
   // Player
 
   self.playerOne = self.factories.player({
-    input: new LocalInput(),
+    input: LocalInput.create(),
     weapon: self.factories.weapon('LaserCannon'),
     script: new LocalPlayerScript(),
     output: new PlayerOutput({
@@ -70,7 +69,6 @@ var Game = module.exports = function (settings) {
 
   //## Mock-player for something to shoot at
   self.playerTwo = self.factories.player({
-    input: new MockInput(),
     weapon: self.factories.weapon('LaserCannon'),
     script: new LocalPlayerScript(),
     powerups: LocalPlayerPowerups.create()

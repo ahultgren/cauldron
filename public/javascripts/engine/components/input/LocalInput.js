@@ -2,6 +2,7 @@
 
 var util = require('util');
 var Component = require('../Component');
+var R = require('ramda');
 var defaults = {
   keyboard: require('../../system/keyboard'),
   mouse: require('../../system/mouse'),
@@ -15,15 +16,22 @@ var defaults = {
 
 var LocalInput = module.exports = function LocalInput (settings) {
   this.constructor.super_.call(this, defaults, settings);
-
-  if(this.mouse.on) {
-    this.mouse.on('mousedown', this.emit.bind(this, 'mousedown'));
-    this.mouse.on('mouseup', this.emit.bind(this, 'mouseup'));
-  }
 };
 
 util.inherits(LocalInput, Component);
 
+LocalInput.create = function (settings) {
+  return new LocalInput(settings);
+};
+
+LocalInput.prototype.init = function(entity) {
+  var emit = R.curryN(2, R.lPartial(R.bind(entity.mediator.emit, entity.mediator)));
+
+  if(this.mouse.on) {
+    this.mouse.on('mousedown', emit('inputmousedown'));
+    this.mouse.on('mouseup', emit('inputmouseup'));
+  }
+};
 
 LocalInput.prototype.update = function(entity) {
   entity.data.dx += this.isDown('left') && -entity.data.acc || this.isDown('right') && entity.data.acc || 0;

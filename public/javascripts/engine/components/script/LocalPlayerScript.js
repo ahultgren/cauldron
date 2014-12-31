@@ -12,8 +12,8 @@ util.inherits(Script, Component);
 
 
 Script.prototype.init = function(entity) {
-  entity.input.on('mousedown', this.triggerStart_.bind(this, entity));
-  entity.input.on('mouseup', this.triggerEnd_.bind(this, entity));
+  entity.mediator.on('inputmousedown', this.triggerStart_.bind(this, entity));
+  entity.mediator.on('inputmouseup', this.triggerEnd_.bind(this, entity));
 };
 
 Script.prototype.update = function() {
