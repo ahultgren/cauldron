@@ -22,8 +22,7 @@ Collision.remove = function() {};
 
 function onCollision (entity, type, target) {
   if(target.data.isPlayer_) {
-    // [TODO] Use mediator
-    target.powerups.add({
+    target.mediator.emit('addPowerup', {
       type: entity.data.powerupType,
       data: entity.data.powerupData
     });

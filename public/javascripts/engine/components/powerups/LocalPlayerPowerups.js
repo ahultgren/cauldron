@@ -13,6 +13,10 @@ var Powerups = module.exports = function LocalPlayerPowerups (settings) {
 util.inherits(Powerups, Component);
 
 
+Powerups.prototype.init = function(entity) {
+  entity.mediator.on('addPowerup', this.add.bind(this, entity));
+};
+
 Powerups.prototype.update = function(entity) {
   var self = this;
   var i, l, powerup;
@@ -35,7 +39,7 @@ Powerups.prototype.update = function(entity) {
   self.newPowerups = [];
 };
 
-Powerups.prototype.add = function(powerup) {
+Powerups.prototype.add = function(entity, powerup) {
   this.newPowerups.push(powerup);
-  this.emit('newPowerup', powerup);
+  entity.mediator.emit('newPowerup', powerup);
 };

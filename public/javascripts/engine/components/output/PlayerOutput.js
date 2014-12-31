@@ -37,7 +37,7 @@ Output.prototype.init = function(entity) {
     newComponent.on('action', actionWeaponListener);
   });
 
-  entity.powerups.on('newPowerup', function (powerup) {
+  entity.mediator.on('newPowerup', function (powerup) {
     self.network.outgoing.push({
       type: 'newPowerup',
       data: powerup
