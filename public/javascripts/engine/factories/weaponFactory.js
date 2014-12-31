@@ -29,11 +29,7 @@ module.exports = function weaponFactory (name, components, data) {
 
   var weapon = new Entity({
     name: name,
-    script: new WeaponScript({
-      game: game,
-      map: game.map
-    })
-    //factory: ammunitionFactory.bind(game) // is this a good way to decouple game from entities?
+    script: WeaponScript.create()
   }, components, data);
 
   game.add(weapon);

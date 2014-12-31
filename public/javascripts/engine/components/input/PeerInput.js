@@ -46,7 +46,7 @@ Peer.prototype.update = function(entity) {
   }
 
   if(this.shootData) {
-    entity.weapon.script.shoot(entity.weapon, {
+    entity.weapon.mediator.emit('shoot', entity.weapon, {
       data: this.shootData.from
     }, this.shootData.toward, this.shootData.spread);
 

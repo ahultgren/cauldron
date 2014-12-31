@@ -13,7 +13,13 @@ var Script = module.exports = function WeaponScript (settings) {
 
 util.inherits(Script, Component);
 
+Script.create = function () {
+  return new Script();
+};
 
+Script.prototype.init = function(entity) {
+  entity.mediator.on('shoot', shoot);
+};
 
 Script.prototype.triggerStart = function (from, toward, spread) {
   this.shooting = true;
@@ -22,17 +28,15 @@ Script.prototype.triggerStart = function (from, toward, spread) {
   this.spread = spread;
 };
 
-
 Script.prototype.triggerEnd = function() {
   this.shooting = false;
 };
-
 
 Script.prototype.update = function(entity) {
   // Whether to shoot or not
   if(this.shooting && entity.data.lastShot <= 0) {
     entity.data.lastShot = entity.data.shotInterval;
-    this.shoot(entity, this.from, this.toward, entity.data.spread);
+    shoot(entity, this.from, this.toward, entity.data.spread);
 
     if(entity.data.singleAction) {
       this.shooting = false;
@@ -52,8 +56,11 @@ Script.prototype.update = function(entity) {
   entity.data.spread = (Math.random() * entity.data.spreadRange - entity.data.spreadRange/2) * (Math.random() * entity.data.spreadRange - entity.data.spreadRange/2);
 };
 
-Script.prototype.shoot = function(entity, from, toward, spread) {
-  this.game.factories.ammunition(entity.data.ammunition, {
+/* Helpers
+============================================================================= */
+
+function shoot (entity, from, toward, spread) {
+  entity.game.factories.ammunition(entity.data.ammunition, {
     from: from,
     toward: toward,
     weapon: entity
@@ -77,4 +84,4 @@ Script.prototype.shoot = function(entity, from, toward, spread) {
     },
     spread: spread
   });
-};
+}
