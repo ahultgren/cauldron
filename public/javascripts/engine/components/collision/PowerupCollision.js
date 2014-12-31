@@ -1,31 +1,28 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
+var Collision = module.exports = exports;
 
+Collision.type_ = 'obstacle';
+Collision.response_ = 'zone';
+Collision.boundingBox_ = 'circle';
 
-var Collision = module.exports = function PowerupCollision (settings) {
-  this.constructor.super_.call(this, {}, settings);
+Collision.create = function () {
+  return Collision;
 };
 
-util.inherits(Collision, Component);
-
-
-Collision.create = function (settings) {
-  return new Collision(settings);
+Collision.init = function(enitity) {
+  enitity.mediator.on('collision', onCollision);
 };
 
-Collision.prototype.type_ = 'obstacle';
-Collision.prototype.response_ = 'zone';
-Collision.prototype.boundingBox_ = 'circle';
+Collision.update = function() {};
+Collision.remove = function() {};
 
-Collision.prototype.init = function(enitity) {
-  enitity.mediator.on('collision', this.onCollision);
-};
+/* Private
+============================================================================= */
 
-Collision.prototype.update = function() {};
-Collision.prototype.onCollision = function(entity, type, target) {
+function onCollision (entity, type, target) {
   if(target.data.isPlayer_) {
+    // [TODO] Use mediator
     target.powerups.add({
       type: entity.data.powerupType,
       data: entity.data.powerupData
@@ -33,4 +30,4 @@ Collision.prototype.onCollision = function(entity, type, target) {
 
     entity.remove();
   }
-};
+}

@@ -24,9 +24,7 @@ module.exports = function (type, components, data) {
   return Entity.create({
     physics: model.components.Physics.create(),
     graphics: model.components.Graphics.create(),
-    collision: model.components.Collision && model.components.Collision.create({
-      game: game
-    }),
+    collision: model.components.Collision && model.components.Collision.create(),
     aabb: AABB.create(),
     shape: model.components.Shape && model.components.Shape.create()
   }, components, data)

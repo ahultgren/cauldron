@@ -1,43 +1,41 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
 var Entity = require('../Entity.v2');
 var ExplosionGraphics = require('../graphics/ExplosionGraphics');
+var defaultEplosionGradient = [
+  '#f00',
+  '#f77',
+  '#faa',
+  '#fcc',
+  '#fff'
+];
 
+var Collision = module.exports = exports;
 
-var Collision = module.exports = function BeamCollision (settings) {
-  this.constructor.super_.call(this, {
-    explosionRadius: 2,
-    explosionDuration: 4,
-    explosionGradient: [
-      '#f00',
-      '#f77',
-      '#faa',
-      '#fcc',
-      '#fff'
-    ]
-  }, settings);
+Collision.type_ = 'collidable';
+Collision.response_ = 'none';
+Collision.boundingBox_ = 'polygon';
+
+Collision.create = function () {
+  return Collision;
 };
 
-util.inherits(Collision, Component);
+Collision.init = function(entity) {
+  entity.mediator.on('collision', onCollision);
 
-
-Collision.create = function (settings) {
-  return new Collision(settings);
+  entity.data.explosionRadius = entity.data.explosionRadius || 2;
+  entity.data.explosionDuration = entity.data.explosionDuration || 4;
+  entity.data.explosionGradient = entity.data.explosionGradient || defaultEplosionGradient;
 };
 
-Collision.prototype.type_ = 'collidable';
-Collision.prototype.response_ = 'none';
-Collision.prototype.boundingBox_ = 'polygon';
+Collision.update = function() {};
 
-Collision.prototype.init = function(entity) {
-  entity.mediator.on('collision', this.onCollision.bind(this));
-};
+Collision.remove = function() {};
 
-Collision.prototype.update = function() {};
+/* Private
+============================================================================= */
 
-Collision.prototype.onCollision = function(entity, type, target) {
+function onCollision (entity, type, target) {
   switch(type) {
     case 'map':
       //## Spawn small explosion?
@@ -46,26 +44,22 @@ Collision.prototype.onCollision = function(entity, type, target) {
     case 'collidable':
       if(target.data.playerId !== entity.data.playerId) {
         // [TODO] Need point of collision
-        this.spawn_(entity, target);
+        spawn(entity, target);
       }
       break;
   }
-};
+}
 
-
-/* Private
-============================================================================= */
-
-Collision.prototype.spawn_ = function(entity, target) {
+function spawn (entity, target) {
   var explosion = Entity.create({
-    gradient: this.explosionGradient,
-    duration: this.explosionDuration,
+    gradient: entity.data.explosionGradient,
+    duration: entity.data.explosionDuration,
     x: target.data.x,
     y: target.data.y,
-    radius: this.explosionRadius
+    radius: entity.data.explosionRadius
   })
   .addStage2Component(ExplosionGraphics.create())
   .init();
 
-  this.game.add(explosion);
-};
+  entity.game.add(explosion);
+}
