@@ -54,7 +54,7 @@ Peer.prototype.update = function(entity) {
   }
 
   if(this.powerups.length) {
-    entity.powerups.newPowerups = this.powerups;
+    entity.mediator.emit('addPowerups', this.powerups);
     this.powerups = [];
   }
 };

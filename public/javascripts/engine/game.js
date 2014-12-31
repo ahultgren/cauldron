@@ -62,9 +62,7 @@ var Game = module.exports = function (settings) {
     output: new PlayerOutput({
       network: self.network
     }),
-    powerups: new LocalPlayerPowerups({
-      game: self
-    })
+    powerups: LocalPlayerPowerups.create()
   }, {
     x: 20,
     y: 20
@@ -75,9 +73,7 @@ var Game = module.exports = function (settings) {
     input: new MockInput(),
     weapon: self.factories.weapon('LaserCannon'),
     script: new LocalPlayerScript(),
-    powerups: new LocalPlayerPowerups({
-      game: self
-    })
+    powerups: LocalPlayerPowerups.create()
   }, {
     x: 60,
     y: 100

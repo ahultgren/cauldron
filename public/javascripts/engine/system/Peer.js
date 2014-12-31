@@ -4,7 +4,6 @@ var PeerInput = require('../components/input/PeerInput');
 var PeerPlayerScript = require('../components/script/PeerPlayerScript');
 var PeerPlayerPowerups = require('../components/powerups/PeerPlayerPowerups');
 
-
 var Peer = module.exports = function Peer (game, id, conn) {
   this.game = game;
   this.id = id;
@@ -16,12 +15,9 @@ var Peer = module.exports = function Peer (game, id, conn) {
       game: this.game
     }),
     script: new PeerPlayerScript(),
-    powerups: new PeerPlayerPowerups({
-      game: this.game
-    })
+    powerups: PeerPlayerPowerups.create()
   });
 };
-
 
 Peer.prototype.remove = function() {
   this.conn.removeAllListeners();
