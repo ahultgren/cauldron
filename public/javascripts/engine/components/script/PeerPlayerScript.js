@@ -1,19 +1,22 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
 var R = require('ramda');
+var Script = module.exports = exports;
 
-var Script = module.exports = function PeerPlayerScript () {};
+Script.create = function () {
+  return Script;
+};
 
-util.inherits(Script, Component);
-
-Script.prototype.init = function(entity) {
+Script.init = function(entity) {
   entity.input.on('triggerStart', R.lPartial(triggerStart, entity));
   entity.input.on('triggerEnd', R.lPartial(triggerEnd, entity));
 };
 
-Script.prototype.update = function(){};
+Script.update = function(){};
+Script.remove = function(){};
+
+/* Helpers
+============================================================================= */
 
 function triggerStart (entity, settings) {
   var from, toward, spread;

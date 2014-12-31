@@ -14,7 +14,7 @@ var Peer = module.exports = function Peer (game, id, conn) {
       conn: conn,
       game: this.game
     }),
-    script: new PeerPlayerScript(),
+    script: PeerPlayerScript.create(),
     powerups: PeerPlayerPowerups.create()
   });
 };
