@@ -57,7 +57,7 @@ var Game = module.exports = function (settings) {
   self.playerOne = self.factories.player({
     input: LocalInput.create(),
     weapon: self.factories.weapon('LaserCannon'),
-    script: new LocalPlayerScript(),
+    script: LocalPlayerScript.create(),
     output: new PlayerOutput({
       network: self.network
     }),
@@ -68,11 +68,7 @@ var Game = module.exports = function (settings) {
   });
 
   //## Mock-player for something to shoot at
-  self.playerTwo = self.factories.player({
-    weapon: self.factories.weapon('LaserCannon'),
-    script: new LocalPlayerScript(),
-    powerups: LocalPlayerPowerups.create()
-  }, {
+  self.playerTwo = self.factories.player({}, {
     x: 60,
     y: 100
   });
