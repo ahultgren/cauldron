@@ -19,6 +19,8 @@ Script.create = function () {
 
 Script.prototype.init = function(entity) {
   entity.mediator.on('shoot', shoot);
+  entity.mediator.on('triggerStart', this.triggerStart.bind(this));
+  entity.mediator.on('triggerEnd', this.triggerEnd.bind(this));
 };
 
 Script.prototype.triggerStart = function (from, toward, spread) {

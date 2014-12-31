@@ -26,26 +26,12 @@ function triggerStart (entity) {
     toward = entity.input.mouse;
     spread = entity.weapon.spread;
 
-    entity.weapon.script.triggerStart(from, toward, spread);
-
-    /*entity.emit('action', 'triggerStart', {
-      from: {
-        x: from.x,
-        y: from.y
-      },
-      toward: {
-        x: toward.x,
-        y: toward.y
-      },
-      spread: spread
-    });*/
+    entity.weapon.mediator.emit('triggerStart', from, toward, spread);
   }
 }
 
 function triggerEnd (entity) {
   if(entity.weapon) {
-    entity.weapon.script.triggerEnd();
-
-    /*entity.emit('action', 'triggerEnd');*/
+    entity.weapon.mediator.emit('triggerEnd');
   }
 }

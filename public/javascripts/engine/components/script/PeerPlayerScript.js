@@ -2,25 +2,20 @@
 
 var util = require('util');
 var Component = require('../Component');
+var R = require('ramda');
 
-
-var Script = module.exports = function PeerPlayerScript (settings) {
-  this.constructor.super_.call(this, {}, settings);
-};
+var Script = module.exports = function PeerPlayerScript () {};
 
 util.inherits(Script, Component);
 
-
 Script.prototype.init = function(entity) {
-  entity.input.on('triggerStart', this.triggerStart_.bind(this, entity));
-  entity.input.on('triggerEnd', this.triggerEnd_.bind(this, entity));
+  entity.input.on('triggerStart', R.lPartial(triggerStart, entity));
+  entity.input.on('triggerEnd', R.lPartial(triggerEnd, entity));
 };
 
-Script.prototype.update = function(entity) {
-  void(entity);
-};
+Script.prototype.update = function(){};
 
-Script.prototype.triggerStart_ = function(entity, settings) {
+function triggerStart (entity, settings) {
   var from, toward, spread;
 
   if(entity.weapon) {
@@ -28,13 +23,12 @@ Script.prototype.triggerStart_ = function(entity, settings) {
     toward = settings.toward;
     spread = settings.spread || entity.weapon.spread;
 
-    entity.weapon.script.triggerStart(from, toward, spread);
+    entity.weapon.mediator.emit('triggerStart', from, toward, spread);
   }
-};
+}
 
-
-Script.prototype.triggerEnd_ = function(entity) {
+function triggerEnd (entity) {
   if(entity.weapon) {
-    entity.weapon.script.triggerEnd();
+    entity.weapon.mediator.emit('triggerEnd');
   }
-};
+}
