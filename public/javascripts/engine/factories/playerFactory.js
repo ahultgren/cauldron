@@ -30,7 +30,7 @@ module.exports = function playerFactory (components, data) {
     playerId: generateId() + generateId() + generateId()
   }, defaultData, data);
 
-  player = new Entity({
+  player = Entity.create({
     physics: PlayerPhysics.create(),
     graphics: PlayerGraphics.create(),
     collision: Collision.create(),

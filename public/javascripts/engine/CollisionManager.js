@@ -46,7 +46,7 @@ Collisions.prototype.mapTests = function(collidable) {
 
           //## All entities should have an entity.shape which is instance of SAT.P|C and updates itself
           if(testXtoMap(getShape(entity), line, response.clear())) {
-            if(entity.collision.response_ === 'obstaclePhobic') {
+            if(entity.data.collisionResponse_ === 'obstaclePhobic') {
               entity.data.x -= response.overlapV.x;
               entity.data.y -= response.overlapV.y;
             }
@@ -145,7 +145,7 @@ Collisions.prototype.testMap = function(entity) {
   }
 
   if(x !== entity.data.x || y !== entity.data.y) {
-    if(entity.collision.response_ === 'obstaclePhobic') {
+    if(entity.data.collisionResponse_ === 'obstaclePhobic') {
       entity.data.x = x;
       entity.data.y = y;
     }

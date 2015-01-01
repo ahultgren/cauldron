@@ -10,8 +10,12 @@ Collision.create = function () {
   return Collision;
 };
 
-Collision.init = function(enitity) {
-  enitity.mediator.on('collision', onCollision);
+Collision.init = function(entity) {
+  entity.mediator.on('collision', onCollision);
+
+  entity.data.collisionType_ = Collision.type_;
+  entity.data.collisionResponse_ = Collision.response_;
+  entity.data.boundingBox_ = Collision.boundingBox_;
 };
 
 Collision.update = function() {};

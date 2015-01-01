@@ -23,6 +23,10 @@ Collision.create = function () {
 Collision.init = function(entity) {
   entity.mediator.on('collision', onCollision);
 
+  entity.data.collisionType_ = Collision.type_;
+  entity.data.collisionResponse_ = Collision.response_;
+  entity.data.boundingBox_ = Collision.boundingBox_;
+
   entity.data.explosionRadius = entity.data.explosionRadius || 2;
   entity.data.explosionDuration = entity.data.explosionDuration || 4;
   entity.data.explosionGradient = entity.data.explosionGradient || defaultEplosionGradient;

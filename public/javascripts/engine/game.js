@@ -58,7 +58,7 @@ var Game = module.exports = function (settings) {
     input: LocalInput.create(),
     weapon: self.factories.weapon('LaserCannon'),
     script: LocalPlayerScript.create(),
-    output: new PlayerOutput({
+    output: PlayerOutput.create({
       network: self.network
     }),
     powerups: LocalPlayerPowerups.create()

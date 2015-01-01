@@ -19,6 +19,9 @@ var Output = module.exports = function PlayerOutput (settings) {
 
 util.inherits(Output, Component);
 
+Output.create = function (settings) {
+  return new Output(settings);
+};
 
 Output.prototype.init = function(entity) {
   var self = this;
