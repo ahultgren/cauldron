@@ -25,7 +25,7 @@ function onCollision (entity, type, target) {
   var isSelf = target && target.data.playerId === entity.data.playerId;
 
   if(isAmmo && !isSelf) {
-    entity.emit('hit', type, target);
-    target.weapon.player.emit('hitEnemyPlayer', entity);
+    entity.mediator.emit('hit', type, target);
+    target.weapon.player.mediator.emit('hitEnemyPlayer', entity);
   }
 }
