@@ -30,11 +30,11 @@ Output.prototype.init = function(entity) {
     });
   }
 
-  entity.weapon.on('action', actionWeaponListener);
+  entity.weapon.mediator.on('action', actionWeaponListener);
 
-  entity.weapon.on('replaced', function (newComponent) {
-    entity.weapon.removeListener('action', actionWeaponListener);
-    newComponent.on('action', actionWeaponListener);
+  entity.weapon.mediator.on('replaced', function (newComponent) {
+    entity.weapon.mediator.removeListener('action', actionWeaponListener);
+    newComponent.mediator.on('action', actionWeaponListener);
   });
 
   entity.mediator.on('newPowerup', function (powerup) {

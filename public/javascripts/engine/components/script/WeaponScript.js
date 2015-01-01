@@ -75,7 +75,7 @@ function shoot (entity, from, toward, spread) {
     entity.data.ammunitionData
   ));
 
-  entity.emit('action', 'shoot', {
+  entity.mediator.emit('action', 'shoot', {
     from: {
       x: from.data.x,
       y: from.data.y

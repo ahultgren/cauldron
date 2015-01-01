@@ -84,7 +84,7 @@ Entity.prototype.remove = function() {
  * Notifies a component that it's being replaced with another instance.
  */
 Entity.prototype.replace = function(name, newComponent) {
-  this[name].emit('replaced', newComponent);
+  this[name].mediator.emit('replaced', newComponent);
   this[name].remove();
   this[name] = newComponent;
   newComponent.init && newComponent.init(this);
