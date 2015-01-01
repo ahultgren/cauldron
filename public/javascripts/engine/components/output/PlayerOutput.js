@@ -66,7 +66,7 @@ Output.prototype.updateEvent = function(entity) {
         {
           type: 'weapon',
           data: {
-            weapon: entity.weapon.name
+            weapon: entity.weapon.data.name
           }
         },
         {
