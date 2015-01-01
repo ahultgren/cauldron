@@ -20,7 +20,7 @@ var Camera = module.exports = function Camera (settings) {
     object.correct(self);
   });
 
-  this.player.on('hit', function () {
+  this.player.mediator.on('hit', function () {
     self.shakeFor = 20;
   });
 };
