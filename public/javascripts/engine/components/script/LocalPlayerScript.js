@@ -24,7 +24,7 @@ function triggerStart (entity) {
   if(entity.weapon) {
     from = entity;
     toward = entity.input.mouse;
-    spread = entity.weapon.spread;
+    spread = entity.weapon.data.spread;
 
     entity.weapon.mediator.emit('triggerStart', from, toward, spread);
   }
