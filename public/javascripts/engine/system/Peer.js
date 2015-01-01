@@ -1,7 +1,6 @@
 'use strict';
 
 var PeerInput = require('../components/input/PeerInput');
-var PeerPlayerScript = require('../components/script/PeerPlayerScript');
 var PeerPlayerPowerups = require('../components/powerups/PeerPlayerPowerups');
 
 var Peer = module.exports = function Peer (game, id, conn) {
@@ -14,7 +13,6 @@ var Peer = module.exports = function Peer (game, id, conn) {
       conn: conn,
       game: this.game
     }),
-    script: PeerPlayerScript.create(),
     powerups: PeerPlayerPowerups.create()
   });
 };
