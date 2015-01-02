@@ -1,7 +1,8 @@
 'use strict';
 
+var R = require('ramda');
 var utils = require('../utils');
-var Entity = require('../components/Entity');
+var Entity = require('../components/Entity.v2');
 var PlayerPhysics = require('../components/physics/PlayerPhysics');
 var PlayerGraphics = require('../components/graphics/PlayerGraphics');
 var Collision = require('../components/collision/PlayerCollision');
@@ -22,7 +23,7 @@ var defaultData = {
 };
 
 
-module.exports = function playerFactory (components, data) {
+module.exports = function playerFactory (components, stage2, data) {
   var game = this;
   var player;
 
@@ -30,13 +31,31 @@ module.exports = function playerFactory (components, data) {
     playerId: generateId() + generateId() + generateId()
   }, defaultData, data);
 
-  player = Entity.create({
-    physics: PlayerPhysics.create(),
-    graphics: PlayerGraphics.create(),
-    collision: Collision.create(),
-    aabb: AABB.create(),
-    shape: Circle.create()
-  }, components, data);
+  player = Entity.create(data);
+
+  [
+    PlayerGraphics.create()
+  ].concat(stage2).forEach(function (component) {
+    player.addStage2Component(component);
+  });
+
+  [
+    PlayerPhysics.create(),
+    Collision.create(),
+    AABB.create(),
+    Circle.create()
+  ].concat(R.values(components)).forEach(function (component) {
+    player.addComponent(component);
+  });
+
+  // [TODO] Don't use named components
+  if(components.input) {
+    player.input = components.input;
+  }
+
+  if(components.weapon) {
+    player.weapon = components.weapon;
+  }
 
   if(player.weapon) {
     // [TODO] Is this still needed?
@@ -44,7 +63,7 @@ module.exports = function playerFactory (components, data) {
     player.weapon.data.playerId = data.playerId;
   }
 
-  game.add(player);
+  game.add(player.init());
 
   return player;
 };

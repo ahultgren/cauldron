@@ -15,7 +15,8 @@ Graphics.init = function (entity) {
   entity.data.gco_ = Graphics.type_;
 };
 
-Graphics.draw = function(entity, ctx) {
+// [TODO] Cleanup when player is done converting
+Graphics.update = Graphics.draw = function(entity, ctx) {
   ctx.beginPath();
   ctx.fillStyle = entity.data.fill;
   ctx.arc(0, 0, entity.data.radius, START, END, false);

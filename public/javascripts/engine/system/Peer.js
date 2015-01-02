@@ -14,7 +14,7 @@ var Peer = module.exports = function Peer (game, id, conn) {
       game: this.game
     }),
     powerups: PeerPlayerPowerups.create()
-  });
+  }, []);
 };
 
 Peer.prototype.remove = function() {

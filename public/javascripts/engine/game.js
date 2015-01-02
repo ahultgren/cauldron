@@ -58,17 +58,18 @@ var Game = module.exports = function (settings) {
     input: LocalInput.create(),
     weapon: self.factories.weapon('LaserCannon'),
     script: LocalPlayerScript.create(),
-    output: PlayerOutput.create({
-      network: self.network
-    }),
     powerups: LocalPlayerPowerups.create()
-  }, {
+  }, [
+    PlayerOutput.create({
+      network: self.network
+    })
+  ], {
     x: 20,
     y: 20
   });
 
   //## Mock-player for something to shoot at
-  self.playerTwo = self.factories.player({}, {
+  self.playerTwo = self.factories.player({}, [], {
     x: 60,
     y: 100
   });
@@ -120,16 +121,19 @@ var Game = module.exports = function (settings) {
 
 
 Game.prototype.add = function (entity) {
-  if(entity.graphics && entity.graphics.type_ && this.loop[entity.graphics.type_]) {
-    this.loop[entity.graphics.type_].push(entity);
-  }
-
   // v2 graphics
   if(entity.data && entity.data.gco_ && this.loop[entity.data.gco_]) {
     this.loop[entity.data.gco_].push(entity);
   }
+  else if(entity.graphics && entity.graphics.type_ && this.loop[entity.graphics.type_]) {
+    this.loop[entity.graphics.type_].push(entity);
+  }
 
-  if(entity.collision && entity.collision.type_ && this.loop[entity.collision.type_]) {
+  // v2 collision
+  if(entity.data && entity.data.collisionType_ && this.loop[entity.data.collisionType_]) {
+    this.loop[entity.data.collisionType_].push(entity);
+  }
+  else if(entity.collision && entity.collision.type_ && this.loop[entity.collision.type_]) {
     this.loop[entity.collision.type_].push(entity);
   }
 

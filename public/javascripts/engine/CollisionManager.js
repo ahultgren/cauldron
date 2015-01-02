@@ -31,8 +31,8 @@ Collisions.prototype.mapTests = function(collidable) {
     }
 
     if(
-      entity.data.dx < entity.aabb.halfWidth &&
-      entity.data.dy < entity.aabb.halfHeight
+      entity.data.dx < entity.data.halfWidth &&
+      entity.data.dy < entity.data.halfHeight
     ) {
       // aabb-aabb test
       for(ii = 0, ll = paths.length; ii < ll; ii++) {
@@ -174,7 +174,7 @@ Collisions.prototype.test = function(entity1, entity2) {
 ============================================================================= */
 
 function getShape (entity) {
-  if(!entity.shape) {
+  if(!entity.data.shape) {
     throw new Error('Entity has no shape');
   }
 
@@ -206,8 +206,8 @@ function testXtoMap (a, map, response) {
 }
 
 function testAabbAabb (a, b) {
-  var distanceX = a.aabbX - b.aabbX;
-  var distanceY = a.aabbY - b.aabbY;
+  var distanceX = (a.aabbX || a.x) - (b.aabbX || b.x);
+  var distanceY = (a.aabbY || a.y) - (b.aabbY || b.y);
 
   return Math.abs(distanceX) < a.halfWidth + b.halfWidth &&
     Math.abs(distanceY) < a.halfHeight + b.halfHeight &&

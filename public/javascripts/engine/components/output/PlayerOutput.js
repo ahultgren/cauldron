@@ -48,7 +48,8 @@ Output.prototype.init = function(entity) {
   });
 };
 
-Output.prototype.updateEvent = function(entity) {
+// [TODO] Cleanup when player is done converting
+Output.prototype.update = Output.prototype.updateEvent = function(entity) {
   var self = this;
   var i, l, id;
 

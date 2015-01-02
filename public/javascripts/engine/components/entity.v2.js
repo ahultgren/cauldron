@@ -96,3 +96,10 @@ Entity.prototype.remove = function() {
 
   return this;
 };
+
+Entity.prototype.replace = function(name, newComponent) {
+  this[name].mediator.emit('replaced', newComponent);
+  this[name].remove();
+  this[name] = newComponent;
+  newComponent.init(this);
+};
