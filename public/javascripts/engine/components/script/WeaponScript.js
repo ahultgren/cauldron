@@ -1,6 +1,7 @@
 'use strict';
 
 var utils = require('../../utils');
+var weaponFactory = require('../../factories/weaponFactory');
 var defaults = {
   lastShot: 0,
   shotInterval: 6,
@@ -10,13 +11,15 @@ var defaults = {
   spread: 0.1
 };
 
-var Script = module.exports = exports;
+var Script = module.exports;
 
 Script.create = function () {
   return Script;
 };
 
 Script.init = function(entity) {
+  var weaponData;
+
   entity.mediator.on('shoot', shoot);
   entity.mediator.on('triggerStart', triggerStart.bind(null, entity));
   entity.mediator.on('triggerEnd', triggerEnd.bind(null, entity));
@@ -24,6 +27,15 @@ Script.init = function(entity) {
   Object.keys(defaults).forEach(function (key) {
     if(!entity.data[key]) {
       entity.data[key] = defaults[key];
+    }
+  });
+
+  // [TODO] Separate function for initating weapon data
+  weaponData = weaponFactory(entity.data.weaponName);
+
+  Object.keys(weaponData).forEach(function (key) {
+    if(!entity.data[key]) {
+      entity.data[key] = weaponData[key];
     }
   });
 };
@@ -69,17 +81,19 @@ function triggerEnd (entity) {
 }
 
 function shoot (entity, from, toward, spread) {
-  entity.game.factories.ammunition(entity.data.ammunition, {
+  var weaponData = weaponFactory(entity.data.weaponName);
+
+  entity.game.factories.ammunition(weaponData.ammunition, {
     from: from,
-    toward: toward,
-    weapon: entity
+    toward: toward
   },
   utils.extend(
     {
       spread: spread,
+      player: entity,
       playerId: entity.data.playerId
     },
-    entity.data.ammunitionData
+    weaponData.ammunitionData
   ));
 
   entity.mediator.emit('action', 'shoot', {

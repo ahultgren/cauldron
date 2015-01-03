@@ -7,26 +7,8 @@ require('../models/weapons/PlasmaRifle');
 require('../models/weapons/RocketLauncher');
 
 var utils = require('../utils');
-var Entity = require('../components/entity.v2');
-var WeaponScript = require('../components/script/WeaponScript');
-var weaponModels = '../models/weapons/';
+var weaponModelsPath = '../models/weapons/';
 
-module.exports = function weaponFactory (name, components, data) {
-  var game = this;
-
-  data = utils.extend({
-    name: name
-  }, require(weaponModels + name), data);
-
-  var weapon = Entity.create(data)
-    .addComponent(WeaponScript.create())
-    .init()
-    .addTo(game);
-
-  // [TODO] This is obsolete. Find another way
-  if(components && components.player) {
-    weapon.player = components.player;
-  }
-
-  return weapon;
+module.exports = function weaponFactory (name, data) {
+  return utils.extend(require(weaponModelsPath + name), data);
 };

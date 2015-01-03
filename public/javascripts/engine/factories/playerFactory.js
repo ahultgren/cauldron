@@ -52,17 +52,13 @@ module.exports = function playerFactory (components, stage2, data) {
   if(components.input) {
     player.input = components.input;
   }
-
-  if(components.weapon) {
-    player.weapon = components.weapon;
-  }
-
+/*
   if(player.weapon) {
     // [TODO] Is this still needed?
     player.weapon.player = player;
     player.weapon.data.playerId = data.playerId;
   }
-
+*/
   game.add(player.init());
 
   return player;

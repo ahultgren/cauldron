@@ -30,6 +30,6 @@ function onCollision (entity, type, target) {
 
   if(isAmmo && !isSelf) {
     entity.mediator.emit('hit', type, target);
-    target.weapon.player.mediator.emit('hitEnemyPlayer', entity);
+    target.data.player.mediator.emit('hitEnemyPlayer', entity);
   }
 }

@@ -10,6 +10,7 @@ var Camera = require('./Camera');
 var CollisionManager = require('./CollisionManager');
 var LocalInput = require('./components/input/LocalInput');
 var LocalPlayerScript = require('./components/script/LocalPlayerScript');
+var WeaponScript = require('./components/script/WeaponScript');
 var PlayerOutput = require('./components/output/PlayerOutput');
 var LocalPlayerPowerups = require('./components/powerups/LocalPlayerPowerups');
 var Entity = require('./components/entity.v2');
@@ -56,14 +57,15 @@ var Game = module.exports = function (settings) {
 
   self.playerOne = self.factories.player({
     input: LocalInput.create(),
-    weapon: self.factories.weapon('LaserCannon'),
     script: LocalPlayerScript.create(),
+    script2: WeaponScript.create(),
     powerups: LocalPlayerPowerups.create()
   }, [
     PlayerOutput.create({
       network: self.network
     })
   ], {
+    weaponName: 'LaserCannon',
     x: 20,
     y: 20
   });

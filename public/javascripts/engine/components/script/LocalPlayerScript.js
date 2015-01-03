@@ -21,17 +21,13 @@ Script.remove = function() {};
 function triggerStart (entity) {
   var from, toward, spread;
 
-  if(entity.weapon) {
-    from = entity;
-    toward = entity.input.mouse;
-    spread = entity.weapon.data.spread;
+  from = entity;
+  toward = entity.input.mouse;
+  spread = entity.data.spread;
 
-    entity.weapon.mediator.emit('triggerStart', from, toward, spread);
-  }
+  entity.mediator.emit('triggerStart', from, toward, spread);
 }
 
 function triggerEnd (entity) {
-  if(entity.weapon) {
-    entity.weapon.mediator.emit('triggerEnd');
-  }
+  entity.mediator.emit('triggerEnd');
 }

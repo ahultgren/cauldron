@@ -32,14 +32,14 @@ Output.prototype.init = function(entity) {
       data: data
     });
   }
-
+/*
   entity.weapon.mediator.on('action', actionWeaponListener);
 
   entity.weapon.mediator.on('replaced', function (newComponent) {
     entity.weapon.mediator.removeListener('action', actionWeaponListener);
     newComponent.mediator.on('action', actionWeaponListener);
   });
-
+*/
   entity.mediator.on('newPowerup', function (powerup) {
     self.network.outgoing.push({
       type: 'newPowerup',
@@ -70,7 +70,7 @@ Output.prototype.update = Output.prototype.updateEvent = function(entity) {
         {
           type: 'weapon',
           data: {
-            weapon: entity.weapon.data.name
+            weapon: entity.data.weaponName
           }
         },
         {
