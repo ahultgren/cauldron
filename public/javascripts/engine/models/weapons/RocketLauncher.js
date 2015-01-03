@@ -2,6 +2,7 @@
 
 module.exports = {
   shotInterval: 20,
+  singleAction: false,
   ammunition: 'Rocket',
   ammunitionData: {
     initialSpeed: 2,

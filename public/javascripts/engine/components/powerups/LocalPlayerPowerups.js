@@ -20,12 +20,7 @@ Powerups.update = function(entity) {
 
     switch (powerup.type) {
       case 'weapon':
-        entity.replace('weapon', entity.game.factories.weapon(powerup.data, {
-          // [TODO] Is this still needed?
-          player: entity,
-        }, {
-          playerId: entity.data.playerId
-        }));
+        entity.mediator.emit('newWeapon', powerup.data);
         break;
     }
   }

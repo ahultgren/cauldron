@@ -64,6 +64,7 @@ Entity.prototype.addStage2Component = function(component) {
   return this;
 };
 
+// [TODO] Don't use this
 Entity.prototype.onCollision = function(type, response) {
   this.mediator.emit('collision', this, type, response);
 };
@@ -95,11 +96,4 @@ Entity.prototype.remove = function() {
   self.remove_ = true;
 
   return this;
-};
-
-Entity.prototype.replace = function(name, newComponent) {
-  this[name].mediator.emit('replaced', newComponent);
-  this[name].remove();
-  this[name] = newComponent;
-  newComponent.init(this);
 };

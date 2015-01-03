@@ -18,26 +18,15 @@ Script.create = function () {
 };
 
 Script.init = function(entity) {
-  var weaponData;
+  var weaponData = weaponFactory(entity.data.weaponName);
 
   entity.mediator.on('shoot', shoot);
   entity.mediator.on('triggerStart', triggerStart.bind(null, entity));
   entity.mediator.on('triggerEnd', triggerEnd.bind(null, entity));
+  entity.mediator.on('newWeapon', newWeapon.bind(null, entity));
 
-  Object.keys(defaults).forEach(function (key) {
-    if(!entity.data[key]) {
-      entity.data[key] = defaults[key];
-    }
-  });
-
-  // [TODO] Separate function for initating weapon data
-  weaponData = weaponFactory(entity.data.weaponName);
-
-  Object.keys(weaponData).forEach(function (key) {
-    if(!entity.data[key]) {
-      entity.data[key] = weaponData[key];
-    }
-  });
+  antiExtend(entity.data, defaults);
+  antiExtend(entity.data, weaponData);
 };
 
 Script.update = function(entity) {
@@ -81,9 +70,7 @@ function triggerEnd (entity) {
 }
 
 function shoot (entity, from, toward, spread) {
-  var weaponData = weaponFactory(entity.data.weaponName);
-
-  entity.game.factories.ammunition(weaponData.ammunition, {
+  entity.game.factories.ammunition(entity.data.ammunition, {
     from: from,
     toward: toward
   },
@@ -93,7 +80,7 @@ function shoot (entity, from, toward, spread) {
       player: entity,
       playerId: entity.data.playerId
     },
-    weaponData.ammunitionData
+    entity.data.ammunitionData
   ));
 
   entity.mediator.emit('action', 'shoot', {
@@ -106,5 +93,23 @@ function shoot (entity, from, toward, spread) {
       y: toward.y
     },
     spread: spread
+  });
+}
+
+function newWeapon (entity, weaponName) {
+  var weaponData = weaponFactory(weaponName);
+
+  entity.data.weaponName = weaponName;
+  utils.extend(entity.data, weaponData);
+}
+
+/**
+ * Temporary helper for extending only if property is not set
+ */
+function antiExtend (target, data) {
+  Object.keys(data).forEach(function (key) {
+    if(!target[key]) {
+      target[key] = data[key];
+    }
   });
 }
