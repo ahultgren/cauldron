@@ -7,12 +7,12 @@ require('../models/ammunition/Rocket');
 
 
 var utils = require('../utils');
-var Entity = require('../components/Entity');
+var Entity = require('../components/entity.v2');
 var AABB = require('../components/shapes/aabb');
 var ammunitionModels = '../models/ammunition/';
 
 
-module.exports = function (type, components, data) {
+module.exports = function (type, data) {
   var game = this;
   var model = require(ammunitionModels + type);
 
@@ -21,12 +21,12 @@ module.exports = function (type, components, data) {
     isAmmo_: true
   }, model.data, data);
 
-  return Entity.create({
-    physics: model.components.Physics.create(),
-    graphics: model.components.Graphics.create(),
-    collision: model.components.Collision && model.components.Collision.create(),
-    aabb: AABB.create(),
-    shape: model.components.Shape && model.components.Shape.create()
-  }, components, data)
+  return Entity.create(data)
+  .addComponent(AABB.create())
+  .addComponent(model.components.Physics.create())
+  .addComponent(model.components.Collision && model.components.Collision.create())
+  .addComponent(model.components.Shape && model.components.Shape.create())
+  .addStage2Component(model.components.Graphics.create())
+  .init()
   .addTo(game);
 };

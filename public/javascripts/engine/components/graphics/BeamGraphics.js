@@ -15,7 +15,7 @@ Graphics.init = function(entity) {
   entity.data.gco_ = Graphics.type_;
 };
 
-Graphics.draw = function(entity, ctx) {
+Graphics.update = function(entity, ctx) {
   var flashX, flashY;
   var path = entity.data.path;
 

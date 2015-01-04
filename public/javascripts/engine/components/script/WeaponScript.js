@@ -70,12 +70,10 @@ function triggerEnd (entity) {
 }
 
 function shoot (entity, from, toward, spread) {
-  entity.game.factories.ammunition(entity.data.ammunition, {
-    from: from,
-    toward: toward
-  },
-  utils.extend(
+  entity.game.factories.ammunition(entity.data.ammunition, utils.extend(
     {
+      from: from,
+      toward: toward,
       spread: spread,
       player: entity,
       playerId: entity.data.playerId

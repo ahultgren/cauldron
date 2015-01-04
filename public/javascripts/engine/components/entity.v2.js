@@ -56,12 +56,16 @@ Entity.prototype.draw = Entity.prototype.updateStage2;
 
 // [TODO] Support adding multiple components at a time
 Entity.prototype.addComponent = function(component) {
-  this.components.push(component);
+  if(component) {
+    this.components.push(component);
+  }
   return this;
 };
 
 Entity.prototype.addStage2Component = function(component) {
-  this.stage2Components.push(component);
+  if(component) {
+    this.stage2Components.push(component);
+  }
   return this;
 };
 

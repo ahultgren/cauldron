@@ -10,11 +10,11 @@ Physics.init = function(entity) {
   var angle;
 
   // Set position
-  entity.data.x = entity.from.data.x;
-  entity.data.y = entity.from.data.y;
+  entity.data.x = entity.data.from.data.x;
+  entity.data.y = entity.data.from.data.y;
 
   // Calculate velocity
-  angle = Math.atan2(entity.toward.y - entity.from.data.y, entity.toward.x - entity.from.data.x);
+  angle = Math.atan2(entity.data.toward.y - entity.data.from.data.y, entity.data.toward.x - entity.data.from.data.x);
   angle += entity.data.spread;
 
   entity.data.dx = Math.cos(angle) * entity.data.speed;

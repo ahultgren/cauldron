@@ -30,7 +30,7 @@ Physics.remove = function(){};
 function makeLine (entity) {
   var i, l, intersection, minIntersection, angle, line;
 
-  angle = Math.atan2(entity.toward.y - entity.from.data.y, entity.toward.x - entity.from.data.x);
+  angle = Math.atan2(entity.data.toward.y - entity.data.from.data.y, entity.data.toward.x - entity.data.from.data.x);
 
   // Accuracy
   angle = angle + entity.data.spread;
@@ -38,12 +38,12 @@ function makeLine (entity) {
   // Start with a really long line...
   entity.data.path = line = [
     {
-      x: entity.from.data.x + Math.cos(angle)*5,
-      y: entity.from.data.y + Math.sin(angle)*5
+      x: entity.data.from.data.x + Math.cos(angle)*5,
+      y: entity.data.from.data.y + Math.sin(angle)*5
     },
     {
-      x: entity.from.data.x + Math.cos(angle)*1000000,
-      y: entity.from.data.y + Math.sin(angle)*1000000
+      x: entity.data.from.data.x + Math.cos(angle)*1000000,
+      y: entity.data.from.data.y + Math.sin(angle)*1000000
     }
   ];
 

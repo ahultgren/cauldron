@@ -17,7 +17,7 @@ Graphics.init = function(entity) {
   entity.data.gco_ = Graphics.type_;
 };
 
-Graphics.draw = function(entity, ctx) {
+Graphics.update = function(entity, ctx) {
   //## entity.shape or maybe entity.spatial should be a good place to store geometrical data for all entities? Even collision-testing should be able to use it
   utils.drawPolygon(entity.data.path, ctx, entity.data.fill);
 
