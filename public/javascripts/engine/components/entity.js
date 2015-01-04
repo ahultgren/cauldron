@@ -1,59 +1,84 @@
 'use strict';
 
-/*jshint expr:true*/
-
-var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var Data = require('./Data');
-var utils = require('../utils');
 
 
-var Entity = module.exports = function Entity (defaults, settings, data) {
-  utils.extend(this, defaults, settings);
-
+var Entity = module.exports = function Entity (data) {
   this.data = new Data(data);
   this.mediator = new EventEmitter();
-
-  this.input && this.input.init(this);
-  this.physics && this.physics.init(this);
-  this.collision && this.collision.init(this);
-  this.script && this.script.init(this);
-  this.graphics && this.graphics.init(this);
-  this.output && this.output.init(this);
-  this.powerups && this.powerups.init(this);
-  this.aabb && this.aabb.init(this);
-  this.shape && this.shape.init(this);
+  this.components = [];
+  this.stage2Components = [];
 };
 
-util.inherits(Entity, EventEmitter);
-
-Entity.create = function (defaults, settings, data) {
-  return new Entity(defaults, settings, data);
+Entity.create = function (data) {
+  return new Entity(data);
 };
 
+Entity.prototype.init = function() {
+  var self = this;
+
+  self.components.forEach(function (component) {
+    component.init(self);
+  });
+
+  self.stage2Components.forEach(function (component) {
+    component.init(self);
+  });
+
+  return this;
+};
 
 Entity.prototype.update = function() {
-  this.data.update(this);
-  this.input && this.input.update(this);
-  this.physics && this.physics.update(this);
-  this.collision && this.collision.update(this);
-  this.script && this.script.update(this);
-  this.powerups && this.powerups.update(this);
-  this.aabb && this.aabb.update(this);
-  this.shape && this.shape.update(this);
+  var self = this;
+
+  self.data.update(self);
+
+  self.components.forEach(function (component) {
+    component.update(self);
+  });
+
+  return this;
 };
 
-Entity.prototype.updateEvent = function() {
-  this.output && this.output.updateEvent(this);
+Entity.prototype.updateStage2 = function(ctx) {
+  var self = this;
+
+  self.stage2Components.forEach(function (component) {
+    component.update(self, ctx);
+  });
+
+  return this;
 };
 
-Entity.prototype.draw = function(ctx) {
-  this.graphics && this.graphics.draw(this, ctx);
+// Alias
+Entity.prototype.draw = Entity.prototype.updateStage2;
+
+Entity.prototype.addComponent = function(component) {
+  if(component) {
+    this.components.push.apply(this.components, arguments);
+  }
+  return this;
 };
 
+Entity.prototype.addStage2Component = function(component) {
+  if(component) {
+    this.stage2Components.push.apply(this.stage2Components, arguments);
+  }
+  return this;
+};
+
+Entity.prototype.addComponents = function(components) {
+  return this.addComponent.apply(this, components);
+};
+
+Entity.prototype.addStage2Components = function(components) {
+  return this.addStage2Component.apply(this, components);
+};
+
+// [TODO] Don't use this
 Entity.prototype.onCollision = function(type, response) {
   this.mediator.emit('collision', this, type, response);
-  //## this.mediator.emit('collision-' + type, this, response); // Good idea?
 };
 
 /**
@@ -69,23 +94,18 @@ Entity.prototype.addTo = function(target) {
  * the loop.
  */
 Entity.prototype.remove = function() {
-  this.input && this.input.remove(this);
-  this.physics && this.physics.remove(this);
-  this.collision && this.collision.remove(this);
-  this.script && this.script.remove(this);
-  this.graphics && this.graphics.remove(this);
-  this.output && this.output.remove(this);
+  var self = this;
 
-  this.removeAllListeners();
-  this.remove_ = true;
-};
+  self.components.forEach(function (component) {
+    component.remove(self);
+  });
 
-/**
- * Notifies a component that it's being replaced with another instance.
- */
-Entity.prototype.replace = function(name, newComponent) {
-  this[name].mediator.emit('replaced', newComponent);
-  this[name].remove();
-  this[name] = newComponent;
-  newComponent.init && newComponent.init(this);
+  self.stage2Components.forEach(function (component) {
+    component.remove(self);
+  });
+
+  self.mediator.removeAllListeners();
+  self.remove_ = true;
+
+  return this;
 };

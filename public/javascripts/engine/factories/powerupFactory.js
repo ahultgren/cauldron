@@ -1,7 +1,7 @@
 'use strict';
 
 var utils = require('../utils');
-var Entity = require('../components/entity.v2');
+var Entity = require('../components/entity');
 var ConcentricalGraphics = require('../components/graphics/ConcentricalGraphics');
 var Collision = require('../components/collision/PowerupCollision');
 var AABB = require('../components/shapes/aabb');

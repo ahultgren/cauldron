@@ -1,6 +1,6 @@
 'use strict';
 
-var Entity = require('../Entity.v2');
+var Entity = require('../entity');
 var ExplosionGraphics = require('../graphics/ExplosionGraphics');
 var Collision = module.exports = exports;
 

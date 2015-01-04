@@ -2,7 +2,7 @@
 
 var R = require('ramda');
 var utils = require('../utils');
-var Entity = require('../components/Entity.v2');
+var Entity = require('../components/entity');
 var PlayerPhysics = require('../components/physics/PlayerPhysics');
 var PlayerGraphics = require('../components/graphics/PlayerGraphics');
 var Collision = require('../components/collision/PlayerCollision');
