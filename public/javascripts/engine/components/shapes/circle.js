@@ -17,6 +17,7 @@ Circle.init = function(entity) {
 Circle.update = function(entity) {
   entity.data.shape.pos.x = entity.data.x;
   entity.data.shape.pos.y = entity.data.y;
+  entity.data.shape.r = entity.data.radius;
 };
 
 Circle.remove = function(){};

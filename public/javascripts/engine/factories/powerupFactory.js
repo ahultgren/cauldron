@@ -1,13 +1,13 @@
 'use strict';
 
 var utils = require('../utils');
-var Entity = require('../components/Entity');
+var Entity = require('../components/entity.v2');
 var ConcentricalGraphics = require('../components/graphics/ConcentricalGraphics');
 var Collision = require('../components/collision/PowerupCollision');
 var AABB = require('../components/shapes/aabb');
-var Circle = require('../components/shapes/circle');
+var Circles = require('../components/shapes/circles');
 
-module.exports = exports = function powerupFactory (components, data) {
+module.exports = exports = function powerupFactory (data) {
   var game = this;
 
   data = utils.extend({
@@ -15,10 +15,10 @@ module.exports = exports = function powerupFactory (components, data) {
     y: Math.random() * game.canvas.height,
   }, data);
 
-  return new Entity({
-    graphics: ConcentricalGraphics.create(),
-    collision: Collision.create(),
-    aabb: AABB.create(),
-    shape: Circle.create()
-  }, components, data);
+  return Entity.create(data)
+  .addComponent(Collision.create())
+  .addComponent(Circles.create())
+  .addComponent(AABB.create())
+  .addStage2Component(ConcentricalGraphics.create())
+  .init();
 };

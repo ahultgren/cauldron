@@ -86,12 +86,13 @@ var Game = module.exports = function (settings) {
   .init()
   .addTo(self);
 
-  self.add(self.factories.powerup({}, {
+  self.factories.powerup({
     powerupType: 'weapon',
     powerupData: 'PlasmaRifle',
     x: 50,
     y: 50
-  }));
+  })
+  .addTo(self);
 
   // Visibility polygon
 

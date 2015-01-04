@@ -54,6 +54,7 @@ Entity.prototype.updateStage2 = function(ctx) {
 // Alias
 Entity.prototype.draw = Entity.prototype.updateStage2;
 
+// [TODO] Support adding multiple components at a time
 Entity.prototype.addComponent = function(component) {
   this.components.push(component);
   return this;

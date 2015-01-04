@@ -27,3 +27,5 @@ AABB.update = function(entity) {
     entity.data.aabbY = entity.data.y;
   }
 };
+
+AABB.remove = function(){};
