@@ -33,32 +33,15 @@ module.exports = function playerFactory (components, stage2, data) {
 
   player = Entity.create(data);
 
-  [
-    PlayerGraphics.create()
-  ].concat(stage2).forEach(function (component) {
-    player.addStage2Component(component);
-  });
-
-  [
+  player.addComponents([
     PlayerPhysics.create(),
     Collision.create(),
     AABB.create(),
     Circle.create()
-  ].concat(R.values(components)).forEach(function (component) {
-    player.addComponent(component);
-  });
+  ].concat(R.values(components)));
 
-  // [TODO] Don't use named components
-  if(components.input) {
-    player.input = components.input;
-  }
-/*
-  if(player.weapon) {
-    // [TODO] Is this still needed?
-    player.weapon.player = player;
-    player.weapon.data.playerId = data.playerId;
-  }
-*/
+  player.addStage2Components([PlayerGraphics.create()].concat(stage2));
+
   game.add(player.init());
 
   return player;

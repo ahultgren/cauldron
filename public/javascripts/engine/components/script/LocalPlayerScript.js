@@ -22,7 +22,7 @@ function triggerStart (entity) {
   var from, toward, spread;
 
   from = entity;
-  toward = entity.input.mouse;
+  toward = entity.data.mouse;
   spread = entity.data.spread;
 
   entity.mediator.emit('triggerStart', from, toward, spread);

@@ -27,6 +27,8 @@ LocalInput.create = function (settings) {
 LocalInput.prototype.init = function(entity) {
   var emit = R.curryN(2, R.lPartial(R.bind(entity.mediator.emit, entity.mediator)));
 
+  entity.data.mouse = entity.data.mouse || this.mouse;
+
   if(this.mouse.on) {
     this.mouse.on('mousedown', emit('inputmousedown'));
     this.mouse.on('mouseup', emit('inputmouseup'));

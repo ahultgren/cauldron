@@ -16,9 +16,7 @@ module.exports = exports = function powerupFactory (data) {
   }, data);
 
   return Entity.create(data)
-  .addComponent(Collision.create())
-  .addComponent(Circles.create())
-  .addComponent(AABB.create())
+  .addComponent(Collision.create(), Circles.create(), AABB.create())
   .addStage2Component(ConcentricalGraphics.create())
   .init();
 };
