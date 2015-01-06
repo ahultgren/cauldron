@@ -51,7 +51,7 @@ Collisions.prototype.mapTests = function(collidable) {
               entity.data.y -= response.overlapV.y;
             }
 
-            collidable[i].onCollision('map');
+            onCollision(collidable[i], 'map');
           }
         }
       }
@@ -59,7 +59,7 @@ Collisions.prototype.mapTests = function(collidable) {
     else {
       //## Sweep aabb-aabb test
       if(this.testMap(entity)) {
-        collidable[i].onCollision('map');
+        onCollision(collidable[i], 'map');
       }
     }
   }
@@ -85,8 +85,8 @@ Collisions.prototype.obstacleTests = function(collidable, obstacles) {
 
       if(testAabbAabb(entity.data, obstacle.data)) {
         if(this.test(entity, obstacle)) {
-          entity.onCollision('obstacle', obstacle);
-          obstacle.onCollision('collidable', entity);
+          onCollision(entity, 'obstacle', obstacle);
+          onCollision(obstacle, 'collidable', entity);
         }
       }
     }
@@ -100,8 +100,8 @@ Collisions.prototype.collidableTests = function(collidable) {
     for(ii = i + 1; ii < l; ii++) {
       if(testAabbAabb(collidable[i].data, collidable[ii].data)) {
         if(this.test(collidable[i], collidable[ii])) {
-          collidable[i].onCollision('collidable', collidable[ii]);
-          collidable[ii].onCollision('collidable', collidable[i]);
+          onCollision(collidable[i], 'collidable', collidable[ii]);
+          onCollision(collidable[ii], 'collidable', collidable[i]);
         }
       }
     }
@@ -238,4 +238,8 @@ function extend (from, to) {
     new SAT.V(newFrom.x, newFrom.y),
     new SAT.V(newTo.x, newTo.y),
   ];
+}
+
+function onCollision (entity, type, response) {
+  entity.mediator.emit('collision', entity, type, response);
 }
