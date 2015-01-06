@@ -17,14 +17,14 @@ var TEMPLATES = {
 };
 
 router.route('/', function () {
-  //## Ensure main menu is shown?
+  showMenu();
   mainMenu.innerHTML = TEMPLATES.start({
     playerName: exports.name.loadName()
   });
 });
 
 router.route('/create', function () {
-  //## Ensure main menu is shown?
+  showMenu();
   mainMenu.innerHTML = TEMPLATES.create({});
 });
 
@@ -33,9 +33,17 @@ router.route('/game/:gameId', function () {
 });
 
 router.route('/play', function () {
-  //## Hide ui (show hud?)
+  hideMenu();
 });
 
 router.route('/stats', function () {
   //## Show stats-overlay?
 });
+
+function hideMenu () {
+  mainMenu.classList.add('u-hide');
+}
+
+function showMenu () {
+  mainMenu.classList.remove('u-hide');
+}

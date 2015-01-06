@@ -3,7 +3,7 @@
 var SAT = require('sat');
 var Graphics = module.exports = exports;
 
-Graphics.type_ = 'masked';
+Graphics.type_ = 'alwaysVisible';
 
 Graphics.create = function () {
   return Graphics;
@@ -27,8 +27,11 @@ Graphics.init = function(entity) {
   entity.data.width = map.width;
   entity.data.height = map.height;
 
+  // [TODO] Doesn't belong here
   createAabb(map);
   createShape(map);
+
+  entity.data.color = entity.data.color || '#c33';
 
   entity.data.gco_ = Graphics.type_;
 };
@@ -37,7 +40,7 @@ Graphics.update = function(entity, ctx) {
   var paths = entity.data.paths;
   var i, l, path;
 
-  ctx.strokeStyle = '#c33';
+  ctx.strokeStyle = entity.data.color;
   ctx.lineWidth = 2;
   ctx.beginPath();
 

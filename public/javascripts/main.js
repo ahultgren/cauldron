@@ -1,11 +1,11 @@
 'use strict';
 
 var Game = require('./engine');
-var map1 = require('./maps/one');
+var map1 = require('./maps/pacman');
 var ui = require('./ui');
 
 var game = new Game({
-  map: map1,
+  map: map1(),
   canvas: document.querySelector('#canvas')
 });
 

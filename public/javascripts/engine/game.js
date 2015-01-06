@@ -38,7 +38,8 @@ var Game = module.exports = function (settings) {
   self.loop = new Loop(self);
 
   self.map = Entity.create({
-    paths: settings.map()
+    paths: settings.map,
+    color: settings.map.color
   })
   .addStage2Component(MapGraphics.create())
   .init()
@@ -66,8 +67,8 @@ var Game = module.exports = function (settings) {
     })
   ], {
     weaponName: 'LaserCannon',
-    x: 20,
-    y: 20
+    x: self.map.data.paths.playerSpawnPoints[0].x,
+    y: self.map.data.paths.playerSpawnPoints[0].y
   });
 
   //## Mock-player for something to shoot at
@@ -86,13 +87,9 @@ var Game = module.exports = function (settings) {
   .init()
   .addTo(self);
 
-  self.factories.powerup({
-    powerupType: 'weapon',
-    powerupData: 'PlasmaRifle',
-    x: 50,
-    y: 50
-  })
-  .addTo(self);
+  self.map.data.paths.powerupSpawnPoints.forEach(function (point) {
+    self.factories.powerup(point).addTo(self);
+  });
 
   // Visibility polygon
 
