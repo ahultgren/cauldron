@@ -1,52 +1,57 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
-var Entity = require('../Entity');
+var Entity = require('../entity');
 var ExplosionGraphics = require('../graphics/ExplosionGraphics');
+var Collision = module.exports = exports;
 
+Collision.type_ = 'collidable';
+Collision.response_ = 'obstaclePhobic';
+Collision.boundingBox_ = 'circle';
 
-var Collision = module.exports = function BallCollision (settings) {
-  this.constructor.super_.call(this, {}, settings);
+Collision.create = function () {
+  return Collision;
 };
 
-util.inherits(Collision, Component);
+Collision.init = function(entity) {
+  entity.mediator.on('collision', onCollision);
 
-
-Collision.prototype.type_ = 'collidable';
-Collision.prototype.response_ = 'obstaclePhobic';
-Collision.prototype.boundingBox_ = 'circle';
-
-Collision.prototype.update = function() {};
-
-Collision.prototype.onCollision = function(entity, type, target) {
-  switch(type) {
-    case 'map':
-      this.spawn_(entity);
-      entity.remove();
-      break;
-
-    case 'collidable':
-      if(target.weapon !== entity.weapon) {
-        this.spawn_(entity);
-        entity.remove();
-      }
-      break;
-  }
+  entity.data.collisionType_ = Collision.type_;
+  entity.data.collisionResponse_ = Collision.response_;
+  entity.data.boundingBox_ = Collision.boundingBox_;
 };
 
+Collision.update = function() {};
+
+Collision.remove = function() {};
 
 /* Private
 ============================================================================= */
 
-Collision.prototype.spawn_ = function(entity) {
-  this.game.add(new Entity({}, {
-    graphics: new ExplosionGraphics({
-      duration: entity.data.explosionDuration
-    })
-  }, {
+function onCollision (entity, type, target) {
+  switch(type) {
+    case 'map':
+      spawn(entity);
+      entity.remove();
+      break;
+
+    case 'collidable':
+      if(target.data.playerId !== entity.data.playerId) {
+        spawn(entity);
+        entity.remove();
+      }
+      break;
+  }
+}
+
+function spawn (entity) {
+  var explosion = Entity.create({
+    duration: entity.data.explosionDuration,
     x: entity.data.x,
     y: entity.data.y,
     radius: entity.data.radius
-  }));
-};
+  })
+  .addStage2Component(ExplosionGraphics.create())
+  .init();
+
+  entity.game.add(explosion);
+}

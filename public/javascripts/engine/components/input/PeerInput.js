@@ -1,8 +1,6 @@
 'use strict';
 
-var util = require('util');
 var utils = require('../../utils');
-var Component = require('../Component');
 var defaults = {
   from: {},
   toward: {},
@@ -17,13 +15,18 @@ var defaults = {
 
 var Peer = module.exports = function PeerInput (settings) {
   // conn, game
-  this.constructor.super_.call(this, defaults, settings);
+  utils.extend(this, defaults, settings);
 
-  this.conn.on('data', this.onData.bind(this));
+  // Hack to be able to unlisten
+  this.onData_ = this.onData.bind(this);
+  this.conn.on('data', this.onData_);
 };
 
-util.inherits(Peer, Component);
+Peer.create = function (settings) {
+  return new Peer(settings);
+};
 
+Peer.prototype.init = function() {};
 
 Peer.prototype.update = function(entity) {
   //## States are not used yet, but when they are it's really only for position
@@ -37,24 +40,27 @@ Peer.prototype.update = function(entity) {
   }
 
   if(this.newWeapon) {
-    entity.weapon = this.game.factories.weapon(this.newWeapon.weapon, {
-      player: entity
-    });
+    entity.mediator.emit('newWeapon', this.newWeapon.weapon);
     this.newWeapon = null;
   }
 
   if(this.shootData) {
-    entity.weapon.script.shoot(entity.weapon, {
-      data: this.shootData.from
-    }, this.shootData.toward, this.shootData.spread);
+    entity.mediator.emit('shoot',
+      this.shootData.from,
+      this.shootData.toward,
+      this.shootData.spread);
 
     this.shootData = null;
   }
 
   if(this.powerups.length) {
-    entity.powerups.newPowerups = this.powerups;
+    entity.mediator.emit('addPowerups', this.powerups);
     this.powerups = [];
   }
+};
+
+Peer.prototype.remove = function() {
+  this.conn.removeListener('data', this.onData_);
 };
 
 Peer.prototype.onData = function(data) {
@@ -109,9 +115,9 @@ Peer.prototype.onNewPowerup_ = function(data) {
   this.powerups.push(data);
 };
 
-
 /* Helpers
 ============================================================================= */
+
 function capitalize (string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }

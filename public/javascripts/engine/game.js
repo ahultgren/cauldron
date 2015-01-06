@@ -9,8 +9,8 @@ var Loop = require('./loop');
 var Camera = require('./Camera');
 var CollisionManager = require('./CollisionManager');
 var LocalInput = require('./components/input/LocalInput');
-var MockInput = require('./components/input/MockInput');
 var LocalPlayerScript = require('./components/script/LocalPlayerScript');
+var WeaponScript = require('./components/script/WeaponScript');
 var PlayerOutput = require('./components/output/PlayerOutput');
 var LocalPlayerPowerups = require('./components/powerups/LocalPlayerPowerups');
 var Entity = require('./components/entity');
@@ -18,6 +18,7 @@ var CursorGraphics = require('./components/graphics/CursorGraphics');
 var FOWGraphics = require('./components/graphics/FOWGraphics');
 var FOVGraphics = require('./components/graphics/FOVGraphics');
 var MapGraphics = require('./components/graphics/MapGraphics');
+var Stalker = require('./components/misc/Stalker.js');
 
 
 var Game = module.exports = function (settings) {
@@ -36,13 +37,12 @@ var Game = module.exports = function (settings) {
   self.canvas = canvas;
   self.loop = new Loop(self);
 
-  self.map = new Entity({}, {
-    graphics: new MapGraphics()
-  }, {
+  self.map = Entity.create({
     paths: settings.map()
-  });
-
-  self.add(self.map);
+  })
+  .addStage2Component(MapGraphics.create())
+  .init()
+  .addTo(self);
 
   self.collisionManager = new CollisionManager({
     paths: self.map.data.paths
@@ -53,64 +53,65 @@ var Game = module.exports = function (settings) {
   self.network = new Network(self);
   self.add(self.network);
 
-  // Player one
+  // Player
 
-  self.playerOne = self.factories.player({
-    input: new LocalInput(),
-    weapon: self.factories.weapon('LaserCannon'),
-    script: new LocalPlayerScript(),
-    output: new PlayerOutput({
+  self.playerOne = self.factories.player([
+    LocalInput.create(),
+    LocalPlayerScript.create(),
+    WeaponScript.create(),
+    LocalPlayerPowerups.create()
+  ], [
+    PlayerOutput.create({
       network: self.network
-    }),
-    powerups: new LocalPlayerPowerups({
-      game: self
     })
-  }, {
+  ], {
+    weaponName: 'LaserCannon',
     x: 20,
     y: 20
   });
 
   //## Mock-player for something to shoot at
-  self.playerTwo = self.factories.player({
-    input: new MockInput(),
-    weapon: self.factories.weapon('LaserCannon'),
-    script: new LocalPlayerScript(),
-    powerups: new LocalPlayerPowerups({
-      game: self
-    })
-  }, {
+  self.playerTwo = self.factories.player([], [], {
     x: 60,
     y: 100
   });
 
-  self.add(new Entity({}, {
-    graphics: new CursorGraphics({
-      mouse: mouse //## Use an input instance instead?
-    })
-  }, {
-    fill: '#ccc'
-  }));
+  // Cursor
 
-  self.add(self.factories.powerup({}, {
+  Entity.create({
+    fill: self.playerOne.data.fill,
+    mouse: mouse //## Use an input instance instead?
+  })
+  .addStage2Component(CursorGraphics.create())
+  .init()
+  .addTo(self);
+
+  self.factories.powerup({
     powerupType: 'weapon',
-    powerupData: 'PlasmaRifle'
-  }));
+    powerupData: 'PlasmaRifle',
+    x: 50,
+    y: 50
+  })
+  .addTo(self);
 
   // Visibility polygon
 
-  self.add(new Entity({
-    graphics: new FOWGraphics({
-      paths: self.map.data.paths,
-      player: self.playerOne
-    })
-  }));
+  Entity.create({
+    paths: self.map.data.paths,
+    player: self.playerOne
+  })
+  .addStage2Component(FOWGraphics.create())
+  .init()
+  .addTo(self);
 
-  self.add(new Entity({
-    graphics: new FOVGraphics({
-      paths: self.map.data.paths,
-      player: self.playerOne
-    })
-  }));
+  Entity.create({
+    paths: self.map.data.paths,
+    player: self.playerOne
+  })
+  .addComponent(Stalker.create(self.playerOne, ['x', 'y', 'a']))
+  .addStage2Component(FOVGraphics.create())
+  .init()
+  .addTo(self);
 
   self.camera = new Camera({
     player: self.playerOne,
@@ -125,12 +126,14 @@ var Game = module.exports = function (settings) {
 
 
 Game.prototype.add = function (entity) {
-  if(entity.graphics && entity.graphics.type_ && this.loop[entity.graphics.type_]) {
-    this.loop[entity.graphics.type_].push(entity);
+  // v2 graphics
+  if(entity.data && entity.data.gco_ && this.loop[entity.data.gco_]) {
+    this.loop[entity.data.gco_].push(entity);
   }
 
-  if(entity.collision && entity.collision.type_ && this.loop[entity.collision.type_]) {
-    this.loop[entity.collision.type_].push(entity);
+  // v2 collision
+  if(entity.data && entity.data.collisionType_ && this.loop[entity.data.collisionType_]) {
+    this.loop[entity.data.collisionType_].push(entity);
   }
 
   if(entity.update) {
@@ -140,6 +143,8 @@ Game.prototype.add = function (entity) {
   if(entity.updateEvent) {
     this.loop.eventUpdating.push(entity);
   }
+
+  entity.game = this;
 
   return this;
 };

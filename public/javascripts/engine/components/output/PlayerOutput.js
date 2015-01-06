@@ -1,24 +1,21 @@
 'use strict';
 
-//## This doesn't feel right. Will anything else than a player use output?
+// [TODO] Extract from game engine?
 
-var util = require('util');
-var Component = require('../Component');
-
+var R = require('ramda');
 
 var Output = module.exports = function PlayerOutput (settings) {
-  this.constructor.super_.call(this, {
-    newPeers: []
-  }, settings);
-  // this.network
+  this.newPeers = [];
+  this.network = settings.network;
 
   // Hack to be able to unlisten
   this.newPeerListener = this.newPeer_.bind(this);
   this.network.on('newPeer', this.newPeerListener);
 };
 
-util.inherits(Output, Component);
-
+Output.create = function (settings) {
+  return new Output(settings);
+};
 
 Output.prototype.init = function(entity) {
   var self = this;
@@ -30,14 +27,9 @@ Output.prototype.init = function(entity) {
     });
   }
 
-  entity.weapon.on('action', actionWeaponListener);
+  entity.mediator.on('shot', R.lPartial(actionWeaponListener, 'shoot'));
 
-  entity.weapon.on('replaced', function (newComponent) {
-    entity.weapon.removeListener('action', actionWeaponListener);
-    newComponent.on('action', actionWeaponListener);
-  });
-
-  entity.powerups.on('newPowerup', function (powerup) {
+  entity.mediator.on('newPowerup', function (powerup) {
     self.network.outgoing.push({
       type: 'newPowerup',
       data: powerup
@@ -45,7 +37,7 @@ Output.prototype.init = function(entity) {
   });
 };
 
-Output.prototype.updateEvent = function(entity) {
+Output.prototype.update = function(entity) {
   var self = this;
   var i, l, id;
 
@@ -66,7 +58,7 @@ Output.prototype.updateEvent = function(entity) {
         {
           type: 'weapon',
           data: {
-            weapon: entity.weapon.name
+            weapon: entity.data.weaponName
           }
         },
         {
@@ -85,8 +77,7 @@ Output.prototype.updateEvent = function(entity) {
   }
 };
 
-Output.prototype.remove = function(entity) {
-  this.constructor.super_.remove.call(this, entity);
+Output.prototype.remove = function() {
   this.network.removeListener('newPeer', this.newPeerListener);
 };
 

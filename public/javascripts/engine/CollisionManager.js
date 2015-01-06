@@ -31,8 +31,8 @@ Collisions.prototype.mapTests = function(collidable) {
     }
 
     if(
-      entity.data.dx < entity.aabb.halfWidth &&
-      entity.data.dy < entity.aabb.halfHeight
+      entity.data.dx < entity.data.halfWidth &&
+      entity.data.dy < entity.data.halfHeight
     ) {
       // aabb-aabb test
       for(ii = 0, ll = paths.length; ii < ll; ii++) {
@@ -40,18 +40,18 @@ Collisions.prototype.mapTests = function(collidable) {
         line = new SAT.Polygon(new SAT.V(),
           [new SAT.V(seg[0].x, seg[0].y), new SAT.V(seg[1].x, seg[1].y)]);
 
-        if(testAabbAabb(entity.aabb, seg.aabb)) {
+        if(testAabbAabb(entity.data, seg.aabb)) {
           // Normal SAT test
           response = this.response;
 
           //## All entities should have an entity.shape which is instance of SAT.P|C and updates itself
           if(testXtoMap(getShape(entity), line, response.clear())) {
-            if(entity.collision.response_ === 'obstaclePhobic') {
+            if(entity.data.collisionResponse_ === 'obstaclePhobic') {
               entity.data.x -= response.overlapV.x;
               entity.data.y -= response.overlapV.y;
             }
 
-            collidable[i].onCollision('map');
+            onCollision(collidable[i], 'map');
           }
         }
       }
@@ -59,7 +59,7 @@ Collisions.prototype.mapTests = function(collidable) {
     else {
       //## Sweep aabb-aabb test
       if(this.testMap(entity)) {
-        collidable[i].onCollision('map');
+        onCollision(collidable[i], 'map');
       }
     }
   }
@@ -83,10 +83,10 @@ Collisions.prototype.obstacleTests = function(collidable, obstacles) {
 
       //## Implement sweep-tests here if either party is moving fast
 
-      if(testAabbAabb(entity.aabb, obstacle.aabb)) {
+      if(testAabbAabb(entity.data, obstacle.data)) {
         if(this.test(entity, obstacle)) {
-          entity.onCollision('obstacle', obstacle);
-          obstacle.onCollision('collidable', entity);
+          onCollision(entity, 'obstacle', obstacle);
+          onCollision(obstacle, 'collidable', entity);
         }
       }
     }
@@ -98,10 +98,10 @@ Collisions.prototype.collidableTests = function(collidable) {
 
   for(i = 0, l = collidable.length; i < l; i++) {
     for(ii = i + 1; ii < l; ii++) {
-      if(testAabbAabb(collidable[i].aabb, collidable[ii].aabb)) {
+      if(testAabbAabb(collidable[i].data, collidable[ii].data)) {
         if(this.test(collidable[i], collidable[ii])) {
-          collidable[i].onCollision('collidable', collidable[ii]);
-          collidable[ii].onCollision('collidable', collidable[i]);
+          onCollision(collidable[i], 'collidable', collidable[ii]);
+          onCollision(collidable[ii], 'collidable', collidable[i]);
         }
       }
     }
@@ -145,7 +145,7 @@ Collisions.prototype.testMap = function(entity) {
   }
 
   if(x !== entity.data.x || y !== entity.data.y) {
-    if(entity.collision.response_ === 'obstaclePhobic') {
+    if(entity.data.collisionResponse_ === 'obstaclePhobic') {
       entity.data.x = x;
       entity.data.y = y;
     }
@@ -174,11 +174,11 @@ Collisions.prototype.test = function(entity1, entity2) {
 ============================================================================= */
 
 function getShape (entity) {
-  if(!entity.shape) {
+  if(!entity.data.shape) {
     throw new Error('Entity has no shape');
   }
 
-  return entity.shape;
+  return entity.data.shape;
 }
 
 function testXtoY (a, b) {
@@ -206,8 +206,8 @@ function testXtoMap (a, map, response) {
 }
 
 function testAabbAabb (a, b) {
-  var distanceX = a.x - b.x;
-  var distanceY = a.y - b.y;
+  var distanceX = (a.aabbX || a.x) - (b.aabbX || b.x);
+  var distanceY = (a.aabbY || a.y) - (b.aabbY || b.y);
 
   return Math.abs(distanceX) < a.halfWidth + b.halfWidth &&
     Math.abs(distanceY) < a.halfHeight + b.halfHeight &&
@@ -238,4 +238,8 @@ function extend (from, to) {
     new SAT.V(newFrom.x, newFrom.y),
     new SAT.V(newTo.x, newTo.y),
   ];
+}
+
+function onCollision (entity, type, response) {
+  entity.mediator.emit('collision', entity, type, response);
 }

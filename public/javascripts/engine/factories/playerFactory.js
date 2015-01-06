@@ -1,7 +1,7 @@
 'use strict';
 
 var utils = require('../utils');
-var Entity = require('../components/Entity');
+var Entity = require('../components/entity');
 var PlayerPhysics = require('../components/physics/PlayerPhysics');
 var PlayerGraphics = require('../components/graphics/PlayerGraphics');
 var Collision = require('../components/collision/PlayerCollision');
@@ -22,30 +22,32 @@ var defaultData = {
 };
 
 
-module.exports = function playerFactory (components, data) {
+module.exports = function playerFactory (components, stage2, data) {
   var game = this;
   var player;
 
-  data = utils.extend({}, defaultData, data);
+  stage2 = stage2 || [];
 
-  player = new Entity({
-    physics: new PlayerPhysics({
-      map: game.map,
-      game: game
-    }),
-    graphics: new PlayerGraphics(),
-    collision: new Collision({
-      game: game
-    }),
-    aabb: new AABB(),
-    shape: new Circle()
-  }, components, data);
+  data = utils.extend({
+    playerId: generateId() + generateId() + generateId()
+  }, defaultData, data);
 
-  if(player.weapon) {
-    player.weapon.player = player;
-  }
+  player = Entity.create(data);
 
-  game.add(player);
+  player.addComponents([
+    PlayerPhysics.create(),
+    Collision.create(),
+    AABB.create(),
+    Circle.create()
+  ].concat(components));
+
+  player.addStage2Components([PlayerGraphics.create()].concat(stage2));
+
+  game.add(player.init());
 
   return player;
 };
+
+function generateId () {
+  return Math.random().toString(16).substring(2);
+}

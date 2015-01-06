@@ -1,58 +1,33 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
+var R = require('ramda');
+var Script = module.exports = exports;
 
-
-var Script = module.exports = function LocalPlayerScript (settings) {
-  this.constructor.super_.call(this, {}, settings);
+Script.create = function () {
+  return Script;
 };
 
-util.inherits(Script, Component);
-
-
-Script.prototype.init = function(entity) {
-  entity.input.on('mousedown', this.triggerStart_.bind(this, entity));
-  entity.input.on('mouseup', this.triggerEnd_.bind(this, entity));
+Script.init = function(entity) {
+  entity.mediator.on('inputmousedown', R.lPartial(triggerStart, entity));
+  entity.mediator.on('inputmouseup', R.lPartial(triggerEnd, entity));
 };
 
-Script.prototype.update = function() {
-};
-
-
+Script.update = function() {};
+Script.remove = function() {};
 
 /* Private
 ============================================================================= */
 
-Script.prototype.triggerStart_ = function(entity) {
+function triggerStart (entity) {
   var from, toward, spread;
 
-  if(entity.weapon) {
-    from = entity;
-    toward = entity.input.mouse;
-    spread = entity.weapon.spread;
+  from = entity;
+  toward = entity.data.mouse;
+  spread = entity.data.spread;
 
-    entity.weapon.script.triggerStart(from, toward, spread);
+  entity.mediator.emit('triggerStart', from, toward, spread);
+}
 
-    /*entity.emit('action', 'triggerStart', {
-      from: {
-        x: from.x,
-        y: from.y
-      },
-      toward: {
-        x: toward.x,
-        y: toward.y
-      },
-      spread: spread
-    });*/
-  }
-};
-
-
-Script.prototype.triggerEnd_ = function(entity) {
-  if(entity.weapon) {
-    entity.weapon.script.triggerEnd();
-
-    /*entity.emit('action', 'triggerEnd');*/
-  }
-};
+function triggerEnd (entity) {
+  entity.mediator.emit('triggerEnd');
+}

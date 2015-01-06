@@ -61,7 +61,7 @@ Loop.prototype.loop = function () {
 
   window.requestAnimationFrame(this.loop.bind(this));
 
-  this.draw();
+  this.updateStage2();
 };
 
 Loop.prototype.update = function () {
@@ -116,7 +116,7 @@ Loop.prototype.updateEvent = function() {
   }
 };
 
-Loop.prototype.draw = function () {
+Loop.prototype.updateStage2 = function () {
   var ctx = this.canvas.ctx;
 
   // Clear canvas
@@ -148,7 +148,7 @@ Loop.prototype.drawEach = function(gco, objects) {
       data = objects[i].data;
 
       this.transform(ctx, data.x, data.y, data.a);
-      objects[i].draw(ctx);
+      objects[i].updateStage2(ctx);
     }
   }
 };

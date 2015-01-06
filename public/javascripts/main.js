@@ -18,10 +18,10 @@ window.onload = function () {
 };
 
 // Score
-game.playerOne.on('hitEnemyPlayer', function () {
+game.playerOne.mediator.on('hitEnemyPlayer', function () {
   ui.score.onScore(100);
 });
 
-game.playerOne.on('hit', function () {
+game.playerOne.mediator.on('hit', function () {
   ui.score.onScore(-50);
 });

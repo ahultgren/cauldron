@@ -1,28 +1,36 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
+var Collision = module.exports = exports;
 
+Collision.type_ = 'obstacle';
+Collision.response_ = 'zone';
+Collision.boundingBox_ = 'circle';
 
-var Collision = module.exports = function PowerupCollision (settings) {
-  this.constructor.super_.call(this, {}, settings);
+Collision.create = function () {
+  return Collision;
 };
 
-util.inherits(Collision, Component);
+Collision.init = function(entity) {
+  entity.mediator.on('collision', onCollision);
 
+  entity.data.collisionType_ = Collision.type_;
+  entity.data.collisionResponse_ = Collision.response_;
+  entity.data.boundingBox_ = Collision.boundingBox_;
+};
 
-Collision.prototype.type_ = 'obstacle';
-Collision.prototype.response_ = 'zone';
-Collision.prototype.boundingBox_ = 'circle';
+Collision.update = function() {};
+Collision.remove = function() {};
 
-Collision.prototype.update = function() {};
-Collision.prototype.onCollision = function(entity, type, target) {
+/* Private
+============================================================================= */
+
+function onCollision (entity, type, target) {
   if(target.data.isPlayer_) {
-    target.powerups.add({
+    target.mediator.emit('addPowerup', {
       type: entity.data.powerupType,
       data: entity.data.powerupData
     });
 
     entity.remove();
   }
-};
+}

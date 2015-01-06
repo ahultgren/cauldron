@@ -1,20 +1,15 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
 var SAT = require('sat');
+var Graphics = module.exports = exports;
 
+Graphics.type_ = 'masked';
 
-var Graphics = module.exports = function MapGraphics (settings) {
-  this.constructor.super_.call(this, {}, settings);
+Graphics.create = function () {
+  return Graphics;
 };
 
-util.inherits(Graphics, Component);
-
-
-Graphics.prototype.type_ = 'masked';
-
-Graphics.prototype.init = function(entity) {
+Graphics.init = function(entity) {
   var map = entity.data.paths;
 
   // Add map borders
@@ -34,9 +29,11 @@ Graphics.prototype.init = function(entity) {
 
   createAabb(map);
   createShape(map);
+
+  entity.data.gco_ = Graphics.type_;
 };
 
-Graphics.prototype.draw = function(entity, ctx) {
+Graphics.update = function(entity, ctx) {
   var paths = entity.data.paths;
   var i, l, path;
 

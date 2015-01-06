@@ -1,27 +1,35 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
+var Collision = module.exports = exports;
 
+Collision.type_ = 'collidable';
+Collision.response_ = 'obstaclePhobic';
+Collision.boundingBox_ = 'circle';
 
-var Collision = module.exports = function BallCollision (settings) {
-  this.constructor.super_.call(this, {}, settings);
+Collision.create = function () {
+  return Collision;
 };
 
-util.inherits(Collision, Component);
+Collision.init = function(entity) {
+  entity.mediator.on('collision', onCollision);
 
+  entity.data.collisionType_ = Collision.type_;
+  entity.data.collisionResponse_ = Collision.response_;
+  entity.data.boundingBox_ = Collision.boundingBox_;
+};
 
-Collision.prototype.type_ = 'collidable';
-Collision.prototype.response_ = 'obstaclePhobic';
-Collision.prototype.boundingBox_ = 'circle';
+Collision.update = function() {};
+Collision.remove = function() {};
 
-Collision.prototype.onCollision = function(enitity, type, target) {
+/* Private
+============================================================================= */
+
+function onCollision (entity, type, target) {
   var isAmmo = target && target.data.isAmmo_;
-  var isSelf = target && target.weapon === enitity.weapon;
+  var isSelf = target && target.data.playerId === entity.data.playerId;
 
   if(isAmmo && !isSelf) {
-    enitity.emit('hit', type, target);
-    target.weapon.player.emit('hitEnemyPlayer', enitity);
+    entity.mediator.emit('hit', type, target);
+    target.data.player.mediator.emit('hitEnemyPlayer', entity);
   }
-};
-Collision.prototype.update = function() {};
+}

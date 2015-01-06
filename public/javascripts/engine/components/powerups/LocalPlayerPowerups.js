@@ -1,38 +1,39 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
+var R = require('ramda');
+var Powerups = module.exports = exports;
 
-
-var Powerups = module.exports = function LocalPlayerPowerups (settings) {
-  this.constructor.super_.call(this, {
-    newPowerups: []
-  }, settings);
+Powerups.create = function () {
+  return Powerups;
 };
 
-util.inherits(Powerups, Component);
+Powerups.init = function(entity) {
+  entity.data.newPowerups = entity.data.newPowerups || [];
+  entity.mediator.on('addPowerup', R.lPartial(add, entity));
+};
 
-
-Powerups.prototype.update = function(entity) {
-  var self = this;
+Powerups.update = function(entity) {
   var i, l, powerup;
 
-  for(i = 0, l = self.newPowerups.length; i < l; i++) {
-    powerup = self.newPowerups[i];
+  for(i = 0, l = entity.data.newPowerups.length; i < l; i++) {
+    powerup = entity.data.newPowerups[i];
 
     switch (powerup.type) {
       case 'weapon':
-        entity.replace('weapon', self.game.factories.weapon(powerup.data, {
-          player: entity
-        }));
+        entity.mediator.emit('newWeapon', powerup.data);
         break;
     }
   }
 
-  self.newPowerups = [];
+  entity.data.newPowerups = [];
 };
 
-Powerups.prototype.add = function(powerup) {
-  this.newPowerups.push(powerup);
-  this.emit('newPowerup', powerup);
-};
+Powerups.remove = function(){};
+
+/* Helpers
+============================================================================= */
+
+function add (entity, powerup) {
+  entity.data.newPowerups.push(powerup);
+  entity.mediator.emit('newPowerup', powerup);
+}

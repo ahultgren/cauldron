@@ -1,21 +1,16 @@
 'use strict';
 
-var util = require('util');
 var utils = require('../../utils');
-var Component = require('../Component');
+var Physics = module.exports = exports;
 
-
-var Physics = module.exports = function BeamPhysics (settings) {
-  this.constructor.super_.call(this, {}, settings);
+Physics.create = function () {
+  return Physics;
 };
 
-util.inherits(Physics, Component);
-
-
-Physics.prototype.init = function(entity) {
+Physics.init = function(entity) {
   // Allow for setting a and b
   if(!entity.data.b) {
-    this.makeLine_(entity);
+    makeLine(entity);
   }
 
   // Generate aabb-data
@@ -26,33 +21,35 @@ Physics.prototype.init = function(entity) {
   entity.data.aabbY = Math.min(entity.data.path[0].y, entity.data.path[1].y) + entity.data.halfHeight;
 };
 
-Physics.prototype.update = function() {
-};
-
+Physics.update = function(){};
+Physics.remove = function(){};
 
 /* Private
 ============================================================================= */
 
-Physics.prototype.makeLine_ = function(entity) {
+function makeLine (entity) {
   var i, l, intersection, minIntersection, angle, line;
 
-  angle = Math.atan2(entity.toward.y - entity.from.data.y, entity.toward.x - entity.from.data.x);
+  angle = Math.atan2(entity.data.toward.y - entity.data.from.data.y, entity.data.toward.x - entity.data.from.data.x);
 
   // Accuracy
   angle = angle + entity.data.spread;
 
   // Start with a really long line...
   entity.data.path = line = [
-    entity.from.data,
     {
-      x: entity.from.data.x + Math.cos(angle)*1000000,
-      y: entity.from.data.y + Math.sin(angle)*1000000
+      x: entity.data.from.data.x + Math.cos(angle)*5,
+      y: entity.data.from.data.y + Math.sin(angle)*5
+    },
+    {
+      x: entity.data.from.data.x + Math.cos(angle)*1000000,
+      y: entity.data.from.data.y + Math.sin(angle)*1000000
     }
   ];
 
   // ...find the closest intersecting map segment...
-  for(i = 0, l = this.paths.length; i < l; i++) {
-    intersection = utils.getIntersection(line, this.paths[i]);
+  for(i = 0, l = entity.data.mapPaths.length; i < l; i++) {
+    intersection = utils.getIntersection(line, entity.data.mapPaths[i]);
 
     if(!minIntersection && intersection || minIntersection && intersection && intersection.param < minIntersection.param) {
       minIntersection = intersection;
@@ -62,4 +59,4 @@ Physics.prototype.makeLine_ = function(entity) {
   // ...and shorten the line
   line[1].x = minIntersection.x;
   line[1].y = minIntersection.y;
-};
+}
