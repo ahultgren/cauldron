@@ -1,23 +1,17 @@
 'use strict';
 
-//## This doesn't feel right. Will anything else than a player use output?
+// [TODO] Extract from game engine?
 
-var util = require('util');
-var Component = require('../Component');
 var R = require('ramda');
 
 var Output = module.exports = function PlayerOutput (settings) {
-  this.constructor.super_.call(this, {
-    newPeers: []
-  }, settings);
-  // this.network
+  this.newPeers = [];
+  this.network = settings.network;
 
   // Hack to be able to unlisten
   this.newPeerListener = this.newPeer_.bind(this);
   this.network.on('newPeer', this.newPeerListener);
 };
-
-util.inherits(Output, Component);
 
 Output.create = function (settings) {
   return new Output(settings);
@@ -84,8 +78,7 @@ Output.prototype.update = Output.prototype.updateEvent = function(entity) {
   }
 };
 
-Output.prototype.remove = function(entity) {
-  this.constructor.super_.remove.call(this, entity);
+Output.prototype.remove = function() {
   this.network.removeListener('newPeer', this.newPeerListener);
 };
 

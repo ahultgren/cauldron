@@ -1,7 +1,6 @@
 'use strict';
 
-var util = require('util');
-var Component = require('../Component');
+var utils = require('../../utils');
 var R = require('ramda');
 var defaults = {
   keyboard: require('../../system/keyboard'),
@@ -15,23 +14,21 @@ var defaults = {
 };
 
 var LocalInput = module.exports = function LocalInput (settings) {
-  this.constructor.super_.call(this, defaults, settings);
+  utils.extend(this, defaults, settings);
 };
-
-util.inherits(LocalInput, Component);
 
 LocalInput.create = function (settings) {
   return new LocalInput(settings);
 };
 
 LocalInput.prototype.init = function(entity) {
-  var emit = R.curryN(2, R.lPartial(R.bind(entity.mediator.emit, entity.mediator)));
+  var emitOnMediator = R.curryN(2, R.lPartial(R.bind(entity.mediator.emit, entity.mediator)));
 
-  entity.data.mouse = entity.data.mouse || this.mouse;
+  entity.data.mouse = this.mouse = entity.data.mouse || this.mouse;
 
   if(this.mouse.on) {
-    this.mouse.on('mousedown', emit('inputmousedown'));
-    this.mouse.on('mouseup', emit('inputmouseup'));
+    this.mouse.on('mousedown', emitOnMediator('inputmousedown'));
+    this.mouse.on('mouseup', emitOnMediator('inputmouseup'));
   }
 };
 
@@ -41,6 +38,8 @@ LocalInput.prototype.update = function(entity) {
 
   entity.data.a = Math.atan2(this.getPosition('y')-entity.data.y, this.getPosition('x')-entity.data.x);
 };
+
+LocalInput.prototype.remove = function(){};
 
 LocalInput.prototype.isDown = function (key) {
   return this.keyboard[this.keymap[key]];
