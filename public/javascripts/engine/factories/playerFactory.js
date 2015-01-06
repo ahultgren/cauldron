@@ -1,6 +1,5 @@
 'use strict';
 
-var R = require('ramda');
 var utils = require('../utils');
 var Entity = require('../components/entity');
 var PlayerPhysics = require('../components/physics/PlayerPhysics');
@@ -27,6 +26,8 @@ module.exports = function playerFactory (components, stage2, data) {
   var game = this;
   var player;
 
+  stage2 = stage2 || [];
+
   data = utils.extend({
     playerId: generateId() + generateId() + generateId()
   }, defaultData, data);
@@ -38,7 +39,7 @@ module.exports = function playerFactory (components, stage2, data) {
     Collision.create(),
     AABB.create(),
     Circle.create()
-  ].concat(R.values(components)));
+  ].concat(components));
 
   player.addStage2Components([PlayerGraphics.create()].concat(stage2));
 

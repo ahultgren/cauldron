@@ -18,15 +18,15 @@ Script.create = function () {
 };
 
 Script.init = function(entity) {
-  var weaponData = weaponFactory(entity.data.weaponName);
+  if(entity.data.weaponName) {
+    antiExtend(entity.data, defaults);
+    antiExtend(entity.data, weaponFactory(entity.data.weaponName));
+  }
 
-  entity.mediator.on('shoot', shoot);
+  entity.mediator.on('shoot', shoot.bind(null, entity));
   entity.mediator.on('triggerStart', triggerStart.bind(null, entity));
   entity.mediator.on('triggerEnd', triggerEnd.bind(null, entity));
   entity.mediator.on('newWeapon', newWeapon.bind(null, entity));
-
-  antiExtend(entity.data, defaults);
-  antiExtend(entity.data, weaponData);
 };
 
 Script.update = function(entity) {
@@ -81,10 +81,12 @@ function shoot (entity, from, toward, spread) {
     entity.data.ammunitionData
   ));
 
-  entity.mediator.emit('action', 'shoot', {
+  entity.mediator.emit('shot', {
     from: {
-      x: from.data.x,
-      y: from.data.y
+      data: {
+        x: from.data.x,
+        y: from.data.y
+      }
     },
     toward: {
       x: toward.x,
@@ -95,10 +97,8 @@ function shoot (entity, from, toward, spread) {
 }
 
 function newWeapon (entity, weaponName) {
-  var weaponData = weaponFactory(weaponName);
-
   entity.data.weaponName = weaponName;
-  utils.extend(entity.data, weaponData);
+  utils.extend(entity.data, weaponFactory(weaponName));
 }
 
 /**

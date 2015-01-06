@@ -37,19 +37,15 @@ Peer.prototype.update = function(entity) {
   }
 
   if(this.newWeapon) {
-    entity.weapon = this.game.factories.weapon(this.newWeapon.weapon, {
-      // [TODO] Where is this still needed?
-      player: entity,
-    }, {
-      playerId: entity.data.playerId
-    });
+    entity.mediator.emit('newWeapon', this.newWeapon.weapon);
     this.newWeapon = null;
   }
 
   if(this.shootData) {
-    entity.weapon.mediator.emit('shoot', entity.weapon, {
-      data: this.shootData.from
-    }, this.shootData.toward, this.shootData.spread);
+    entity.mediator.emit('shoot',
+      this.shootData.from,
+      this.shootData.toward,
+      this.shootData.spread);
 
     this.shootData = null;
   }

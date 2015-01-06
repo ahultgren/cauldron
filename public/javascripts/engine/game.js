@@ -55,12 +55,12 @@ var Game = module.exports = function (settings) {
 
   // Player
 
-  self.playerOne = self.factories.player({
-    input: LocalInput.create(),
-    script: LocalPlayerScript.create(),
-    script2: WeaponScript.create(),
-    powerups: LocalPlayerPowerups.create()
-  }, [
+  self.playerOne = self.factories.player([
+    LocalInput.create(),
+    LocalPlayerScript.create(),
+    WeaponScript.create(),
+    LocalPlayerPowerups.create()
+  ], [
     PlayerOutput.create({
       network: self.network
     })
@@ -71,7 +71,7 @@ var Game = module.exports = function (settings) {
   });
 
   //## Mock-player for something to shoot at
-  self.playerTwo = self.factories.player({}, [], {
+  self.playerTwo = self.factories.player([], [], {
     x: 60,
     y: 100
   });
