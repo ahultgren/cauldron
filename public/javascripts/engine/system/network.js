@@ -133,13 +133,11 @@ Network.prototype.connectToAllPeers = function() {
 };
 
 Network.prototype.updateEvent = function() {
-  var outgoing = this.outgoing;
+  // Only send if there's anything to send
+  if(this.outgoing.length) {
+    this.sendToAll(this.outgoing);
+  }
 
   // Clear outgoing queue
   this.outgoing = [];
-
-  // Only send if there's anything to send
-  if(outgoing.length) {
-    this.sendToAll(outgoing);
-  }
 };

@@ -51,9 +51,6 @@ Entity.prototype.updateStage2 = function(ctx) {
   return this;
 };
 
-// Alias
-Entity.prototype.draw = Entity.prototype.updateStage2;
-
 Entity.prototype.addComponent = function(component) {
   if(component) {
     this.components.push.apply(this.components, arguments);

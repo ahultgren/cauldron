@@ -130,16 +130,10 @@ Game.prototype.add = function (entity) {
   if(entity.data && entity.data.gco_ && this.loop[entity.data.gco_]) {
     this.loop[entity.data.gco_].push(entity);
   }
-  else if(entity.graphics && entity.graphics.type_ && this.loop[entity.graphics.type_]) {
-    this.loop[entity.graphics.type_].push(entity);
-  }
 
   // v2 collision
   if(entity.data && entity.data.collisionType_ && this.loop[entity.data.collisionType_]) {
     this.loop[entity.data.collisionType_].push(entity);
-  }
-  else if(entity.collision && entity.collision.type_ && this.loop[entity.collision.type_]) {
-    this.loop[entity.collision.type_].push(entity);
   }
 
   if(entity.update) {
