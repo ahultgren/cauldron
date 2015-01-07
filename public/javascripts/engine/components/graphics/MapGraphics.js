@@ -20,6 +20,14 @@ Graphics.init = function(entity) {
     [{x: 0, y: map.height}, {x: 0, y: 0}]
   );
 
+  // Add map outer borders to prevent global spying bug
+  map.unshift(
+    [{x: -20, y: -20}, {x: map.width + 20, y: -20}],
+    [{x: map.width + 20, y: -20}, {x: map.width + 20, y: map.height + 20}],
+    [{x: map.width + 20, y: map.height + 20}, {x: -20, y: map.height + 20}],
+    [{x: -20, y: map.height + 20}, {x: -20, y: -20}]
+  );
+
   // Alias for paths
   entity.data.map = map;
 
