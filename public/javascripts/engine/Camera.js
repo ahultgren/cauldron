@@ -41,14 +41,20 @@ Camera.prototype.clamp_ = function() {
   var maxX = this.canvas.width - this.map.data.width - MAP_OVERFLOW;
   var maxY = this.canvas.height - this.map.data.height - MAP_OVERFLOW;
 
-  if(this.x > MAP_OVERFLOW) {
+  if(this.canvas.width > this.map.data.width) {
+    this.x = maxX / 2;
+  }
+  else if(this.x > MAP_OVERFLOW) {
     this.x = MAP_OVERFLOW;
   }
   else if(this.x < maxX) {
     this.x = maxX;
   }
 
-  if(this.y > MAP_OVERFLOW) {
+  if(this.canvas.height > this.map.data.height) {
+    this.y = maxY / 2;
+  }
+  else if(this.y > MAP_OVERFLOW) {
     this.y = MAP_OVERFLOW;
   }
   else if(this.y < maxY) {
