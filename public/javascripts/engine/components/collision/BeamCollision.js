@@ -32,10 +32,6 @@ Collision.init = function(entity) {
   entity.data.explosionGradient = entity.data.explosionGradient || defaultEplosionGradient;
 };
 
-Collision.update = function() {};
-
-Collision.remove = function() {};
-
 /* Private
 ============================================================================= */
 

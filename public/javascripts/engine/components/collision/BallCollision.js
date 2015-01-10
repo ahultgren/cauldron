@@ -20,10 +20,6 @@ Collision.init = function(entity) {
   entity.data.boundingBox_ = Collision.boundingBox_;
 };
 
-Collision.update = function() {};
-
-Collision.remove = function() {};
-
 /* Private
 ============================================================================= */
 

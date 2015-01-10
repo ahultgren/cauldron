@@ -21,5 +21,3 @@ Line.update = function(entity) {
   entity.data.shape.pos.x = entity.data.x || 0;
   entity.data.shape.pos.y = entity.data.y || 0;
 };
-
-Line.remove = function(){};

@@ -20,5 +20,3 @@ Polygon.update = function(entity) {
   entity.data.shape.pos.x = entity.data.x;
   entity.data.shape.pos.y = entity.data.y;
 };
-
-Polygon.remove = function(){};

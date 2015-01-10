@@ -30,6 +30,3 @@ Graphics.update = function(entity, ctx) {
     ctx.fill();
   }
 };
-
-// [TODO] Remove when v1 entity is gone
-Graphics.remove = function(){};

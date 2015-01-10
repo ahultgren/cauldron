@@ -21,9 +21,6 @@ Physics.init = function(entity) {
   entity.data.aabbY = Math.min(entity.data.path[0].y, entity.data.path[1].y) + entity.data.halfHeight;
 };
 
-Physics.update = function(){};
-Physics.remove = function(){};
-
 /* Private
 ============================================================================= */
 

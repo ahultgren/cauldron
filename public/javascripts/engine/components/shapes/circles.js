@@ -36,5 +36,3 @@ Circles.update = function(entity) {
   entity.data.shape.pos.y = entity.data.y;
   entity.data.shape.r = entity.data.radius;
 };
-
-Circles.remove = function(){};

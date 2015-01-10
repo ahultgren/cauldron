@@ -53,8 +53,6 @@ Script.update = function(entity) {
   entity.data.spread = (Math.random() * entity.data.spreadRange - entity.data.spreadRange/2) * (Math.random() * entity.data.spreadRange - entity.data.spreadRange/2);
 };
 
-Script.remove = function(){};
-
 /* Helpers
 ============================================================================= */
 

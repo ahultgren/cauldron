@@ -34,5 +34,3 @@ Physics.update = function(entity) {
   entity.data.x += entity.data.dx;
   entity.data.y += entity.data.dy;
 };
-
-Physics.remove = function(){};

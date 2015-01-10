@@ -39,8 +39,6 @@ LocalInput.prototype.update = function(entity) {
   entity.data.a = Math.atan2(this.getPosition('y')-entity.data.y, this.getPosition('x')-entity.data.x);
 };
 
-LocalInput.prototype.remove = function(){};
-
 LocalInput.prototype.isDown = function (key) {
   return this.keyboard[this.keymap[key]];
 };

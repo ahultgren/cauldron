@@ -23,5 +23,3 @@ Graphics.update = Graphics.draw = function(entity, ctx) {
   ctx.lineTo(0, 0);
   ctx.fill();
 };
-
-Graphics.remove = function() {};

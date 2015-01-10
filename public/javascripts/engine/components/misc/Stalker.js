@@ -11,8 +11,6 @@ Stalker.create = function (target, props) {
   return stalker;
 };
 
-Stalker.init = function () {};
-
 Stalker.update = function (entity) {
   var self = this;
 

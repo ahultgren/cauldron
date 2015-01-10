@@ -36,5 +36,3 @@ Graphics.update = function(entity, ctx) {
   ctx.arc(-6, 0, entity.data.flareRadius, 0, Math.PI*2);
   ctx.fill();
 };
-
-Graphics.remove = function(){};

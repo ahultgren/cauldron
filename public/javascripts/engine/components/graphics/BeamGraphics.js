@@ -44,6 +44,3 @@ Graphics.update = function(entity, ctx) {
   ctx.lineTo(path[1].x, path[1].y);
   ctx.stroke();
 };
-
-// [TODO] Remove when v1 entity is gone
-Graphics.remove = function(){};

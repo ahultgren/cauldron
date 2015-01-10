@@ -15,8 +15,6 @@ Powerups.init = function(entity) {
 
 Powerups.update = LocalPlayerPowerups.update;
 
-Powerups.remove = function(){};
-
 /* Helpers
 ============================================================================= */
 

@@ -28,8 +28,6 @@ Powerups.update = function(entity) {
   entity.data.newPowerups = [];
 };
 
-Powerups.remove = function(){};
-
 /* Helpers
 ============================================================================= */
 

@@ -1,13 +1,18 @@
 'use strict';
 
+var R = require('ramda');
 var EventEmitter = require('events').EventEmitter;
 var Data = require('./Data');
+var push = Array.prototype.push;
 
 var Entity = module.exports = function Entity (data) {
   this.data = new Data(data);
   this.mediator = new EventEmitter();
+
+  this.initable = [];
   this.components = [];
   this.stage2Components = [];
+  this.removable = [];
 };
 
 Entity.create = function (data) {
@@ -15,15 +20,8 @@ Entity.create = function (data) {
 };
 
 Entity.prototype.init = function() {
-  var self = this;
-
-  self.components.forEach(function (component) {
-    component.init(self);
-  });
-
-  self.stage2Components.forEach(function (component) {
-    component.init(self);
-  });
+  this.initable.forEach(R.nAry(1, R.rPartial(R.func('init'), this)));
+  this.initable = [];
 
   return this;
 };
@@ -54,33 +52,34 @@ Entity.prototype.updateStage2 = function(ctx) {
  * Tells the entity manager to remove the object from the loop.
  */
 Entity.prototype.remove = function() {
-  var self = this;
-
-  self.components.forEach(function (component) {
-    component.remove(self);
-  });
-
-  self.stage2Components.forEach(function (component) {
-    component.remove(self);
-  });
-
-  self.mediator.removeAllListeners();
-  self.remove_ = true;
+  this.removable.forEach(R.nAry(1, R.rPartial(R.func('init'), this)));
+  this.mediator.removeAllListeners();
+  this.remove_ = true;
 
   return this;
 };
 
 Entity.prototype.addComponent = function(component) {
-  if(component) {
-    this.components.push.apply(this.components, arguments);
+  if(!component) {
+    return this;
   }
+
+  this.addUpdatable(this.components, arguments);
+  this.addInitable(arguments);
+  this.addRemovable(arguments);
+
   return this;
 };
 
 Entity.prototype.addStage2Component = function(component) {
-  if(component) {
-    this.stage2Components.push.apply(this.stage2Components, arguments);
+  if(!component) {
+    return this;
   }
+
+  this.addUpdatable(this.stage2Components, arguments);
+  this.addInitable(arguments);
+  this.addRemovable(arguments);
+
   return this;
 };
 
@@ -90,6 +89,24 @@ Entity.prototype.addComponents = function(components) {
 
 Entity.prototype.addStage2Components = function(components) {
   return this.addStage2Component.apply(this, components);
+};
+
+Entity.prototype.addInitable = function(components) {
+  var pushToInitable = R.nAry(1, push.bind(this.initable));
+  R.filter(R.hasIn('init'), components).forEach(pushToInitable);
+  return this;
+};
+
+Entity.prototype.addUpdatable = function(target, components) {
+  var pushToTarget = R.nAry(1, push.bind(target));
+  R.filter(R.hasIn('update'), components).forEach(pushToTarget);
+  return this;
+};
+
+Entity.prototype.addRemovable = function(components) {
+  var pushToRemovable = R.nAry(1, push.bind(this.removable));
+  R.filter(R.hasIn('remove'), components).forEach(pushToRemovable);
+  return this;
 };
 
 /**

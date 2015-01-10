@@ -22,5 +22,3 @@ Graphics.update = function(entity, ctx) {
     ctx.stroke();
   });
 };
-
-Graphics.remove = function() {};

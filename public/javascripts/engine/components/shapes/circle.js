@@ -19,5 +19,3 @@ Circle.update = function(entity) {
   entity.data.shape.pos.y = entity.data.y;
   entity.data.shape.r = entity.data.radius;
 };
-
-Circle.remove = function(){};

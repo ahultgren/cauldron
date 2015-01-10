@@ -31,6 +31,3 @@ Graphics.update = function(entity, ctx) {
   ctx.arc(0, 0, radius, 0, Math.PI * 2);
   ctx.fill();
 };
-
-// [TODO] Remove when v1 entity is gone
-Graphics.remove = function(){};

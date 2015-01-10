@@ -12,9 +12,6 @@ Script.init = function(entity) {
   entity.mediator.on('inputmouseup', R.lPartial(triggerEnd, entity));
 };
 
-Script.update = function() {};
-Script.remove = function() {};
-
 /* Private
 ============================================================================= */
 
