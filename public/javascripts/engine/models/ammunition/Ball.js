@@ -1,12 +1,14 @@
 'use strict';
 
 module.exports = {
-  components: {
-    Physics: require('../../components/physics/BallPhysics'),
-    Graphics: require('../../components/graphics/BallGraphics'),
-    Collision: require('../../components/collision/BallCollision'),
-    Shape: require('../../components/shapes/circle')
-  },
+  components: [
+    require('../../components/physics/BallPhysics'),
+    require('../../components/collision/BallCollision'),
+    require('../../components/shapes/circle')
+  ],
+  stage2Components: [
+    require('../../components/graphics/BallGraphics')
+  ],
   data: {
     radius: 8,
     fill: 'cyan',

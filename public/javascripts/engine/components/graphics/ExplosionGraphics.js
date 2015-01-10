@@ -16,23 +16,17 @@ var defaults = {
   duration: 5
 };
 
-
 var Graphics = module.exports = exports;
 
 Graphics.create = function () {
   return Graphics;
 };
 
-
-Graphics.type_ = 'masked';
-
 Graphics.init = function(entity) {
   entity.data.currentStep = entity.data.currentStep || defaults.currentStep;
   entity.data.gradient = entity.data.gradient || defaults.gradient;
   entity.data.inflationSpeed = entity.data.inflationSpeed || defaults.inflationSpeed;
   entity.data.duration = entity.data.duration || defaults.duration;
-
-  entity.data.gco_ = Graphics.type_;
 };
 
 Graphics.update = function(entity, ctx) {

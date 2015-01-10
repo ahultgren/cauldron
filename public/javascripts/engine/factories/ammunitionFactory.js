@@ -6,11 +6,12 @@ require('../models/ammunition/Ball');
 require('../models/ammunition/Rocket');
 
 
+var R = require('ramda');
 var utils = require('../utils');
 var Entity = require('../components/entity');
 var AABB = require('../components/shapes/aabb');
 var ammunitionModels = '../models/ammunition/';
-
+var masked = require('../components/graphicsType/masked');
 
 module.exports = function (type, data) {
   var game = this;
@@ -22,11 +23,12 @@ module.exports = function (type, data) {
   }, model.data, data);
 
   return Entity.create(data)
-  .addComponent(AABB.create())
-  .addComponent(model.components.Physics.create())
-  .addComponent(model.components.Collision && model.components.Collision.create())
-  .addComponent(model.components.Shape && model.components.Shape.create())
-  .addStage2Component(model.components.Graphics.create())
+  .addComponents([
+    AABB.create(),
+    masked.create()
+  ])
+  .addComponents(model.components.map(R.func('create')))
+  .addStage2Components(model.stage2Components.map(R.func('create')))
   .init()
   .addTo(game);
 };

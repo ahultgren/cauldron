@@ -19,6 +19,8 @@ var FOWGraphics = require('./components/graphics/FOWGraphics');
 var FOVGraphics = require('./components/graphics/FOVGraphics');
 var MapGraphics = require('./components/graphics/MapGraphics');
 var Stalker = require('./components/misc/Stalker.js');
+var alwaysVisible = require('./components/graphicsType/alwaysVisible');
+var visibilityPolygon = require('./components/graphicsType/visibilityPolygon');
 
 
 var Game = module.exports = function (settings) {
@@ -29,7 +31,8 @@ var Game = module.exports = function (settings) {
     player: require('./factories/playerFactory').bind(self),
     weapon: require('./factories/weaponFactory').bind(self),
     ammunition: require('./factories/ammunitionFactory').bind(self),
-    powerup: require('./factories/powerupFactory').bind(self)
+    powerup: require('./factories/powerupFactory').bind(self),
+    explosion: require('./factories/explosionFactory').bind(self)
   };
 
   // Map
@@ -41,6 +44,7 @@ var Game = module.exports = function (settings) {
     paths: settings.map,
     color: settings.map.color
   })
+  .addComponent(alwaysVisible)
   .addStage2Component(MapGraphics.create())
   .init()
   .addTo(self);
@@ -73,8 +77,8 @@ var Game = module.exports = function (settings) {
 
   //## Mock-player for something to shoot at
   self.playerTwo = self.factories.player([], [], {
-    x: 60,
-    y: 100
+    x: self.map.data.paths.playerSpawnPoints[1].x,
+    y: self.map.data.paths.playerSpawnPoints[1].y
   });
 
   // Cursor
@@ -83,6 +87,7 @@ var Game = module.exports = function (settings) {
     fill: self.playerOne.data.fill,
     mouse: mouse //## Use an input instance instead?
   })
+  .addComponent(alwaysVisible.create())
   .addStage2Component(CursorGraphics.create())
   .init()
   .addTo(self);
@@ -97,6 +102,7 @@ var Game = module.exports = function (settings) {
     paths: self.map.data.paths,
     player: self.playerOne
   })
+  .addComponent(visibilityPolygon.create())
   .addStage2Component(FOWGraphics.create())
   .init()
   .addTo(self);
@@ -106,6 +112,7 @@ var Game = module.exports = function (settings) {
     player: self.playerOne
   })
   .addComponent(Stalker.create(self.playerOne, ['x', 'y', 'a']))
+  .addComponent(visibilityPolygon.create())
   .addStage2Component(FOVGraphics.create())
   .init()
   .addTo(self);

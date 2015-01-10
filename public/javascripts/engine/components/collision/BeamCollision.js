@@ -1,7 +1,5 @@
 'use strict';
 
-var Entity = require('../entity');
-var ExplosionGraphics = require('../graphics/ExplosionGraphics');
 var defaultEplosionGradient = [
   '#f00',
   '#f77',
@@ -51,15 +49,11 @@ function onCollision (entity, type, target) {
 }
 
 function spawn (entity, target) {
-  var explosion = Entity.create({
+  entity.game.factories.explosion({
     gradient: entity.data.explosionGradient,
     duration: entity.data.explosionDuration,
     x: target.data.x,
     y: target.data.y,
     radius: entity.data.explosionRadius
-  })
-  .addStage2Component(ExplosionGraphics.create())
-  .init();
-
-  entity.game.add(explosion);
+  });
 }

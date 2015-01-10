@@ -1,12 +1,14 @@
 'use strict';
 
 module.exports = {
-  components: {
-    Physics: require('../../components/physics/BeamPhysics'),
-    Graphics: require('../../components/graphics/BeamGraphics'),
-    Collision: require('../../components/collision/BeamCollision'),
-    Shape: require('../../components/shapes/line')
-  },
+  components: [
+    require('../../components/physics/BeamPhysics'),
+    require('../../components/collision/BeamCollision'),
+    require('../../components/shapes/line')
+  ],
+  stage2Components: [
+    require('../../components/graphics/BeamGraphics')
+  ],
   data: {
     aliveUntil: 2,
     aliveFor: 0

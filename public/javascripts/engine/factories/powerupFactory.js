@@ -6,6 +6,7 @@ var ConcentricalGraphics = require('../components/graphics/ConcentricalGraphics'
 var Collision = require('../components/collision/PowerupCollision');
 var AABB = require('../components/shapes/aabb');
 var Circles = require('../components/shapes/circles');
+var masked = require('../components/graphicsType/masked');
 
 module.exports = exports = function powerupFactory (data) {
   var game = this;
@@ -16,7 +17,7 @@ module.exports = exports = function powerupFactory (data) {
   }, data);
 
   return Entity.create(data)
-  .addComponent(Collision.create(), Circles.create(), AABB.create())
+  .addComponent(Collision.create(), Circles.create(), AABB.create(), masked.create())
   .addStage2Component(ConcentricalGraphics.create())
   .init();
 };

@@ -2,8 +2,6 @@
 
 var Graphics = module.exports = exports;
 
-Graphics.type_ = 'masked';
-
 Graphics.create = function () {
   return Graphics;
 };
@@ -11,8 +9,6 @@ Graphics.create = function () {
 Graphics.init = function(entity) {
   entity.data.flashed = entity.data.flashed || false;
   entity.data.flashColor = entity.data.flashColor || '#fd0';
-
-  entity.data.gco_ = Graphics.type_;
 };
 
 Graphics.update = function(entity, ctx) {

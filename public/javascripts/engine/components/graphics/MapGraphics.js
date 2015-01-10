@@ -3,8 +3,6 @@
 var SAT = require('sat');
 var Graphics = module.exports = exports;
 
-Graphics.type_ = 'alwaysVisible';
-
 Graphics.create = function () {
   return Graphics;
 };
@@ -40,8 +38,6 @@ Graphics.init = function(entity) {
   createShape(map);
 
   entity.data.color = entity.data.color || '#c33';
-
-  entity.data.gco_ = Graphics.type_;
 };
 
 Graphics.update = function(entity, ctx) {

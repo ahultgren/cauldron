@@ -3,8 +3,6 @@
 var utils = require('../../utils');
 var Graphics = module.exports = exports;
 
-Graphics.type_ = 'visibilityPolygons';
-
 Graphics.create = function () {
   return Graphics;
 };
@@ -12,8 +10,6 @@ Graphics.create = function () {
 Graphics.init = function(entity) {
   entity.data.fuzzyRadius = entity.data.fuzzyRadius || 10;
   entity.data.uniquePoints = calculateUniquePoints(entity.data.paths);
-
-  entity.data.gco_ = Graphics.type_;
 };
 
 Graphics.update = function(entity, ctx) {

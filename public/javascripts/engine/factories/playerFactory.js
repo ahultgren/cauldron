@@ -7,6 +7,7 @@ var PlayerGraphics = require('../components/graphics/PlayerGraphics');
 var Collision = require('../components/collision/PlayerCollision');
 var AABB = require('../components/shapes/aabb');
 var Circle = require('../components/shapes/circle');
+var masked = require('../components/graphicsType/masked');
 
 var defaultData = {
   radius: 5,
@@ -24,7 +25,6 @@ var defaultData = {
 
 module.exports = function playerFactory (components, stage2, data) {
   var game = this;
-  var player;
 
   stage2 = stage2 || [];
 
@@ -32,20 +32,19 @@ module.exports = function playerFactory (components, stage2, data) {
     playerId: generateId() + generateId() + generateId()
   }, defaultData, data);
 
-  player = Entity.create(data);
-
-  player.addComponents([
+  return Entity.create(data)
+  .addComponents([
     PlayerPhysics.create(),
     Collision.create(),
     AABB.create(),
-    Circle.create()
-  ].concat(components));
-
-  player.addStage2Components([PlayerGraphics.create()].concat(stage2));
-
-  game.add(player.init());
-
-  return player;
+    Circle.create(),
+    masked.create()
+  ])
+  .addComponents(components)
+  .addStage2Components([PlayerGraphics.create()])
+  .addStage2Components(stage2)
+  .init()
+  .addTo(game);
 };
 
 function generateId () {

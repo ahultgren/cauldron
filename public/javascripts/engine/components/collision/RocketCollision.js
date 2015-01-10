@@ -1,7 +1,5 @@
 'use strict';
 
-var Entity = require('../entity');
-var ExplosionGraphics = require('../graphics/ExplosionGraphics');
 var Collision = module.exports = exports;
 
 Collision.type_ = 'collidable';
@@ -40,15 +38,11 @@ function onCollision (entity, type, target) {
 }
 
 function spawn (entity) {
-  var explosion = Entity.create({
+  entity.game.factories.explosion({
     duration: entity.data.explosionDuration,
     inflationSpeed: entity.data.inflationSpeed,
     x: entity.data.x,
     y: entity.data.y,
     radius: 5
-  })
-  .addStage2Component(ExplosionGraphics.create())
-  .init();
-
-  entity.game.add(explosion);
+  });
 }

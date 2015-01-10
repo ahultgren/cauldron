@@ -2,15 +2,8 @@
 
 var Graphics = module.exports = exports;
 
-Graphics.type_ = 'masked';
-
 Graphics.create = function () {
   return Graphics;
-};
-
-Graphics.init = function (entity) {
-  // [TODO] Use a gco-component for this instead?
-  entity.data.gco_ = Graphics.type_;
 };
 
 Graphics.update = function(entity, ctx) {

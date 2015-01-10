@@ -3,8 +3,6 @@
 var utils = require('../../utils');
 var Graphics = module.exports = exports;
 
-Graphics.type_ = 'visibilityPolygons';
-
 Graphics.create = function () {
   return Graphics;
 };
@@ -15,8 +13,6 @@ Graphics.init = function (entity) {
 
   entity.data.path = createCartesianPath(createBasePolygon(entity));
   entity.data.player = entity.data.player;
-
-  entity.data.gco_ = Graphics.type_;
 };
 
 Graphics.update = function(entity, ctx) {

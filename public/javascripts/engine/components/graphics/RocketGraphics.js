@@ -3,8 +3,6 @@
 var utils = require('../../utils');
 var Graphics = module.exports = exports;
 
-Graphics.type_ = 'masked';
-
 Graphics.create = function () {
   return Graphics;
 };
@@ -13,8 +11,6 @@ Graphics.init = function(entity) {
   entity.data.flareRadius = entity.data.flareRadius || 3;
   entity.data.minFlareRadius = entity.data.minFlareRadius || 3;
   entity.data.maxFlareRadius = entity.data.maxFlareRadius || 10;
-
-  entity.data.gco_ = Graphics.type_;
 };
 
 Graphics.update = function(entity, ctx) {

@@ -1,12 +1,14 @@
 'use strict';
 
 module.exports = {
-  components: {
-    Physics: require('../../components/physics/RocketPhysics'),
-    Graphics: require('../../components/graphics/RocketGraphics'),
-    Collision: require('../../components/collision/RocketCollision'),
-    Shape: require('../../components/shapes/polygon')
-  },
+  components: [
+    require('../../components/physics/RocketPhysics'),
+    require('../../components/collision/RocketCollision'),
+    require('../../components/shapes/polygon')
+  ],
+  stage2Components: [
+    require('../../components/graphics/RocketGraphics')
+  ],
   data: {
     fill: '#999',
     explosionDuration: 5,

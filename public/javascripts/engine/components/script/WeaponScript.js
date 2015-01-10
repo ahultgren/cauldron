@@ -19,8 +19,8 @@ Script.create = function () {
 
 Script.init = function(entity) {
   if(entity.data.weaponName) {
-    antiExtend(entity.data, defaults);
     antiExtend(entity.data, weaponFactory(entity.data.weaponName));
+    antiExtend(entity.data, defaults);
   }
 
   entity.mediator.on('shoot', shoot.bind(null, entity));
