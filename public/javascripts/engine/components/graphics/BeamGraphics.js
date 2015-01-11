@@ -16,12 +16,6 @@ Graphics.update = function(entity, ctx) {
   var flashX, flashY;
   var path = entity.data.path;
 
-  // [TODO] Move this to it's own component
-  if((entity.data.aliveFor++) >= entity.data.aliveUntil) {
-    entity.remove();
-    return;
-  }
-
   // Muzzle flash
   if(!entity.data.flashed) {
     flashX = path[0].x;
