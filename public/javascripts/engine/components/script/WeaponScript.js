@@ -74,7 +74,8 @@ function shoot (entity, from, toward, spread) {
       toward: toward,
       spread: spread,
       player: entity,
-      playerId: entity.data.playerId
+      playerId: entity.data.playerId,
+      color: entity.data.fill
     },
     entity.data.ammunitionData
   ));

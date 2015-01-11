@@ -9,12 +9,14 @@ Graphics.create = function () {
 Graphics.init = function(entity) {
   entity.data.flashed = entity.data.flashed || false;
   entity.data.flashColor = entity.data.flashColor || '#fd0';
+  entity.data.color = entity.data.color || '#c63';
 };
 
 Graphics.update = function(entity, ctx) {
   var flashX, flashY;
   var path = entity.data.path;
 
+  // [TODO] Move this to it's own component
   if((entity.data.aliveFor++) >= entity.data.aliveUntil) {
     entity.remove();
     return;
@@ -33,7 +35,7 @@ Graphics.update = function(entity, ctx) {
     entity.data.flashed = true;
   }
 
-  ctx.strokeStyle = '#c63';
+  ctx.strokeStyle = entity.data.color;
   ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(path[0].x, path[0].y);
