@@ -5,7 +5,8 @@ module.exports = {
     require('../../components/physics/BallPhysics'),
     require('../../components/collision/BallCollision'),
     require('../../components/shapes/circle'),
-    [require('../../components/misc/RemoveOn'), 'collision']
+    [require('../../components/misc/RemoveOn'), 'collision'],
+    require('../../components/movement/linearMovement')
   ],
   stage2Components: [
     require('../../components/graphics/BallGraphics')
