@@ -21,7 +21,7 @@ Graphics.update = function(entity, ctx) {
     radius *= 2;
     fill = entity.data.flashColor;
     entity.data.flashed = true;
-    x = -10;
+    x = -5;
   }
 
   ctx.beginPath();

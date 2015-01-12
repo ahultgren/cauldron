@@ -34,6 +34,11 @@ module.exports = function (type, player, from, toward, spread) {
 
   data.from = offsetFrom(from, player, data, angle);
 
+  if(model.spawnAtFrom) {
+    data.x = data.from.data.x;
+    data.y = data.from.data.y;
+  }
+
   return Entity.create(data)
   .addComponents(model.components.map(create))
   .addComponents([
