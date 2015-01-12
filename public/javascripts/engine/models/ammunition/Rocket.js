@@ -4,7 +4,8 @@ module.exports = {
   components: [
     require('../../components/physics/RocketPhysics'),
     require('../../components/collision/RocketCollision'),
-    require('../../components/shapes/polygon')
+    require('../../components/shapes/polygon'),
+    [require('../../components/misc/RemoveOn'), 'collision']
   ],
   stage2Components: [
     require('../../components/graphics/RocketGraphics')

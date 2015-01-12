@@ -60,8 +60,7 @@ function create (component) {
  * Spawn projectile a bit away from the player
  */
 function offsetFrom (from, player, modelData, angle) {
-  // [TODO] Support calculations based on width and stuff
-  var ammoRadius = modelData.radius || 0;
+  var ammoRadius = modelData.radius || modelData.halfWidth || 0;
 
   if(player.data.radius) {
     return {
