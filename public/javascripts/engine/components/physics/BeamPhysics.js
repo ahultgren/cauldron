@@ -8,10 +8,10 @@ Physics.create = function () {
 };
 
 Physics.init = function(entity) {
-  // Allow for setting a and b
-  if(!entity.data.b) {
-    makeLine(entity);
-  }
+  makeLine(entity);
+
+  // [TODO] Fix beam so it supports an angle?
+  entity.data.a = 0;
 
   // Generate aabb-data
   entity.data.halfWidth = Math.abs(entity.data.path[0].x - entity.data.path[1].x)/2;
@@ -35,8 +35,8 @@ function makeLine (entity) {
   // Start with a really long line...
   entity.data.path = line = [
     {
-      x: entity.data.from.data.x + Math.cos(angle)*5,
-      y: entity.data.from.data.y + Math.sin(angle)*5
+      x: entity.data.from.data.x,
+      y: entity.data.from.data.y
     },
     {
       x: entity.data.from.data.x + Math.cos(angle)*1000000,

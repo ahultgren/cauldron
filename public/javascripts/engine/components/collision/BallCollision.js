@@ -25,13 +25,11 @@ function onCollision (entity, type, target) {
   switch(type) {
     case 'map':
       spawn(entity);
-      entity.remove();
       break;
 
     case 'collidable':
       if(target.data.playerId !== entity.data.playerId) {
         spawn(entity);
-        entity.remove();
       }
       break;
   }

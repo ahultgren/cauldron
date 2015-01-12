@@ -68,17 +68,7 @@ function triggerEnd (entity) {
 }
 
 function shoot (entity, from, toward, spread) {
-  entity.game.factories.ammunition(entity.data.ammunition, utils.extend(
-    {
-      from: from,
-      toward: toward,
-      spread: spread,
-      player: entity,
-      playerId: entity.data.playerId,
-      color: entity.data.fill
-    },
-    entity.data.ammunitionData
-  ));
+  entity.game.factories.ammunition(entity.data.ammunition, entity, from, toward, spread);
 
   entity.mediator.emit('shot', {
     from: {
