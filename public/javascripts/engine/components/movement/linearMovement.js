@@ -10,8 +10,10 @@ exports.create = function () {
 
 exports.init = function (entity) {
   // Calculate velocity
-  entity.data.dx = Math.cos(entity.data.a) * entity.data.speed;
-  entity.data.dy = Math.sin(entity.data.a) * entity.data.speed;
+  if(entity.data.speed) {
+    entity.data.dx = Math.cos(entity.data.a) * entity.data.speed;
+    entity.data.dy = Math.sin(entity.data.a) * entity.data.speed;
+  }
 };
 
 exports.update = function (entity) {

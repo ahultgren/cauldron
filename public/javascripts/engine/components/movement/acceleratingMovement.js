@@ -22,7 +22,4 @@ exports.update = function (entity) {
     entity.data.dx = Math.cos(entity.data.a) * entity.data.speed;
     entity.data.dy = Math.sin(entity.data.a) * entity.data.speed;
   }
-
-  entity.data.x += entity.data.dx;
-  entity.data.y += entity.data.dy;
 };

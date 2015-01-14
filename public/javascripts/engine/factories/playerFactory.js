@@ -2,7 +2,8 @@
 
 var utils = require('../utils');
 var Entity = require('../components/entity');
-var PlayerPhysics = require('../components/physics/PlayerPhysics');
+var frictionMovement = require('../components/movement/frictionMovement');
+var linearMovement = require('../components/movement/linearMovement');
 var PlayerGraphics = require('../components/graphics/PlayerGraphics');
 var Collision = require('../components/collision/PlayerCollision');
 var AABB = require('../components/shapes/aabb');
@@ -34,7 +35,8 @@ module.exports = function playerFactory (components, stage2, data) {
 
   return Entity.create(data)
   .addComponents([
-    PlayerPhysics.create(),
+    frictionMovement.create(),
+    linearMovement.create(),
     Collision.create(),
     AABB.create(),
     Circle.create(),

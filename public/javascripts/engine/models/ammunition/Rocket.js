@@ -3,8 +3,8 @@
 module.exports = {
   spawnAtFrom: true,
   components: [
-    //require('../../components/physics/RocketPhysics'),
     require('../../components/movement/acceleratingMovement'),
+    require('../../components/movement/linearMovement'),
     require('../../components/collision/RocketCollision'),
     require('../../components/shapes/polygon'),
     [require('../../components/misc/RemoveOn'), 'collision']
