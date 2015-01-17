@@ -70,7 +70,7 @@ var Game = module.exports = function (settings) {
       network: self.network
     })
   ], {
-    weaponName: 'RocketLauncher',
+    weaponName: 'LaserCannon',
     x: self.map.data.paths.playerSpawnPoints[0].x,
     y: self.map.data.paths.playerSpawnPoints[0].y
   });

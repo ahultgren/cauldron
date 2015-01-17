@@ -8,17 +8,23 @@ Physics.create = function () {
 };
 
 Physics.init = function(entity) {
-  makeLine(entity);
-
-  // [TODO] Fix beam so it supports an angle?
-  entity.data.a = 0;
+  var line = makeLine(entity);
 
   // Generate aabb-data
-  entity.data.halfWidth = Math.abs(entity.data.path[0].x - entity.data.path[1].x)/2;
-  entity.data.halfHeight = Math.abs(entity.data.path[0].y - entity.data.path[1].y)/2;
+  entity.data.halfWidth = Math.abs(line[0].x - line[1].x)/2;
+  entity.data.halfHeight = Math.abs(line[0].y - line[1].y)/2;
+  entity.data.aabbX = Math.min(line[0].x, line[1].x) + entity.data.halfWidth;
+  entity.data.aabbY = Math.min(line[0].y, line[1].y) + entity.data.halfHeight;
 
-  entity.data.aabbX = Math.min(entity.data.path[0].x, entity.data.path[1].x) + entity.data.halfWidth;
-  entity.data.aabbY = Math.min(entity.data.path[0].y, entity.data.path[1].y) + entity.data.halfHeight;
+  var xLength = entity.data.halfWidth * 2;
+  var yLength = entity.data.halfHeight * 2;
+  var xPow = Math.pow(xLength, 2);
+  var yPow = Math.pow(yLength, 2);
+
+  entity.data.lineEnd = {
+    x: Math.sqrt(xPow + yPow),
+    y: 0
+  };
 };
 
 /* Private
@@ -27,13 +33,10 @@ Physics.init = function(entity) {
 function makeLine (entity) {
   var i, l, intersection, minIntersection, angle, line;
 
-  angle = Math.atan2(entity.data.toward.y - entity.data.from.data.y, entity.data.toward.x - entity.data.from.data.x);
-
-  // Accuracy
-  angle = angle + entity.data.spread;
+  angle = entity.data.a;
 
   // Start with a really long line...
-  entity.data.path = line = [
+  line = [
     {
       x: entity.data.from.data.x,
       y: entity.data.from.data.y
@@ -56,4 +59,6 @@ function makeLine (entity) {
   // ...and shorten the line
   line[1].x = minIntersection.x;
   line[1].y = minIntersection.y;
+
+  return line;
 }

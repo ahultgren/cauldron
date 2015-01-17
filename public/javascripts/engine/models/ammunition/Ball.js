@@ -1,7 +1,6 @@
 'use strict';
 
 module.exports = {
-  spawnAtFrom: true,
   components: [
     require('../../components/collision/BallCollision'),
     require('../../components/shapes/circle'),

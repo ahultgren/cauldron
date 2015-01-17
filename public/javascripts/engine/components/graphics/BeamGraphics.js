@@ -13,16 +13,10 @@ Graphics.init = function(entity) {
 };
 
 Graphics.update = function(entity, ctx) {
-  var flashX, flashY;
-  var path = entity.data.path;
-
   // Muzzle flash
   if(!entity.data.flashed) {
-    flashX = path[0].x;
-    flashY = path[0].y;
-
     ctx.beginPath();
-    ctx.arc(flashX, flashY, 15, 0, Math.PI * 2);
+    ctx.arc(0, 0, 15, 0, Math.PI * 2);
     ctx.fillStyle = entity.data.flashColor;
     ctx.fill();
 
@@ -32,7 +26,7 @@ Graphics.update = function(entity, ctx) {
   ctx.strokeStyle = entity.data.color;
   ctx.lineWidth = 1;
   ctx.beginPath();
-  ctx.moveTo(path[0].x, path[0].y);
-  ctx.lineTo(path[1].x, path[1].y);
+  ctx.moveTo(0, 0);
+  ctx.lineTo(entity.data.lineEnd.x, entity.data.lineEnd.y);
   ctx.stroke();
 };

@@ -9,11 +9,10 @@ Line.create = function () {
 
 Line.init = function(entity) {
   var origin = new SAT.V(entity.data.x || 0, entity.data.y || 0);
-  var path = entity.data.path.map(function (point) {
-    return new SAT.V(point.x, point.y);
-  });
+  var path = [new SAT.V(), new SAT.V(entity.data.lineEnd.x, entity.data.lineEnd.y)];
 
   entity.data.shape = new SAT.Polygon(origin, path);
+  entity.data.shape.setAngle(entity.data.a);
   entity.data.shape.isPolygon = true;
 };
 
