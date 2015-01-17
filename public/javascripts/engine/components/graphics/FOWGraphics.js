@@ -13,28 +13,10 @@ Graphics.init = function(entity) {
 };
 
 Graphics.update = function(entity, ctx) {
-  var angle, dx, dy;
-  var polygons = [
-    getSightPolygon(entity.data.paths, entity.data.uniquePoints, entity.data.player.data.x, entity.data.player.data.y)
-  ];
+  var polygon = getSightPolygon(entity.data.paths, entity.data.uniquePoints, entity.data.player.data.x, entity.data.player.data.y);
 
-  for(angle = 0; angle < Math.PI*2; angle += (Math.PI*2)/3.1){
-    dx = Math.cos(angle)*entity.data.fuzzyRadius;
-    dy = Math.sin(angle)*entity.data.fuzzyRadius;
-
-    polygons.push(
-      getSightPolygon(entity.data.paths, entity.data.uniquePoints, entity.data.player.data.x+dx, entity.data.player.data.y+dy)
-    );
-  }
-
-  // DRAW AS A GIANT POLYGON
-  for(var i=1;i<polygons.length;i++){
-    utils.drawPolygon(polygons[i], ctx, 'rgba(255,255,255,0.2)');
-  }
-
-  utils.drawPolygon(polygons[0], ctx, '#fff');
+  utils.drawPolygon(polygon, ctx, '#fff');
 };
-
 
 /* Helpers
 ============================================================================= */
