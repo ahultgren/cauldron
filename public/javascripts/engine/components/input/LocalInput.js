@@ -26,10 +26,10 @@ LocalInput.prototype.init = function(entity) {
 
   entity.data.mouse = this.mouse = entity.data.mouse || this.mouse;
 
-  if(this.mouse.on) {
-    this.mouse.on('mousedown', emitOnMediator('inputmousedown'));
-    this.mouse.on('mouseup', emitOnMediator('inputmouseup'));
-  }
+  this.mouse.on('mousedown', function () {
+    entity.mediator.emit('triggerStart', entity, entity.data.mouse, entity.data.spread);
+  });
+  this.mouse.on('mouseup', emitOnMediator('triggerEnd'));
 };
 
 LocalInput.prototype.update = function(entity) {

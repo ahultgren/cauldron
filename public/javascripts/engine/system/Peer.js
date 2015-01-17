@@ -2,7 +2,7 @@
 
 var PeerInput = require('../components/input/PeerInput');
 var PeerPlayerPowerups = require('../components/powerups/PeerPlayerPowerups');
-var WeaponScript = require('../components/script/WeaponScript');
+var Weapon = require('../components/misc/Weapon');
 
 var Peer = module.exports = function Peer (game, id, conn) {
   this.game = game;
@@ -15,7 +15,7 @@ var Peer = module.exports = function Peer (game, id, conn) {
       game: this.game
     }),
     PeerPlayerPowerups.create(),
-    WeaponScript.create()
+    Weapon.create()
   ]);
 };
 
