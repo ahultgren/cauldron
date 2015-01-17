@@ -4,14 +4,14 @@ var utils = require('../utils');
 var Entity = require('../components/entity');
 var frictionMovement = require('../components/movement/frictionMovement');
 var linearMovement = require('../components/movement/linearMovement');
-var PlayerGraphics = require('../components/graphics/PlayerGraphics');
+var CircleSegmentGraphics = require('../components/graphics/CircleSegmentGraphics');
 var Collision = require('../components/collision/PlayerCollision');
 var AABB = require('../components/shapes/aabb');
 var Circle = require('../components/shapes/circle');
 var masked = require('../components/graphicsType/masked');
 
 var defaultData = {
-  radius: 5,
+  radius: 7,
   x: 0,
   y: 0,
   a: 0,
@@ -43,7 +43,7 @@ module.exports = function playerFactory (components, stage2, data) {
     masked.create()
   ])
   .addComponents(components)
-  .addStage2Components([PlayerGraphics.create()])
+  .addStage2Component(CircleSegmentGraphics.create())
   .addStage2Components(stage2)
   .init()
   .addTo(game);
