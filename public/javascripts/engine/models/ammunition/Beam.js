@@ -2,7 +2,7 @@
 
 module.exports = {
   components: [
-    require('../../components/physics/BeamPhysics'),
+    require('../../components/misc/MakeLine'),
     require('../../components/collision/BeamCollision'),
     require('../../components/shapes/line'),
     require('../../components/misc/RemoveAfter')
