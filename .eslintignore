@@ -1,0 +1,2 @@
+# Fix because eslint inline ignores doesn't seem to work ><
+source/js/utils/findMap.js

@@ -1,76 +1,82 @@
 'use strict';
 
+/*eslint no-use-before-define:0*/
+
 var gulp = require('gulp');
 var util = require('gulp-util');
-var rename = require('gulp-rename');
-var browserify = require('gulp-browserify');
-var jshint = require('gulp-jshint');
-var uglify = require('gulp-uglify');
+var eslint = require('gulp-eslint');
 var less = require('gulp-less');
 var sourcemaps = require('gulp-sourcemaps');
+var browserify = require('browserify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var babelify = require('babelify');
+var uglify = require('gulp-uglify');
+var watchify = require('watchify');
 
+var publicJsDir = 'source/js';
+var publicJsRoot = './' + publicJsDir + '/main.js';
+var jsDest = './public/dist';
+var jsMin = 'main.min.js';
 
-var clientJsDir = 'public/javascripts';
-var clientJsRoot = clientJsDir + '/main.js';
-var clientJsDest = 'public/dist';
-var clientJsMin = 'main.min.js';
+var jsGlob = ['gulpfile.js', 'app/**/*.js', 'source/**/*.js'];
 
-var serverJsGlob = ['package.json', 'gulpfile.js', 'app.js', 'bin/*.js'];
-
-var lessSrc = 'public/less/main.less';
-var lessSrcGlob = 'public/less/**/*.less';
+var lessSrc = 'source/less/main.less';
+var lessSrcGlob = ['source/less/**/*.less'];
 var lessDest = 'public/dist';
 
+function handleError (error) {
+  util.log(error.message);
+}
 
 gulp.task('lint', function() {
-  gulp.src([clientJsDir + '/**/*.js'])
-    .pipe(jshint({
-      curly: true,
-      eqeqeq: true,
-      eqnull: true,
-      globalstrict: true,
-      camelcase: true,
-      indent: 2,
-      immed: true,
-      latedef: 'nofunc',
-      newcap: true,
-      quotmark: true,
-      undef: true,
-      unused: true,
-      trailing: true,
-      browser: true,
-      node: true
-    }))
+  return gulp.src(jsGlob)
+    .pipe(eslint())
     .on('error', handleError)
-    .pipe(jshint.reporter('jshint-stylish'));
-
-  gulp.src(serverJsGlob)
-    .pipe(jshint({
-      node: true
-    }))
-    .on('error', handleError)
-    .pipe(jshint.reporter('jshint-stylish'));
+    .pipe(eslint.format());
 });
 
 gulp.task('browserify', function() {
-  gulp.src(clientJsRoot)
-    .pipe(browserify({
-      shim: {
-        peerjs: {
-          path: 'node_modules/peerjs/dist/peer.min.js',
-          exports: 'Peer'
-        }
-      },
-      transform: ['brfs']
-    }))
-    .on('error', handleError)
-    .pipe(uglify())
-    .pipe(rename(clientJsMin))
-    .pipe(gulp.dest(clientJsDest));
+  var b = browserify({
+    entries: [publicJsRoot],
+    cache: {},
+    packageCache: {},
+  })
+  .transform(babelify.configure({
+    optional: ['es7.objectRestSpread'],
+  }));
+
+  b = watchify(b, {
+    delay: 100,
+  });
+
+  b.on('update', function () {
+    util.log('Starting \'watchify\'');
+    bundle();
+  });
+
+  b.on('time', function (time) {
+    util.log('Finished \'watchify\' after ' + time + ' ms');
+  });
+
+  function bundle () {
+    return b
+      .bundle()
+      .on('error', util.log.bind(util, 'Browserify Error'))
+      .pipe(source(jsMin))
+      .pipe(buffer())
+      .pipe(sourcemaps.init({loadMaps: true}))
+      .pipe(uglify())
+      .pipe(sourcemaps.write('./'))
+      .pipe(gulp.dest(jsDest));
+  }
+
+  return bundle();
 });
 
+
 gulp.task('less', function () {
-  gulp.src(lessSrc)
+  return gulp.src(lessSrc)
     .pipe(less({
       paths: [],
       compress: true
@@ -80,8 +86,7 @@ gulp.task('less', function () {
 });
 
 gulp.task('watch', function () {
-  gulp.watch([clientJsDir + '/**/*.js'], ['build_js']);
-  gulp.watch(serverJsGlob, ['lint']);
+  gulp.watch(jsGlob, ['lint']);
   gulp.watch(lessSrcGlob, ['build_css']);
 });
 
@@ -90,11 +95,3 @@ gulp.task('build_js', ['lint', 'browserify']);
 gulp.task('build_css', ['less']);
 
 gulp.task('default', ['build', 'watch']);
-
-
-/* Helpers
-============================================================================= */
-
-function handleError (error) {
-  util.log(error.message);
-}
