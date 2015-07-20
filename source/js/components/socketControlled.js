@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = require('../utils/component')({
+module.exports = require('cauldron-core/app/utils/component')({
   name: 'socketControlled',
   player_id: '',
 });

@@ -1,7 +1,7 @@
 'use strict';
 
-var Entity = require('../entity');
-var playerFactory = require('../factories/player');
+var Entity = require('cauldron-core/app/entity');
+var playerFactory = require('cauldron-core/app/factories/player');
 var socketComponent = require('../components/socketControlled');
 
 var pickLocalPlayerData = (player) => {

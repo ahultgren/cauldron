@@ -1,36 +1,24 @@
 'use strict';
 
-var Game = require('./game');
+var cauldron = require('cauldron-core');
 var Socket = require('./socket');
-var maps = require('./maps');
+var maps = require('cauldron-core/app/maps');
 
-var Render = require('./systems/render');
-var KeyboardInput = require('./systems/keyboardInput');
-var Movement = require('./systems/movement');
-var MouseInput = require('./systems/mouseInput');
-var PointerFollower = require('./systems/pointerFollower');
-var Parent = require('./systems/parent');
-var Factory = require('./systems/factory');
-var Collision = require('./systems/collision');
-var Animation = require('./systems/animation');
-var Expire = require('./systems/expire');
+var playerFactory = require('cauldron-core/app/factories/player');
 var Multiplayer = require('./systems/multiplayer');
-var Camera = require('./systems/camera');
 
-var position = require('./components/position');
-var appearance = require('./components/appearance');
-var keyboardControlled = require('./components/keyboardControlled');
-var mouseControlled = require('./components/mouseControlled');
-var pointerFollower = require('./components/pointerFollower');
-var parent = require('./components/parent');
-var factory = require('./components/factory');
-var collision = require('./components/collision');
-var cameraTarget = require('./components/cameraTarget');
-var cameraBounds = require('./components/cameraBounds');
+var {
+  Render, KeyboardInput, Movement, MouseInput, PointerFollower, Parent, Factory,
+  Collision, Animation, Expire, Camera
+} = cauldron.systems;
 
-var playerFactory = require('./factories/player');
+var {
+  position, appearance, keyboardControlled, mouseControlled, pointerFollower,
+  parent, factory, collision, cameraTarget, cameraBounds,
+} = cauldron.components;
 
-var Entity = require('./entity');
+var Game = cauldron.Game;
+var Entity = cauldron.Entity;
 
 // [TODO] Use a config file
 var socket = Socket.create('ws://localhost:5005');

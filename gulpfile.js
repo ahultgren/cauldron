@@ -67,6 +67,7 @@ gulp.task('browserify', function() {
       .pipe(buffer())
       .pipe(sourcemaps.init({loadMaps: true}))
       .pipe(uglify())
+      .on('error', handleError)
       .pipe(sourcemaps.write('./'))
       .pipe(gulp.dest(jsDest));
   }
@@ -95,3 +96,7 @@ gulp.task('build_js', ['lint', 'browserify']);
 gulp.task('build_css', ['less']);
 
 gulp.task('default', ['build', 'watch']);
+
+process.on('uncaughtExepction', function (err) {
+  util.log(err);
+});
