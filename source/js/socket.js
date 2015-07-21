@@ -24,6 +24,10 @@ class Socket extends EventEmitter {
       console.log('Socket connected');
       this.emit('open');
     };
+    this.socket.onclose = () => {
+      console.log('Socket closed');
+      this.emit('close');
+    };
   }
 
   send (type, data = {}) {

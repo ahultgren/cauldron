@@ -44,6 +44,7 @@ class Multiplayer {
     this.socket.on('player/left', data => this.peerLeft(data));
     this.socket.on('player/update', data => this.updates.push(data));
     this.socket.on('game/spawn', data => this.spawns.push(data));
+    this.socket.on('close', () => this.game.stop());
   }
 
   tick (entities) {
