@@ -52,9 +52,9 @@ socket.on('game/joined', (rules) => {
   }));
   map.addComponent(collision.fromPaths({
     paths: mapPaths,
+    type: 'map',
   }));
   game.addEntity(map);
-  game.setMap(map);
 
   var player = playerFactory();
   player.addComponent(keyboardControlled());
