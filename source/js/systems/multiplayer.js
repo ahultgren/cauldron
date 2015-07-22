@@ -1,7 +1,6 @@
 'use strict';
 
 var Entity = require('cauldron-core/app/entity');
-var playerFactory = require('cauldron-core/app/factories/player');
 var socketComponent = require('../components/socketControlled');
 
 var pickLocalPlayerData = (player) => {
@@ -42,7 +41,7 @@ class Multiplayer {
     this.beat = true;
 
     this.socket.on('player/left', data => this.peerLeft(data));
-    this.socket.on('player/update', data => this.updates.push(data));
+    this.socket.on('game/updates', updates => this.updates.push(...updates));
     this.socket.on('game/spawn', data => this.spawns.push(data));
     this.socket.on('close', () => this.game.stop());
   }
@@ -57,18 +56,19 @@ class Multiplayer {
 
   readUpdates () {
     this.updates.forEach((data) => {
-      var player = this.peers.get(data.player_id);
+      var player = this.peers.get(data.id);
 
+      // [TODO] Do not add local player as peer
       if(!player) {
-        player = playerFactory(data);
+        player = Entity.fromData(data);
         player.addComponent(socketComponent({
-          player_id: data.player_id,
+          player_id: data.id,
         }));
         this.game.addEntity(player);
-        this.peers.set(data.player_id, player);
+        this.peers.set(data.id, player);
       }
       else {
-        setPlayerData(player, data);
+        setPlayerData(player, data.components);
       }
     });
     this.updates = [];
