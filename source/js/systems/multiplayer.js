@@ -36,7 +36,6 @@ class Multiplayer {
   constructor (socket) {
     this.socket = socket;
     this.updates = [];
-    this.peers = new Map();
     this.beat = true;
 
     this.socket.on('player/left', data => this.peerLeft(data));
@@ -53,7 +52,7 @@ class Multiplayer {
 
   readUpdates () {
     this.updates.forEach((data) => {
-      var player = this.peers.get(data.id);
+      var player = this.game.getEntity(data.id);
 
       // [TODO] Do not add local player as peer
       if(!player) {
@@ -62,9 +61,14 @@ class Multiplayer {
           player_id: data.id,
         }));
         this.game.addEntity(player);
-        this.peers.set(data.id, player);
       }
       else {
+        if(player.hasComponent('keyboardControlled')) {
+          // [TODO] Interpolate? For now just ignore position stuff
+          delete data.components.position;
+          delete data.components.physics;
+        }
+
         setPlayerData(player, data.components);
       }
     });
@@ -108,9 +112,7 @@ class Multiplayer {
   }
 
   peerLeft ({player_id}) {
-    var entity = this.peers.get(player_id);
-    this.peers.delete(player_id);
-    this.game.removeEntity(entity.id);
+    this.game.removeEntity(player_id);
     console.log(`${player_id} disconnected`);
   }
 }

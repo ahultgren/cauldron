@@ -3,8 +3,6 @@
 var cauldron = require('cauldron-core');
 var Socket = require('./socket');
 
-var playerFactory = require('cauldron-core/app/factories/player');
-var mapFactory = require('cauldron-core/app/factories/map');
 var Multiplayer = require('./systems/multiplayer');
 var Score = require('./systems/score');
 
@@ -24,7 +22,7 @@ var Entity = cauldron.Entity;
 // [TODO] Use a config file
 var socket = Socket.create('ws://localhost:5005');
 
-socket.on('game/joined', (rules) => {
+socket.on('game/joined', ({player: playerData}) => {
   var canvas = document.querySelector('.js-canvas');
   var camera = Camera.create(canvas);
   var game = Game.create();
@@ -42,10 +40,7 @@ socket.on('game/joined', (rules) => {
   game.addSystem(Score.create(document.querySelector('.js-score')));
   game.addRenderSystem(Render.create(canvas, camera));
 
-  var map = mapFactory(rules.map);
-  game.addEntity(map);
-
-  var player = playerFactory();
+  var player = Entity.fromData(playerData);
   player.addComponent(keyboardControlled());
   player.addComponent(mouseControlled());
   player.addComponent(cameraTarget());
