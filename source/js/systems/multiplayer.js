@@ -36,20 +36,17 @@ class Multiplayer {
   constructor (socket) {
     this.socket = socket;
     this.updates = [];
-    this.spawns = [];
     this.peers = new Map();
     this.beat = true;
 
     this.socket.on('player/left', data => this.peerLeft(data));
     this.socket.on('game/updates', updates => this.updates.push(...updates));
-    this.socket.on('game/spawn', data => this.spawns.push(data));
     this.socket.on('close', () => this.game.stop());
   }
 
   tick (entities) {
     this.beat = !this.beat;
     this.readUpdates();
-    this.readSpawns();
     this.sendUpdates(entities);
     this.sendSpawns(entities);
   }
@@ -72,13 +69,6 @@ class Multiplayer {
       }
     });
     this.updates = [];
-  }
-
-  readSpawns () {
-    this.spawns.forEach((data) => {
-      this.game.addEntity(Entity.fromData(data));
-    });
-    this.spawns = [];
   }
 
   sendUpdates (entities) {
