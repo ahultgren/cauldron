@@ -2,10 +2,11 @@
 
 var cauldron = require('cauldron-core');
 var Socket = require('./socket');
-var maps = require('cauldron-core/app/maps');
 
 var playerFactory = require('cauldron-core/app/factories/player');
+var mapFactory = require('cauldron-core/app/factories/map');
 var Multiplayer = require('./systems/multiplayer');
+var Score = require('./systems/score');
 
 var {
   Render, KeyboardInput, Movement, MouseInput, PointerFollower, Parent, Factory,
@@ -14,7 +15,7 @@ var {
 
 var {
   position, appearance, keyboardControlled, mouseControlled, pointerFollower,
-  parent, factory, collision, cameraTarget, cameraBounds,
+  parent, factory, cameraTarget,
 } = cauldron.components;
 
 var Game = cauldron.Game;
@@ -38,22 +39,10 @@ socket.on('game/joined', (rules) => {
   game.addSystem(Expire.create());
   game.addSystem(Multiplayer.create(socket));
   game.addSystem(Animation.create());
+  game.addSystem(Score.create(document.querySelector('.js-score')));
   game.addRenderSystem(Render.create(canvas, camera));
 
-  var map = Entity.create();
-  var mapPaths = maps[rules.map];
-  map.addComponent(position());
-  map.addComponent(cameraBounds.fromPaths(mapPaths));
-  map.addComponent(appearance({
-    shape: 'polygons',
-    fill: 'transparent',
-    stroke: '#f00',
-    paths: mapPaths,
-  }));
-  map.addComponent(collision.fromPaths({
-    paths: mapPaths,
-    type: 'map',
-  }));
+  var map = mapFactory(rules.map);
   game.addEntity(map);
 
   var player = playerFactory();
