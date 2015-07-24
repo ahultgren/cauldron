@@ -2,6 +2,7 @@
 
 var Entity = require('cauldron-core/app/entity');
 var socketComponent = require('../components/socketControlled');
+var find = require('cauldron-core/app/utils/findMap');
 
 var pickLocalPlayerData = (player) => {
   return {
@@ -37,15 +38,18 @@ class Multiplayer {
     this.socket = socket;
     this.updates = [];
     this.beat = true;
+    this.respawns = null;
 
     this.socket.on('player/left', data => this.peerLeft(data));
     this.socket.on('game/updates', updates => this.updates.push(...updates));
+    this.socket.on('game/respawn', data => this.respawns = data);
     this.socket.on('close', () => this.game.stop());
   }
 
   tick (entities) {
     this.beat = !this.beat;
     this.readUpdates();
+    this.readRespawns(entities);
     this.sendUpdates(entities);
     this.sendSpawns(entities);
   }
@@ -73,6 +77,19 @@ class Multiplayer {
       }
     });
     this.updates = [];
+  }
+
+  readRespawns (entities) {
+    if(!this.respawns) {
+      return;
+    }
+
+    var {x, y} = this.respawns;
+    var localPlayer = find(isLocalPlayer, entities);
+    var position = localPlayer.getComponent('position');
+    position.x = x;
+    position.y = y;
+    this.respawns = null;
   }
 
   sendUpdates (entities) {
