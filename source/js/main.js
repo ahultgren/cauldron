@@ -73,6 +73,7 @@ socket.on('game/joined', ({player: playerData}) => {
     event: 'click',
     data: {
       speed: 20,
+      damage: 1,
     }
   }));
   game.addEntity(weapon);
