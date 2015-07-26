@@ -1,7 +1,6 @@
 'use strict';
 
 var Entity = require('cauldron-core/app/entity');
-var socketComponent = require('../components/socketControlled');
 var find = require('cauldron-core/app/utils/findMap');
 
 var pickLocalPlayerData = (player) => {
@@ -58,12 +57,8 @@ class Multiplayer {
     this.updates.forEach((data) => {
       var player = this.game.getEntity(data.id);
 
-      // [TODO] Do not add local player as peer
       if(!player) {
         player = Entity.fromData(data);
-        player.addComponent(socketComponent({
-          player_id: data.id,
-        }));
         this.game.addEntity(player);
       }
       else {
