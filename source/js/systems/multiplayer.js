@@ -1,6 +1,7 @@
 'use strict';
 
 var Entity = require('cauldron-core/app/entity');
+var hudComponent = require('../components/hud');
 var find = require('cauldron-core/app/utils/findMap');
 
 var pickLocalPlayerData = (player) => {
@@ -55,20 +56,27 @@ class Multiplayer {
 
   readUpdates () {
     this.updates.forEach((data) => {
-      var player = this.game.getEntity(data.id);
+      var entity = this.game.getEntity(data.id);
 
-      if(!player) {
-        player = Entity.fromData(data);
-        this.game.addEntity(player);
+      if(!entity) {
+        entity = Entity.fromData(data);
+
+        if(entity.hasComponent('score')) {
+          entity.addComponent(hudComponent({
+            type: ['score'],
+          }));
+        }
+
+        this.game.addEntity(entity);
       }
       else {
-        if(player.hasComponent('keyboardControlled')) {
+        if(entity.hasComponent('keyboardControlled')) {
           // [TODO] Interpolate? For now just ignore position stuff
           delete data.components.position;
           delete data.components.physics;
         }
 
-        setPlayerData(player, data.components);
+        setPlayerData(entity, data.components);
       }
     });
     this.updates = [];

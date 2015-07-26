@@ -13,11 +13,13 @@ body {
   display: none;
 }
 
-.game-canvas {
+.game-canvas,
+.hud-canvas {
   background-color: #000;
   width: 100%;
   height: 100%;
   position: absolute;
+  z-index: 1;
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -26,6 +28,11 @@ body {
   -ms-user-select: none;
   user-select: none;
   cursor: none;
+}
+
+.hud-canvas {
+  background-color: transparent;
+  z-index: 2;
 }
 
 .menu {
@@ -49,14 +56,4 @@ body {
   right: 0;
   bottom: 0;
   z-index: 2;
-}
-
-.score {
-  background-color: rgba(255,255,255,0.2);
-  padding: 10px;
-  width: 200px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: #c00;
 }

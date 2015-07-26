@@ -4,7 +4,8 @@ var cauldron = require('cauldron-core');
 var Socket = require('./socket');
 
 var Multiplayer = require('./systems/multiplayer');
-var Score = require('./systems/score');
+var Hud = require('./systems/hud');
+var hud = require('./components/hud');
 
 var {
   Render, KeyboardInput, Movement, MouseInput, PointerFollower, Parent, Factory,
@@ -23,9 +24,11 @@ var Entity = cauldron.Entity;
 var socket = Socket.create('ws://localhost:5005');
 
 socket.on('game/joined', ({player: playerData}) => {
-  var canvas = document.querySelector('.js-canvas');
-  var camera = Camera.create(canvas);
+  var gameCanvas = document.querySelector('.js-game-canvas');
+  var hudCanvas = document.querySelector('.js-hud-canvas');
+  var camera = Camera.create(gameCanvas);
   var game = Game.create();
+
   game.addSystem(KeyboardInput.create());
   game.addSystem(MouseInput.create(camera)); // [TODO] Bad dependency
   game.addSystem(Collision.create());
@@ -37,13 +40,16 @@ socket.on('game/joined', ({player: playerData}) => {
   game.addSystem(Expire.create());
   game.addSystem(Multiplayer.create(socket));
   game.addSystem(Animation.create());
-  game.addSystem(Score.create(document.querySelector('.js-score')));
-  game.addRenderSystem(Render.create(canvas, camera));
+  game.addRenderSystem(Render.create(gameCanvas, camera));
+  game.addRenderSystem(Hud.create(hudCanvas, camera));
 
   var player = Entity.fromData(playerData);
   player.addComponent(keyboardControlled());
   player.addComponent(mouseControlled());
   player.addComponent(cameraTarget());
+  player.addComponent(hud({
+    type: ['health', 'score'],
+  }));
   game.addEntity(player);
 
   var shield = Entity.create();
