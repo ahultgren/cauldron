@@ -114,5 +114,8 @@ socket.on('game/joined', ({player: playerData}) => {
 
   game.start();
 
+  gameCanvas.addEventListener('contextmenu', e => e.preventDefault(), false);
+  hudCanvas.addEventListener('contextmenu', e => e.preventDefault(), false);
+
   window.game = game;
 });
