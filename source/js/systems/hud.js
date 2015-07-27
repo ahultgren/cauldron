@@ -7,6 +7,8 @@ var hasHud = filter(entity => entity.hasComponents('hud'));
 var typeHealth = entity => entity.getComponent('hud').type.indexOf('health') > -1;
 var typeScore = entity => entity.getComponent('hud').type.indexOf('score') > -1;
 var scoreDiff = (a, b) => b.getComponent('score').score - a.getComponent('score').score;
+var zeroPad = (str) => ('0000' + str).substr(-2);
+var zeroPadded = (strings, ...values) => R.flatten(R.zip(strings, values.map(zeroPad))).join('');
 
 class Hud extends require('cauldron-core/app/systems/render') {
   static create (canvas) {
@@ -22,6 +24,7 @@ class Hud extends require('cauldron-core/app/systems/render') {
     var healthEntity = R.find(typeHealth, showable);
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.timeleft();
 
     if(healthEntity) {
       this.drawHealth(healthEntity);
@@ -40,11 +43,10 @@ class Hud extends require('cauldron-core/app/systems/render') {
     var height = 12;
 
     ctx.beginPath();
-    ctx.fillStyle = '#0f0';
-    ctx.strokeStyle = '#fff';
+    ctx.fillStyle = '#f00';
+    ctx.strokeStyle = '#000';
     ctx.lineWidth = 2;
     ctx.fillRect(20, 20, width, height);
-    ctx.strokeRect(20, 20, maxWidth, height);
   }
 
   drawScore (entity, i) {
@@ -57,7 +59,28 @@ class Hud extends require('cauldron-core/app/systems/render') {
     ctx.beginPath();
     ctx.fillStyle = '#f00';
     ctx.font = '16px monospace';
+    ctx.textAlign = 'start';
+    ctx.textBaseline = 'top';
     ctx.fillText(`${entity.id.substring(0, 8)}: ${score}`, left, topOffset + lineHeight * i);
+  }
+
+  timeleft () {
+    var ctx = this.ctx;
+    var now = new Date();
+    var start = new Date(this.game.rules.started_at);
+    var duration = this.game.rules.duration;
+    var leftTime = new Date(start.valueOf() + duration * 1000 - now);
+
+    ctx.beginPath();
+    ctx.fillStyle = '#f00';
+    ctx.font = '24px monospace';
+    ctx.textAlign = 'end';
+    ctx.textBaseline = 'top';
+    ctx.fillText(
+      zeroPadded`${leftTime.getMinutes()}:${leftTime.getSeconds()}`,
+      this.canvas.width - 20,
+      20
+    );
   }
 }
 

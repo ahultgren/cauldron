@@ -23,11 +23,12 @@ var Entity = cauldron.Entity;
 // [TODO] Use a config file
 var socket = Socket.create('ws://localhost:5005');
 
-socket.on('game/joined', ({player: playerData}) => {
+socket.on('game/joined', ({player: playerData, rules}) => {
   var gameCanvas = document.querySelector('.js-game-canvas');
   var hudCanvas = document.querySelector('.js-hud-canvas');
   var camera = Camera.create(gameCanvas);
   var game = Game.create();
+  game.rules = rules;
 
   game.addSystem(KeyboardInput.create());
   game.addSystem(MouseInput.create(camera)); // [TODO] Bad dependency
