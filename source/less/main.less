@@ -4,6 +4,7 @@
 
 html,
 body {
+  font-family: Helvetica, Arial;
   height: 100%;
   margin: 0;
   padding: 0;
@@ -56,4 +57,48 @@ body {
   right: 0;
   bottom: 0;
   z-index: 2;
+}
+
+.leaderboard {
+  border: 1px solid #f00;
+  background-color: rgba(0,0,0,0.5);
+  width: 30%;
+  height: 30%;
+  margin: auto;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+
+  &::before {
+    content: "";
+    background-color: rgba(0,0,0,0.5);
+    margin: auto;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+  }
+
+  &::after {
+    content: "Play again";
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+}
+
+.u-hidden {
+  display: none;
 }

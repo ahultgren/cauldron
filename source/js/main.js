@@ -2,6 +2,7 @@
 
 var cauldron = require('cauldron-core');
 var Socket = require('./socket');
+var leaderboard = require('./leaderboard');
 
 var Multiplayer = require('./systems/multiplayer');
 var Hud = require('./systems/hud');
@@ -20,103 +21,110 @@ var {
 var Game = cauldron.Game;
 var Entity = cauldron.Entity;
 
-// [TODO] Use a config file
-var socket = Socket.create('ws://localhost:5005');
+var gameCanvas = document.querySelector('.js-game-canvas');
+var hudCanvas = document.querySelector('.js-hud-canvas');
 
-socket.on('game/joined', ({player: playerData, rules}) => {
-  var gameCanvas = document.querySelector('.js-game-canvas');
-  var hudCanvas = document.querySelector('.js-hud-canvas');
-  var camera = Camera.create(gameCanvas);
-  var game = Game.create();
-  game.rules = rules;
+gameCanvas.addEventListener('contextmenu', e => e.preventDefault(), false);
+hudCanvas.addEventListener('contextmenu', e => e.preventDefault(), false);
 
-  game.addSystem(KeyboardInput.create());
-  game.addSystem(MouseInput.create(camera)); // [TODO] Bad dependency
-  game.addSystem(Collision.create());
-  game.addSystem(Movement.create());
-  game.addSystem(camera);
-  game.addSystem(PointerFollower.create(camera));
-  game.addSystem(Parent.create());
-  game.addSystem(Factory.create());
-  game.addSystem(Expire.create());
-  game.addSystem(Multiplayer.create(socket));
-  game.addSystem(Animation.create());
-  game.addRenderSystem(Render.create(gameCanvas, camera));
-  game.addRenderSystem(Hud.create(hudCanvas, camera));
+var joinMultiplayerGame = () => {
+  // [TODO] Use a config file
+  var socket = Socket.create('ws://localhost:5005');
 
-  var player = Entity.fromData(playerData);
-  player.addComponent(keyboardControlled());
-  player.addComponent(mouseControlled());
-  player.addComponent(cameraTarget());
-  player.addComponent(hud({
-    type: ['health', 'score'],
-  }));
-  game.addEntity(player);
+  socket.on('game/joined', ({player: playerData, rules}) => {
+    var camera = Camera.create(gameCanvas);
+    var game = Game.create();
+    game.rules = rules;
 
-  var shield = Entity.create();
-  shield.addComponent(parent({
-    parentId: player.id,
-  }));
-  shield.addComponent(position({
-    offsetX: 170,
-    offsetY: 0,
-  }));
-  shield.addComponent(appearance({
-    fill: 'transparent',
-    stroke: '#f00',
-    shape: 'arc',
-    radius: 200,
-    gap: Math.PI * 0.95,
-  }));
-  game.addEntity(shield);
+    game.addSystem(KeyboardInput.create());
+    game.addSystem(MouseInput.create(camera)); // [TODO] Bad dependency
+    game.addSystem(Collision.create());
+    game.addSystem(Movement.create());
+    game.addSystem(camera);
+    game.addSystem(PointerFollower.create(camera));
+    game.addSystem(Parent.create());
+    game.addSystem(Factory.create());
+    game.addSystem(Expire.create());
+    game.addSystem(Multiplayer.create(socket));
+    game.addSystem(Animation.create());
+    game.addRenderSystem(Render.create(gameCanvas, camera));
+    game.addRenderSystem(Hud.create(hudCanvas, camera));
 
-  var weapon = Entity.create();
-  weapon.addComponent(position());
-  weapon.addComponent(parent({
-    parentId: player.id,
-  }));
-  weapon.addComponent(factory({
-    factory: 'bullet',
-    event: 'click',
-    data: {
-      speed: 20,
-      damage: 2,
-    }
-  }));
-  game.addEntity(weapon);
+    var player = Entity.fromData(playerData);
+    player.addComponent(keyboardControlled());
+    player.addComponent(mouseControlled());
+    player.addComponent(cameraTarget());
+    player.addComponent(hud({
+      type: ['health', 'score'],
+    }));
+    game.addEntity(player);
 
-  var pointer = Entity.create();
-  pointer.addComponent(position({x: 0, y: 0}));
-  pointer.addComponent(pointerFollower());
-  pointer.addComponent(appearance({
-    fill: 'transparent',
-    stroke: '#fd0',
-    shape: 'arc',
-    radius: 10,
-    gap: 0,
-  }));
-  game.addEntity(pointer);
+    var shield = Entity.create();
+    shield.addComponent(parent({
+      parentId: player.id,
+    }));
+    shield.addComponent(position({
+      offsetX: 170,
+      offsetY: 0,
+    }));
+    shield.addComponent(appearance({
+      fill: 'transparent',
+      stroke: '#f00',
+      shape: 'arc',
+      radius: 200,
+      gap: Math.PI * 0.95,
+    }));
+    game.addEntity(shield);
 
-  var pointerPoint = Entity.create();
-  pointerPoint.addComponent(parent({
-    parentId: pointer.id,
-  }));
-  pointerPoint.addComponent(position({
-    offsetX: 0,
-    offsetY: 0,
-  }));
-  pointerPoint.addComponent(appearance({
-    fill: '#fd0',
-    stroke: 'transparent',
-    shape: 'arc',
-    radius: 2,
-  }));
-  game.addEntity(pointerPoint);
+    var weapon = Entity.create();
+    weapon.addComponent(position());
+    weapon.addComponent(parent({
+      parentId: player.id,
+    }));
+    weapon.addComponent(factory({
+      factory: 'bullet',
+      event: 'click',
+      data: {
+        speed: 20,
+        damage: 2,
+      }
+    }));
+    game.addEntity(weapon);
 
-  game.start();
+    var pointer = Entity.create();
+    pointer.addComponent(position({x: 0, y: 0}));
+    pointer.addComponent(pointerFollower());
+    pointer.addComponent(appearance({
+      fill: 'transparent',
+      stroke: '#fd0',
+      shape: 'arc',
+      radius: 10,
+      gap: 0,
+    }));
+    game.addEntity(pointer);
 
-  gameCanvas.addEventListener('contextmenu', e => e.preventDefault(), false);
-  hudCanvas.addEventListener('contextmenu', e => e.preventDefault(), false);
+    var pointerPoint = Entity.create();
+    pointerPoint.addComponent(parent({
+      parentId: pointer.id,
+    }));
+    pointerPoint.addComponent(position({
+      offsetX: 0,
+      offsetY: 0,
+    }));
+    pointerPoint.addComponent(appearance({
+      fill: '#fd0',
+      stroke: 'transparent',
+      shape: 'arc',
+      radius: 2,
+    }));
+    game.addEntity(pointerPoint);
 
-  window.game = game;
-});
+    game.start();
+
+    socket.on('game/end', data => leaderboard.show(game, data, joinMultiplayerGame));
+
+    window.game = game;
+  });
+};
+
+joinMultiplayerGame();
