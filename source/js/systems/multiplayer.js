@@ -13,19 +13,6 @@ var pickLocalPlayerData = (player) => {
   };
 };
 
-var setPlayerData = (player, data) => {
-  Object.keys(data).forEach((name) => {
-    var component = player.getComponent(name);
-    var componentData = data[name];
-
-    if(component) {
-      Object.keys(componentData).forEach((key) => {
-        component[key] = componentData[key];
-      });
-    }
-  });
-};
-
 // [TODO] Better way than assuming keyboardControlled is only player?
 var isLocalPlayer = (entity) => entity.hasComponent('keyboardControlled');
 
@@ -76,7 +63,7 @@ class Multiplayer {
           delete data.components.physics;
         }
 
-        setPlayerData(entity, data.components);
+        entity.setComponents(data.components);
       }
     });
     this.updates = [];
