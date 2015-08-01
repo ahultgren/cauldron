@@ -4,15 +4,6 @@ var Entity = require('cauldron-core/app/entity');
 var hudComponent = require('../components/hud');
 var find = require('cauldron-core/app/utils/findMap');
 
-var pickLocalPlayerData = (player) => {
-  return {
-    position: player.getComponent('position'),
-    appearance: player.getComponent('appearance'),
-    physics: player.getComponent('physics'),
-    collision: player.getComponent('collision'),
-  };
-};
-
 // [TODO] Better way than assuming keyboardControlled is only player?
 var isLocalPlayer = (entity) => entity.hasComponent('keyboardControlled');
 
@@ -100,8 +91,7 @@ class Multiplayer {
       return;
     }
 
-    // [TODO] Only send data if anything's changed
-    data = pickLocalPlayerData(localPlayer);
+    data = localPlayer.serializeDirty().components;
 
     this.socket.send('player/update', data);
   }
