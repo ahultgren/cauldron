@@ -55,7 +55,7 @@ var joinMultiplayerGame = () => {
     player.addComponent(mouseControlled());
     player.addComponent(cameraTarget());
     player.addComponent(hud({
-      type: ['health', 'score'],
+      type: ['health', 'score', 'powerup'],
     }));
     game.addEntity(player);
 

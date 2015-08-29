@@ -2,10 +2,17 @@
 
 var R = require('ramda');
 var filter = require('cauldron-core/app/utils/filter');
+var Powerups = require('cauldron-core/app/systems/powerups/powerups');
+
+const PADDING = 20;
+const ICON_SIZE = 30;
+const ICON_RADIUS = ICON_SIZE / 2;
+const ICON_PADDING = 10;
 
 var hasHud = filter(entity => entity.hasComponents('hud'));
 var typeHealth = entity => entity.getComponent('hud').type.indexOf('health') > -1;
 var typeScore = entity => entity.getComponent('hud').type.indexOf('score') > -1;
+var typePowerup = entity => entity.getComponent('hud').type.indexOf('powerup') > -1;
 var scoreDiff = (a, b) => b.getComponent('score').score - a.getComponent('score').score;
 var zeroPad = (str) => ('0000' + str).substr(-2);
 var zeroPadded = (strings, ...values) => R.flatten(R.zip(strings, values.map(zeroPad))).join('');
@@ -17,6 +24,7 @@ class Hud extends require('cauldron-core/app/systems/render') {
 
   constructor (canvas) {
     super(canvas);
+    this.camera = { x: 0, y: 0 };
   }
 
   tick (entities) {
@@ -33,6 +41,9 @@ class Hud extends require('cauldron-core/app/systems/render') {
     showable.filter(typeScore)
     .sort(scoreDiff)
     .forEach((...args) => this.drawScore(...args));
+
+    showable.filter(typePowerup)
+    .forEach(entity => this.drawPowerups(entity));
   }
 
   drawHealth (entity) {
@@ -46,7 +57,7 @@ class Hud extends require('cauldron-core/app/systems/render') {
     ctx.fillStyle = '#f00';
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 2;
-    ctx.fillRect(20, 20, width, height);
+    ctx.fillRect(PADDING, PADDING, width, height);
   }
 
   drawScore (entity, i) {
@@ -54,7 +65,7 @@ class Hud extends require('cauldron-core/app/systems/render') {
     var {score} = entity.getComponent('score');
     var lineHeight = 24;
     var topOffset = 60;
-    var left = 20;
+    var left = PADDING;
 
     ctx.beginPath();
     ctx.fillStyle = '#f00';
@@ -62,6 +73,23 @@ class Hud extends require('cauldron-core/app/systems/render') {
     ctx.textAlign = 'start';
     ctx.textBaseline = 'top';
     ctx.fillText(`${entity.id.substring(0, 8)}: ${score}`, left, topOffset + lineHeight * i);
+  }
+
+  drawPowerups (entity) {
+    var {ctx} = this;
+    var {powerups} = entity.getComponent('powerupTarget');
+
+    powerups.forEach((powerup, i) => {
+      this.transform(PADDING + ICON_RADIUS, 100 + (ICON_SIZE + ICON_PADDING) * i);
+      this.draw(ctx, Powerups[powerup.type].icon);
+      this.draw(ctx, {
+        shape: 'arc',
+        stroke: Powerups[powerup.type].icon.fill || '#fc0',
+        radius: ICON_RADIUS,
+        gap: (1 - powerup.duration / Powerups[powerup.type].duration) * Math.PI,
+      });
+      this.transform(0, 0, 0);
+    });
   }
 
   timeleft () {
