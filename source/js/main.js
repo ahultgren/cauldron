@@ -6,6 +6,7 @@ var leaderboard = require('./leaderboard');
 
 var Multiplayer = require('./systems/multiplayer');
 var Hud = require('./systems/hud');
+var Sound = require('./systems/sound');
 var hud = require('./components/hud');
 
 var {
@@ -47,6 +48,7 @@ var joinMultiplayerGame = () => {
     game.addSystem(Expire.create());
     game.addSystem(Multiplayer.create(socket));
     game.addSystem(Animation.create());
+    game.addSystem(Sound.create());
     game.addRenderSystem(Render.create(gameCanvas, camera));
     game.addRenderSystem(Hud.create(hudCanvas, camera));
 
