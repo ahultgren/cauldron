@@ -44,7 +44,9 @@ gulp.task('browserify', function() {
   })
   .transform(babelify.configure({
     optional: ['es7.objectRestSpread'],
-  }));
+  }), {
+    global: true,
+  });
 
   b = watchify(b, {
     delay: 100,
